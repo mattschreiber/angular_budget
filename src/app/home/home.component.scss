@@ -1,0 +1,12 @@
+.example-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.example-container > * {
+  width: 100%;
+}
+
+.mat-input-element:disabled {
+  color: rgba(0, 0, 0, 0.72);
+}
