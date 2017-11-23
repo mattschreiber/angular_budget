@@ -1,25 +1,26 @@
-<div class="container" fxLayout="column" fxLayoutGap="20px">
-  <table class="example-full-width" cellspacing="0"><tr>
-  <td><mat-form-field class="example-container">
+<div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
+<div>
+  <mat-form-field class="example-container">
     <input matInput placeholder="Projected Budget" disabled [value]="projBalance">
-  </mat-form-field></td>
-  <td><mat-form-field class="example-container">
-    <input class="my-class" #fun (dateChange)="updateEndDate(fun.value)"  matInput [matDatepicker]="picker1" placeholder="End Date" [formControl]="date">
-  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-  <mat-datepicker #picker1></mat-datepicker>
-  </mat-form-field></td>
-  </tr>
-  <tr>
-    <td>
-    <mat-form-field class="example-container" fxFlex>
-      <input matInput placeholder="Ledger Balance" disabled value="Placeholder">
-    </mat-form-field>
-  </td>
-    <span class="flex-spacer"></span>
-  </tr>
-  </table>
-
+  </mat-form-field>
 </div>
+<div>
+  <mat-form-field class="example-container">
+    <input class="my-class" #fun (dateChange)="updateEndDate(fun.value)"  matInput [matDatepicker]="picker1" placeholder="Projected End Date" [formControl]="date">
+  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+  <mat-datepicker touchUi="true" #picker1></mat-datepicker>
+  </mat-form-field>
+</div>
+</div>
+<div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
+  <mat-form-field class="example-container">
+    <input matInput placeholder="Ledger Balance" disabled value="Placeholder">
+  </mat-form-field>
+  <span class="flex-spacer"></span>
+</div>
+
+
+
 <!-- <div class="container" fxFlex>
   <app-table-ledger></app-table-ledger>
 </div> -->
