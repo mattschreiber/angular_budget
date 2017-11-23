@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldModule,
   MatInputModule, MatRadioModule, MatSelectModule, MatSliderModule,
@@ -13,6 +13,8 @@ import { MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldMo
   MatNativeDateModule} from '@angular/material';
 
 import 'hammerjs';
+
+import { AuthInterceptor } from './auth.interceptor';
 
 
 import { AppComponent } from './app.component';
@@ -40,7 +42,13 @@ import { TableLedgerComponent } from './table-ledger/table-ledger.component';
     MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule,
     MatTableModule, MatSortModule, MatNativeDateModule,
   ],
-  providers: [HttpClientModule],
+  providers: [HttpClientModule,
+    {
+      provide : HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi   : true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

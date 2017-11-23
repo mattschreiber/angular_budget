@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {FormControl} from '@angular/forms';
+import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit {
 
@@ -24,7 +26,7 @@ export class HomeComponent implements OnInit {
   }
 
   updateEndDate(val: Date): void {
-    let parseDate = new Date(Date.parse(val + 'GMT'));
+    let parseDate = new Date(Date.parse(val + 'EST'));
     let endDate = parseDate.getFullYear()+'-'+(parseDate.getMonth()+1)+'-'+parseDate.getDate();
     this.getProjectedValue(endDate);
     console.log(endDate);
@@ -45,7 +47,7 @@ export class HomeComponent implements OnInit {
         // The backend returned an unsuccessful response code.
         // The response body may contain clues as to what went wrong,
         this.projBalance = null;
-        console.log('Backend returned code ${err.status}, body was: ${err.error}')
+        console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
       }
     }
  );// end current

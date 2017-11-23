@@ -4,17 +4,25 @@
     <input matInput placeholder="Projected Budget" disabled [value]="projBalance">
   </mat-form-field></td>
   <td><mat-form-field class="example-container">
-    <input #fun (dateChange)="updateEndDate(fun.value)"  matInput [matDatepicker]="picker1" placeholder="Angular forms" [formControl]="date">
+    <input class="my-class" #fun (dateChange)="updateEndDate(fun.value)"  matInput [matDatepicker]="picker1" placeholder="End Date" [formControl]="date">
   <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
   <mat-datepicker #picker1></mat-datepicker>
   </mat-form-field></td>
-  </tr></table>
-  <mat-form-field class="example-container">
-    <input matInput placeholder="Ledger Balance" disabled value="Placeholder">
-  </mat-form-field>
+  </tr>
+  <tr>
+    <td>
+    <mat-form-field class="example-container" fxFlex>
+      <input matInput placeholder="Ledger Balance" disabled value="Placeholder">
+    </mat-form-field>
+  </td>
+    <span class="flex-spacer"></span>
+  </tr>
+  </table>
 
+</div>
 <!-- <div class="container" fxFlex>
   <app-table-ledger></app-table-ledger>
 </div> -->
+<div class="container" fxLayout="column" fxLayoutGap="20px">
 <app-table-ledger></app-table-ledger>
-</div>
+<div>

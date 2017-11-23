@@ -29,21 +29,21 @@ export class TableLedgerComponent implements AfterViewInit   {
   constructor(private http: HttpClient) {}
 
   ngAfterViewInit() {
-     this.exampleDatabase = new ExampleHttpDao(this.http);
-
-     // If the user changes the sort order, reset back to the first page.
-     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-     this.dataSource.paginator = this.paginator;
-
-     this.http.get<GithubApi>('https://api.github.com/search/issues?q=repo:angular/material2&sort=created&order=asc&page=1')
-     .map(data => {
-       this.resultsLength = 30;
-       this.paginator.pageSize = 10;
-       return data.items;
-     })
-     .subscribe(data => {
-      this.dataSource.data = data;
-    });
+    //  this.exampleDatabase = new ExampleHttpDao(this.http);
+    //
+    //  // If the user changes the sort order, reset back to the first page.
+    //  this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    //  this.dataSource.paginator = this.paginator;
+    //
+    //  this.http.get<GithubApi>('https://api.github.com/search/issues?q=repo:angular/material2&sort=created&order=asc&page=1')
+    //  .map(data => {
+    //    this.resultsLength = 30;
+    //    this.paginator.pageSize = 10;
+    //    return data.items;
+    //  })
+    //  .subscribe(data => {
+    //   this.dataSource.data = data;
+    // });
 
 
      // Observable.merge(this.sort.sortChange, this.paginator.page)
