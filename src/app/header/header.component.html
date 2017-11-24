@@ -2,15 +2,20 @@
   <mat-toolbar color="primary">
   <mat-toolbar-row>
   <!-- <span><img src="/assets/images/logo.png" height=30 width=41></span> -->
-  <a mat-button routerLink="/home" routerLinkActive="active"><span class="fa fa-university fa-lg"></span> Home</a>
-  <a mat-button><span class="fa fa-list fa-lg"></span> Ledger</a>
-  <a mat-button routerLink="/menu" routerLinkActive="active"><span class="fa fa-list fa-lg"></span> Budget</a>
-  <a mat-button fxHide.lt-md routerLink="/contactus" routerLinkActive="active"><span class="fa fa-calculator fa-lg"></span> New Entry</a>
+  <img src="/assets/images/budget-logo.svg" alt="Logo" width="50" height="50px">
+  <a mat-button routerLink="/home" routerLinkActive="active">Home</a>
+  <a mat-button>Ledger</a>
+  <a mat-button routerLink="/menu" routerLinkActive="active">Budget</a>
+  <a mat-button [matMenuTriggerFor]="menu" routerLinkActive="active">New Entry</a>
+  <mat-menu #menu="matMenu">
+    <button (click)="openNewEntry('ledger')" mat-menu-item routerLinkActive="active">Ledger</button>
+    <button mat-menu-item routerLinkActive="active">Budget</button>
+  </mat-menu>
   <span class="flex-spacer"></span>
-  <a mat-button fxHide.lt-md (click)="openLoginForm()"><span class="fa fa-sign-in fa-lg"></span> Login</a>
+  <a mat-button fxHide.lt-md (click)="openLoginForm()">Login</a>
   </mat-toolbar-row>
   <mat-toolbar-row fxHide.gt-sm>
-    <a mat-button (click)="openLoginForm()"><span class="fa fa-sign-in fa-lg"></span> Login</a>
+    <a mat-button (click)="openLoginForm()">Login</a>
   </mat-toolbar-row>
 </mat-toolbar>
 <!-- </div> -->

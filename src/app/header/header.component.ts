@@ -14,4 +14,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
+  openNewEntry(entryType: string) {
+    console.log("new entry: " + entryType);
+  }
+
 }
