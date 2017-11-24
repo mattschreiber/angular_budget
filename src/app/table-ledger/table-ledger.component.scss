@@ -1,13 +1,14 @@
 /* Structure */
-.example-container {
+.table-container {
   display: flex;
   flex-direction: column;
   max-height: 500px;
-  min-width: 700px;
+  min-width: 300px;
+  max-width: 700px;
   position: relative;
 }
 
-.example-header {
+.table-header {
   min-height: 64px;
   display: flex;
   align-items: center;
@@ -15,12 +16,12 @@
   font-size: 20px;
 }
 
-.example-table {
+.table-table {
   overflow: auto;
   min-height: 300px;
 }
 
-.example-loading-shade {
+.table-loading-shade {
   position: absolute;
   top: 0;
   left: 0;
@@ -33,7 +34,7 @@
   justify-content: center;
 }
 
-.example-rate-limit-reached {
+.table-rate-limit-reached {
   color: #980000;
   max-width: 360px;
   text-align: center;

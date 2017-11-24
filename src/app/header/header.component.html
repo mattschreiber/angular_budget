@@ -1,0 +1,16 @@
+<!-- <div class="container" fxLayout="row" fxLayoutGap="20px"> -->
+  <mat-toolbar color="primary">
+  <mat-toolbar-row>
+  <!-- <span><img src="/assets/images/logo.png" height=30 width=41></span> -->
+  <a mat-button routerLink="/home" routerLinkActive="active"><span class="fa fa-university fa-lg"></span> Home</a>
+  <a mat-button><span class="fa fa-list fa-lg"></span> Ledger</a>
+  <a mat-button routerLink="/menu" routerLinkActive="active"><span class="fa fa-list fa-lg"></span> Budget</a>
+  <a mat-button fxHide.lt-md routerLink="/contactus" routerLinkActive="active"><span class="fa fa-calculator fa-lg"></span> New Entry</a>
+  <span class="flex-spacer"></span>
+  <a mat-button fxHide.lt-md (click)="openLoginForm()"><span class="fa fa-sign-in fa-lg"></span> Login</a>
+  </mat-toolbar-row>
+  <mat-toolbar-row fxHide.gt-sm>
+    <a mat-button (click)="openLoginForm()"><span class="fa fa-sign-in fa-lg"></span> Login</a>
+  </mat-toolbar-row>
+</mat-toolbar>
+<!-- </div> -->

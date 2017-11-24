@@ -22,13 +22,15 @@ import { AuthInterceptor } from './auth.interceptor';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { TableLedgerComponent } from './table-ledger/table-ledger.component';
+import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    TableLedgerComponent
+    TableLedgerComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
