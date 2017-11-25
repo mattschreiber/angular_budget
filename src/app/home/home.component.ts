@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {FormControl} from '@angular/forms';
 import { ViewEncapsulation } from '@angular/core';
 
+import { DateService } from '../services/date.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,24 +14,21 @@ import { ViewEncapsulation } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   projBalance: number;
-  // minDate = new Date(2000, 0, 1);
-  maxDate = new Date(2020, 11, 21);
-  date = new FormControl(new Date());
+  date = new FormControl(this.dateservice.todayDate);
 
-  todayDate = this.maxDate.getFullYear()+'-'+(this.maxDate.getMonth()+1)+'-'+this.maxDate.getDate();
   // serializedDate = new FormControl((new Date()).toISOString());
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private dateservice: DateService) { }
 
   ngOnInit() {
-    this.getProjectedValue(this.todayDate);
+    this.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
   }
 
   updateEndDate(val: Date): void {
-    let parseDate = new Date(Date.parse(val + 'EST'));
-    let endDate = parseDate.getFullYear()+'-'+(parseDate.getMonth()+1)+'-'+parseDate.getDate();
-    this.getProjectedValue(endDate);
-    console.log(endDate);
+    // let parseDate = new Date(Date.parse(val + 'EST'));
+    // let endDate = parseDate.getFullYear()+'-'+(parseDate.getMonth()+1)+'-'+parseDate.getDate();
+    this.getProjectedValue(this.dateservice.parseDate(val));
+    console.log(this.dateservice.parseDate(val));
   }
 
   getProjectedValue(today: string): void {

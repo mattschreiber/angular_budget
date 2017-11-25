@@ -15,6 +15,7 @@ import { MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldMo
 import 'hammerjs';
 
 import { AuthService } from './services/auth.service';
+import { DateService } from './services/date.service';
 
 import { AuthInterceptor } from './auth.interceptor';
 
@@ -46,7 +47,7 @@ import { HeaderComponent } from './header/header.component';
     MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule,
     MatTableModule, MatSortModule, MatNativeDateModule,
   ],
-  providers: [HttpClientModule, AuthService,
+  providers: [HttpClientModule, AuthService, DateService,
     {
       provide : HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
