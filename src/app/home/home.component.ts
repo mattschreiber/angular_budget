@@ -25,15 +25,14 @@ export class HomeComponent implements OnInit {
   }
 
   updateEndDate(val: Date): void {
-    // let parseDate = new Date(Date.parse(val + 'EST'));
-    // let endDate = parseDate.getFullYear()+'-'+(parseDate.getMonth()+1)+'-'+parseDate.getDate();
     this.getProjectedValue(this.dateservice.parseDate(val));
-    console.log(this.dateservice.parseDate(val));
+    console.log(this.dateservice.firstOfMonth(val));
+    console.log(this.dateservice.lastOfMonth(val));
   }
 
-  getProjectedValue(today: string): void {
+  getProjectedValue(date: string): void {
     const href = 'http://localhost:5000/home/';
-    const requestUrl =`${href}${today}`;
+    const requestUrl =`${href}${date}`;
     this.http.get<ProjectedBalance>(requestUrl)
     .subscribe(data => {
      this.projBalance = data.projBalance * .01;
