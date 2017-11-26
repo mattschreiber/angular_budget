@@ -29,7 +29,9 @@
       <mat-header-cell *matHeaderCellDef
                        mat-sort-header> Date
       </mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.trans_date | date }}</mat-cell>
+      <mat-cell *matCellDef="let row">{{ row.trans_date | date:'MMM d, y':'GMT'
+
+}}</mat-cell>
     </ng-container>
     <!-- Credit Column -->
     <ng-container matColumnDef="credit">

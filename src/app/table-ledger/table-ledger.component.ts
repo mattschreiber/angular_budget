@@ -19,9 +19,9 @@ import { Ledger } from '../shared/ledger';
   templateUrl: './table-ledger.component.html',
   styleUrls: ['./table-ledger.component.scss']
 })
+
+
 export class TableLedgerComponent implements AfterViewInit   {
-
-
   startDate = new FormControl(this.dateservice.firstDayMonth);
   endDate = new FormControl(this.dateservice.todayDate);
   displayedColumns = ['date', 'credit', 'debit', 'store', 'category'];
@@ -44,7 +44,10 @@ export class TableLedgerComponent implements AfterViewInit   {
      this.dataSource.paginator = this.paginator;
      this.dataSource.sort = this.sort;
 
-    this.http.get<LedgerEntries[]>('http://localhost:5000/ledger-entries/2017-01-01/2020-01-01')
+    const href = 'http://localhost:5000/ledger-entries/';
+    const requestUrl =`${href}${this.dateservice.parseDate(this.dateservice.firstDayMonth)}/${this.dateservice.parseDate(this.dateservice.todayDate)}`;
+    console.log(requestUrl);
+    this.http.get<Ledger[]>(requestUrl)
     .map(data => {
       this.resultsLength = 30;
       this.paginator.pageSize = 10;
@@ -56,9 +59,9 @@ export class TableLedgerComponent implements AfterViewInit   {
  }
 
 }
-export interface LedgerEntries {
-  ledger: Ledger
-}
+// export interface LedgerEntries {
+//   ledger: Ledger
+// }
 
 
 
