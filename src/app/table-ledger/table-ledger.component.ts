@@ -12,7 +12,7 @@ import 'rxjs/add/operator/switchMap';
 
 import { DateService } from '../services/date.service';
 
-// import { Ledger } from '../shared/ledger';
+import { Ledger } from '../shared/ledger';
 
 @Component({
   selector: 'app-table-ledger',
@@ -21,12 +21,13 @@ import { DateService } from '../services/date.service';
 })
 export class TableLedgerComponent implements AfterViewInit   {
 
+
   startDate = new FormControl(this.dateservice.firstDayMonth);
   endDate = new FormControl(this.dateservice.todayDate);
   displayedColumns = ['date', 'credit', 'debit', 'store', 'category'];
 
+
   dataSource = new MatTableDataSource();
-  public ledger: LedgerEntries[];
   resultsLength = 0;
   isLoadingResults = false;
   isRateLimitReached = false;
@@ -43,17 +44,22 @@ export class TableLedgerComponent implements AfterViewInit   {
      this.dataSource.paginator = this.paginator;
      this.dataSource.sort = this.sort;
 
-     this.http.get<any>('http://localhost:5000/ledger-entries/2017-01-01/2020-01-01')
-     .map(data => {
-       this.resultsLength = 30;
-       this.paginator.pageSize = 10;
-       // console.log(data);
-       return data;
-     })
-     .subscribe(data => {
-       console.log(data);
-      this.dataSource.data = data;
-    });
+    this.http.get<LedgerEntries[]>('http://localhost:5000/ledger-entries/2017-01-01/2020-01-01')
+    .map(data => {
+      this.resultsLength = 30;
+      this.paginator.pageSize = 10;
+      return data;
+    })
+    .subscribe(data => {
+     this.dataSource.data = data;
+   });
+ }
+
+}
+export interface LedgerEntries {
+  ledger: Ledger
+}
+
 
 
      // Observable.merge(this.sort.sortChange, this.paginator.page)
@@ -77,22 +83,4 @@ export class TableLedgerComponent implements AfterViewInit   {
      //       this.isRateLimitReached = true;
      //       return Observable.of([]);
      //     })
-     //     .subscribe(data => this.dataSource.data = data);
-   }
-
- }
-
- export interface LedgerEntries {
-   entries: Ledger[]
- }
-
- export interface Ledger {
-   id: number;
-   credit: number;
-   debit: string;
-   trans_date: string;
-   store_name: string;
-   category_name: string;
-   store_id: number;
-   category_id: number;
- }
+     //     .subscribe(data => this.dataSource.data = data)
