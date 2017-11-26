@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {FormControl} from '@angular/forms';
 import { ViewEncapsulation } from '@angular/core';
@@ -11,12 +11,11 @@ import { DateService } from '../services/date.service';
   styleUrls: ['./home.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   projBalance: number;
   date = new FormControl(this.dateservice.todayDate);
-
-  // serializedDate = new FormControl((new Date()).toISOString());
+  private httpSubscription;
 
   constructor(private http: HttpClient, private dateservice: DateService) { }
 
@@ -33,7 +32,7 @@ export class HomeComponent implements OnInit {
   getProjectedValue(date: string): void {
     const href = 'http://localhost:5000/home/';
     const requestUrl =`${href}${date}`;
-    this.http.get<ProjectedBalance>(requestUrl)
+    this.httpSubscription = this.http.get<ProjectedBalance>(requestUrl)
     .subscribe(data => {
      this.projBalance = data.projBalance * .01;
    },
@@ -49,6 +48,10 @@ export class HomeComponent implements OnInit {
       }
     }
  );// end current
+  }
+
+  ngOnDestroy() {
+    this.httpSubscription.unsubscribe();
   }
 }
 
