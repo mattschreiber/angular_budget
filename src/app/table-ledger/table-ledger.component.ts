@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, ViewChild} from '@angular/core';
+import {Component, AfterViewInit, ViewChild, OnDestroy} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
@@ -11,8 +11,8 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/switchMap';
 
 import { DateService } from '../services/date.service';
+import { LedgerService } from '../services/ledger.service';
 
-import { Ledger } from '../shared/ledger';
 
 @Component({
   selector: 'app-table-ledger',
@@ -22,68 +22,69 @@ import { Ledger } from '../shared/ledger';
 
 
 export class TableLedgerComponent implements AfterViewInit   {
+
+  private httpSubscription;
   startDate = new FormControl(this.dateservice.firstDayMonth);
   endDate = new FormControl(this.dateservice.todayDate);
   displayedColumns = ['date', 'credit', 'debit', 'store', 'category'];
 
-
   dataSource = new MatTableDataSource();
   resultsLength = 0;
-  isLoadingResults = false;
-  isRateLimitReached = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private http: HttpClient, private dateservice: DateService) {}
-
+  tableEntries: LedgerService | null;
+  constructor(private http: HttpClient, private dateservice: DateService, ledgerservice: LedgerService) {}
   ngAfterViewInit() {
-
+    this.tableEntries = new LedgerService(this.http, this.dateservice);
      // If the user changes the sort order, reset back to the first page.
      this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
      this.dataSource.paginator = this.paginator;
      this.dataSource.sort = this.sort;
 
-    const href = 'http://localhost:5000/ledger-entries/';
-    const requestUrl =`${href}${this.dateservice.parseDate(this.dateservice.firstDayMonth)}/${this.dateservice.parseDate(this.dateservice.todayDate)}`;
-    console.log(requestUrl);
-    this.http.get<Ledger[]>(requestUrl)
-    .map(data => {
-      this.resultsLength = 30;
-      this.paginator.pageSize = 10;
-      return data;
-    })
-    .subscribe(data => {
-     this.dataSource.data = data;
-   });
+     this.httpSubscription = this.getTableEntries();
  }
 
+ ngOnDestroy() {
+   this.httpSubscription.unsubscribe();
+ }
+
+ getTableEntries(): void {
+   this.tableEntries.getRepoIssues()
+   .map(data => {
+     return data;
+   })
+   .catch(() => {
+     return Observable.of([]);
+   })
+   .subscribe(data => this.dataSource.data = data)
+ }
 }
-// export interface LedgerEntries {
-//   ledger: Ledger
-// }
 
+//   const href = 'http://localhost:5000/ledger-entries/';
+//   const requestUrl =`${href}${this.dateservice.parseDate(this.dateservice.firstDayMonth)}/${this.dateservice.parseDate(this.dateservice.todayDate)}`;
+//   console.log(requestUrl);
+//   this.http.get<LedgerEntries[]>(requestUrl)
+//   .map(data => {
+//     this.resultsLength = data.length;
+//     this.paginator.pageSize = 10;
+//     return data;
+//   })
+//   .subscribe(data => {
+//    this.dataSource.data = data;
+//  });
 
-
-     // Observable.merge(this.sort.sortChange, this.paginator.page)
-     //     .startWith(null)
-     //     .switchMap(() => {
-     //       this.isLoadingResults = true;
-     //       return this.exampleDatabase!.getRepoIssues(
-     //           this.sort.active, this.sort.direction, this.paginator.pageIndex);
-     //     })
-     //     .map(data => {
-     //       // Flip flag to show that loading has finished.
-     //       this.isLoadingResults = false;
-     //       this.isRateLimitReached = false;
-     //       this.resultsLength = data.total_count;
-     //
-     //       return data.items;
-     //     })
-     //     .catch(() => {
-     //       this.isLoadingResults = false;
-     //       // Catch if the GitHub API has reached its rate limit. Return empty data.
-     //       this.isRateLimitReached = true;
-     //       return Observable.of([]);
-     //     })
-     //     .subscribe(data => this.dataSource.data = data)
+// Observable.merge(this.sort.sortChange, this.paginator.page)
+//     .startWith(null)
+//     .switchMap(() => {
+//       return this.exampleDatabase!.getRepoIssues(
+//           this.sort.active, this.sort.direction, this.paginator.pageIndex);
+//     })
+//     .map(data => {
+//       return data;
+//     })
+//     .catch(() => {
+//       return Observable.of([]);
+//     })
+//     .subscribe(data => this.dataSource.data = data)
