@@ -17,6 +17,7 @@ import 'hammerjs';
 import { AuthService } from './services/auth.service';
 import { DateService } from './services/date.service';
 import { LedgerService } from './services/ledger.service';
+import { DatatableService } from './services/datatable.service';
 
 import { AuthInterceptor } from './auth.interceptor';
 
@@ -48,7 +49,7 @@ import { HeaderComponent } from './header/header.component';
     MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule,
     MatTableModule, MatSortModule, MatNativeDateModule,
   ],
-  providers: [HttpClientModule, AuthService, DateService, LedgerService,
+  providers: [HttpClientModule, AuthService, DateService, LedgerService, DatatableService,
     {
       provide : HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

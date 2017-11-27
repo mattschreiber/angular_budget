@@ -12,6 +12,9 @@ import { DateService } from '../services/date.service';
   encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
+  // This is passed to the query that populates the datatable within the table-ledger component
+  dataType: string = 'ledger-entries';
 
   projBalance: number;
   date = new FormControl(this.dateservice.todayDate);

@@ -1,14 +1,14 @@
 <div fxLayout.lt-sm="column" fxLayoutGap="20px">
   <div>
     <mat-form-field class="example-container">
-      <input class="my-class" matInput [matDatepicker]="start" placeholder="Start Date" [formControl]="startDate">
+      <input class="my-class" #startDatePicker (dateChange)="updateDate(startDatePicker.value, endDatePicker.value)"  matInput [matDatepicker]="start" placeholder="Start Date" [formControl]="startDate">
     <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
     <mat-datepicker touchUi="true" #start></mat-datepicker>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="example-container">
-      <input class="my-class" matInput [matDatepicker]="end" placeholder="End Date" [formControl]="endDate">
+      <input class="my-class" #endDatePicker (dateChange)="updateDate(startDatePicker.value, endDatePicker.value)"  matInput [matDatepicker]="end" placeholder="End Date" [formControl]="endDate">
     <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
     <mat-datepicker touchUi="true" #end></mat-datepicker>
     </mat-form-field>
