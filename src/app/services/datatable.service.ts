@@ -12,6 +12,9 @@ import 'rxjs/add/operator/switchMap';
 import { DateService } from '../services/date.service';
 
 import { Ledger } from '../shared/ledger';
+import { Balance } from '../shared/balance';
+
+import { CONFIGS } from '../shared/configurations';
 
 @Injectable()
 export class DatatableService {
@@ -19,11 +22,17 @@ export class DatatableService {
   constructor(private http: HttpClient, private dateservice: DateService) { }
 
   // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
-  getRepoIssues(dataType: string, startDate: string, endDate: string): Observable<TableEntries[]> {
-    const href = 'http://localhost:5000/';
+  getEntries(dataType: string, startDate: string, endDate: string): Observable<TableEntries[]> {
+    // const href = 'http://localhost:5000/';
+    const href = CONFIGS.baseUrl;
     const requestUrl =`${href}${dataType}/${startDate}/${endDate}`;
-    console.log(requestUrl);
     return this.http.get<TableEntries[]>(requestUrl);
+  }
+
+  getBalances(startDate: string, endDate: string): Observable<Balance> {
+    const href = CONFIGS.baseUrl;
+    const requestUrl =`${href}balances/${startDate}/${endDate}`;
+    return this.http.get<Balance>(requestUrl);
   }
 }
 

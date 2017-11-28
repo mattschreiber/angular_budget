@@ -13,7 +13,6 @@ import 'rxjs/add/operator/switchMap';
 import { DateService } from '../services/date.service';
 import { DatatableService } from '../services/datatable.service';
 
-
 @Component({
   selector: 'app-table-ledger',
   templateUrl: './table-ledger.component.html',
@@ -42,6 +41,8 @@ export class TableLedgerComponent implements AfterViewInit   {
   tableEntries: DatatableService | null;
   constructor(private http: HttpClient, private dateservice: DateService, ledgerservice: DatatableService) {}
   ngAfterViewInit() {
+
+    // console.log(CONFIG.baseUrl);
     this.tableEntries = new DatatableService(this.http, this.dateservice);
      // If the user changes the sort order, reset back to the first page.
      this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
@@ -58,7 +59,7 @@ export class TableLedgerComponent implements AfterViewInit   {
 // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
 // call service to get back a list of table entries. These could be for ledger or budget
  getTableEntries(startDate: string, endDate: string): void {
-   this.tableEntries.getRepoIssues(this.dataType, startDate, endDate)
+   this.tableEntries.getEntries(this.dataType, startDate, endDate)
    .map(data => {
      return data;
    })

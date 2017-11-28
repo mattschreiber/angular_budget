@@ -20,22 +20,4 @@ export class LedgerService {
 
   constructor(private http: HttpClient, private dateservice: DateService) { }
 
-  getRepoIssues(): Observable<LedgerEntries[]> {
-    const href = 'http://localhost:5000/ledger-entries/';
-    const requestUrl =`${href}${this.dateservice.parseDate(this.dateservice.firstDayMonth)}/${this.dateservice.parseDate(this.dateservice.todayDate)}`;
-    console.log(requestUrl);
-    return this.http.get<LedgerEntries[]>(requestUrl);
-  }
-
-}
-
-export interface LedgerEntries {
-  id: number;
-  credit: number;
-  debit: number;
-  trans_date: string;
-  store_name: number;
-  category_name: number;
-  store_id: number;
-  category_id: number;
 }
