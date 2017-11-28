@@ -28,12 +28,12 @@ export class HomeComponent implements OnInit {
   dataType: string = 'ledger-entries';
   balLedger: number;
   projBalance: number;
-  bal: Balance = new Balance()
+  bal: Balance = new Balance;
   date = new FormControl(this.dateservice.todayDate);
-
+  tableEntries = new DatatableService(this.http, this.dateservice);
 
   constructor(private http: HttpClient, private dateservice: DateService) { }
-  tableEntries = new DatatableService(this.http, this.dateservice);
+
   ngOnInit() {
     this.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
     this.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate))

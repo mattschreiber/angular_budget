@@ -26,6 +26,9 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { TableLedgerComponent } from './table-ledger/table-ledger.component';
 import { HeaderComponent } from './header/header.component';
+import { BudgetComponent } from './budget/budget.component';
+
+import { AppRoutingModule } from './app-routing/app-routing.module';
 
 
 @NgModule({
@@ -33,7 +36,8 @@ import { HeaderComponent } from './header/header.component';
     AppComponent,
     HomeComponent,
     TableLedgerComponent,
-    HeaderComponent
+    HeaderComponent,
+    BudgetComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +52,7 @@ import { HeaderComponent } from './header/header.component';
     MatSlideToggleModule, MatToolbarModule, MatListModule, MatGridListModule,
     MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule,
     MatTableModule, MatSortModule, MatNativeDateModule,
+    AppRoutingModule,
   ],
   providers: [HttpClientModule, AuthService, DateService, LedgerService, DatatableService,
     {

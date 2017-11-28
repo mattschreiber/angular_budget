@@ -1,3 +1,4 @@
+
 <div fxLayout.lt-sm="column" fxLayoutGap="20px">
   <div>
     <mat-form-field class="example-container">
@@ -14,7 +15,20 @@
     </mat-form-field>
   </div>
 </div>
-
+<div fxLayout.lt-sm="column" fxLayoutGap="20px">
+  <div>
+    <mat-form-field class="example-container lengthen-underline">
+      <input matInput placeholder="Estimated Amount" disabled [value]="bal.budgetamount">
+    </mat-form-field>
+  </div>
+  <div>
+    <div>
+      <mat-form-field class="example-container">
+        <input matInput placeholder="Actual Amount" disabled [value]="bal.ledgeramount">
+      </mat-form-field>
+    </div>
+  </div>
+</div>
 <div fxLayout.lt-sm="column" fxLayoutGap="20px">
 <div class="table-container mat-elevation-z8" fxFlex.lt-sm="300px" fxFlex.sm="500px">
 

@@ -1,6 +1,6 @@
 import {Component, Input, AfterViewInit, ViewChild, OnDestroy} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
@@ -13,6 +13,8 @@ import 'rxjs/add/operator/switchMap';
 import { DateService } from '../services/date.service';
 import { DatatableService } from '../services/datatable.service';
 
+import { Balance } from '../shared/balance';
+
 @Component({
   selector: 'app-table-ledger',
   templateUrl: './table-ledger.component.html',
@@ -23,8 +25,8 @@ import { DatatableService } from '../services/datatable.service';
 export class TableLedgerComponent implements AfterViewInit   {
   // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
   @Input() dataType: string;
+  bal: Balance = new Balance;
 
-  private httpSubscription;
   // Dates used to initially configure Date Pickers which are used to populate the datatable
   firstOfMonth: Date = this.dateservice.firstDayMonth;
   todayDate: Date = this.dateservice.todayDate;
@@ -39,7 +41,7 @@ export class TableLedgerComponent implements AfterViewInit   {
   @ViewChild(MatSort) sort: MatSort;
 
   tableEntries: DatatableService | null;
-  constructor(private http: HttpClient, private dateservice: DateService, ledgerservice: DatatableService) {}
+  constructor(private http: HttpClient, private dateservice: DateService, datatableserve: DatatableService) {}
   ngAfterViewInit() {
 
     // console.log(CONFIG.baseUrl);
@@ -49,11 +51,8 @@ export class TableLedgerComponent implements AfterViewInit   {
      this.dataSource.paginator = this.paginator;
      this.dataSource.sort = this.sort;
 
-     this.httpSubscription = this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.todayDate));
- }
- // make sure to unsubscribe to the getTableEntries
- ngOnDestroy() {
-   this.httpSubscription.unsubscribe();
+     this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.todayDate));
+     this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.todayDate));
  }
 
 // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
@@ -72,6 +71,24 @@ export class TableLedgerComponent implements AfterViewInit   {
  updateDate(startDate: Date, endDate: Date): void {
    this.getTableEntries(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate))
  }
+
+ getBalances(startDate: string, endDate: string) {
+   this.tableEntries.getBalances(startDate, endDate)
+   .subscribe(data =>
+     { this.bal = data;
+       console.log(this.bal);
+   },
+   (err: HttpErrorResponse) => {
+      if (err.error instanceof Error) {
+        // A client-side or network error occurred. Handle it accordingly.
+        console.log('An error occurred:', err.error.message);
+      } else {
+        // The backend returned an unsuccessful response code.
+        // The response body may contain clues as to what went wrong,
+        console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+      }
+    }
+ );}
 }
 
 //   const href = 'http://localhost:5000/ledger-entries/';
