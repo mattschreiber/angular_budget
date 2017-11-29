@@ -15,7 +15,7 @@
 <div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
   <div>
     <mat-form-field class="example-container">
-      <input matInput placeholder="Actual Balance" disabled value={{bal.ledgeramount}}>
+      <input matInput placeholder="Actual Balance as of {{this.dateservice.todayDate | date:'shortDate'}}" disabled value={{bal.ledgeramount}} >
     </mat-form-field>
   </div>
 </div>
@@ -26,5 +26,5 @@
   <app-table-ledger></app-table-ledger>
 </div> -->
 <div class="container" fxLayout="column" fxLayoutGap="20px">
-<app-table-ledger [dataType]="dataType"></app-table-ledger>
+<app-table-ledger [dataType]="dataType" [showBalance]="showBalance" [entryType]="entryType"></app-table-ledger>
 <div>

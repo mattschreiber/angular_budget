@@ -25,6 +25,9 @@ import { Balance } from '../shared/balance';
 export class TableLedgerComponent implements AfterViewInit   {
   // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
   @Input() dataType: string;
+  // set show balance to true in order to display Ledger Amount and/or Budget Amount
+  @Input() showBalance: boolean;
+  @Input() entryType: string; // Used to set heading to Budget or Ledger in html template
   bal: Balance = new Balance;
 
   // Dates used to initially configure Date Pickers which are used to populate the datatable
@@ -69,14 +72,18 @@ export class TableLedgerComponent implements AfterViewInit   {
  }
 
  updateDate(startDate: Date, endDate: Date): void {
-   this.getTableEntries(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate))
+   this.getTableEntries(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
+   // Only update Ledger and Budget balances if they are visible for the component view
+   if (this.showBalance) {
+    console.log("show balance");
+    this.getBalances(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
+   }
  }
 
  getBalances(startDate: string, endDate: string) {
    this.tableEntries.getBalances(startDate, endDate)
    .subscribe(data =>
      { this.bal = data;
-       console.log(this.bal);
    },
    (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
