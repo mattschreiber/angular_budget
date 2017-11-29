@@ -41,8 +41,16 @@ export interface TableEntries {
   credit: number;
   debit: number;
   trans_date: string;
-  store_name: number;
-  category_name: number;
-  store_id: number;
-  category_id: number;
+  cat: Category;
+  store: Store;
+}
+
+export interface Category {
+  id: number;
+  category_name: string;
+}
+
+export interface Store {
+  id: number;
+  store_name: string;
 }

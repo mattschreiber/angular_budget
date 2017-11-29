@@ -21,13 +21,13 @@
 <div fxLayout.lt-sm="column" fxLayoutGap="20px">
   <div [fxShow]="showBalance">
     <mat-form-field class="example-container lengthen-underline">
-      <input matInput placeholder="Estimated Amount" disabled [value]="(bal.budgetamount * .01).toFixed(2)">
+      <input matInput placeholder="Estimated Amount" disabled [value]="bal.budgetamount / 100 ">
     </mat-form-field>
   </div>
   <div>
     <div [fxShow]="showBalance">
       <mat-form-field class="example-container">
-        <input matInput placeholder="Actual Amount" disabled [value]="(bal.ledgeramount * .01).toFixed(2)">
+        <input matInput placeholder="Actual Amount" disabled [value]="bal.ledgeramount / 100">
       </mat-form-field>
     </div>
   </div>
@@ -51,25 +51,25 @@
     <!-- Credit Column -->
     <ng-container matColumnDef="credit">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Credit</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ (row.credit * .01).toFixed(2) }}</mat-cell>
+      <mat-cell *matCellDef="let row">{{ row.credit / 100 }}</mat-cell>
     </ng-container>
 
     <!-- Debit Column -->
     <ng-container matColumnDef="debit">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Debit</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ (row.debit * .01).toFixed(2) }}</mat-cell>
+      <mat-cell *matCellDef="let row">{{ row.debit / 100 }}</mat-cell>
     </ng-container>
 
     <!-- Store Column -->
     <ng-container matColumnDef="store">
       <mat-header-cell *matHeaderCellDef>Store</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.store_name }}</mat-cell>
+      <mat-cell *matCellDef="let row">{{ row.store.store_name }}</mat-cell>
     </ng-container>
 
     <!-- Category Column -->
     <ng-container matColumnDef="category">
       <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.category_name }}</mat-cell>
+      <mat-cell *matCellDef="let row">{{ row.category.category_name }}</mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit {
     const requestUrl =`${href}projected-balance/${date}`;
     this.http.get<ProjectedBalance>(requestUrl)
     .subscribe(data => {
-     this.projBalance = data.projBalance * .01;
+     this.projBalance = data.projBalance / 100;
    },
    (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
   getBalances(startDate: string, endDate: string) {
     this.tableEntries.getBalances(startDate, endDate)
     .subscribe(data =>
-      { this.bal.ledgeramount = data.ledgeramount * .01;
+      { this.bal.ledgeramount = data.ledgeramount / 100;
     },
     (err: HttpErrorResponse) => {
        if (err.error instanceof Error) {
