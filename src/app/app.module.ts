@@ -10,7 +10,7 @@ import { MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldMo
   MatInputModule, MatRadioModule, MatSelectModule, MatSliderModule,
   MatSlideToggleModule, MatToolbarModule, MatListModule, MatGridListModule,
   MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule, MatTableModule, MatSortModule,
-  MatNativeDateModule} from '@angular/material';
+  MatNativeDateModule, MatAutocompleteModule} from '@angular/material';
 
 import 'hammerjs';
 
@@ -29,6 +29,7 @@ import { HeaderComponent } from './header/header.component';
 import { BudgetComponent } from './budget/budget.component';
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { LedgerentryComponent } from './ledgerentry/ledgerentry.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
     HomeComponent,
     TableLedgerComponent,
     HeaderComponent,
-    BudgetComponent
+    BudgetComponent,
+    LedgerentryComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +53,7 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
     MatInputModule, MatRadioModule, MatSelectModule, MatSliderModule,
     MatSlideToggleModule, MatToolbarModule, MatListModule, MatGridListModule,
     MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule,
-    MatTableModule, MatSortModule, MatNativeDateModule,
+    MatTableModule, MatSortModule, MatNativeDateModule, MatAutocompleteModule,
     AppRoutingModule,
   ],
   providers: [HttpClientModule, AuthService, DateService, LedgerService, DatatableService,
