@@ -61,6 +61,7 @@ export class TableLedgerComponent implements AfterViewInit   {
 // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
 // call service to get back a list of table entries. These could be for ledger or budget
  getTableEntries(startDate: string, endDate: string): void {
+ console.log(startDate, endDate);
    this.tableEntries.getEntries(this.dataType, startDate, endDate)
    .map(data => {
      return data;
@@ -68,7 +69,10 @@ export class TableLedgerComponent implements AfterViewInit   {
    .catch(() => {
      return Observable.of([]);
    })
-   .subscribe(data => this.dataSource.data = data)
+   .subscribe(data => {
+     this.dataSource.data = data;
+     this.dataSource.sort = this.sort;
+   })
  }
 
  updateDate(startDate: Date, endDate: Date): void {
