@@ -1,28 +1,33 @@
 <div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
-  <form>
-    <div class="form-group">
+  <form (ngSubmit)="onSubmit()" #ledgerEntryForm="ngForm">
+      TODO: remove this:{{ model | json }}
+    <div class="form-group" [fxShow]="isCredit">
       <mat-form-field>
-        <input type="number" matInput placeholder="Amount" [(ngModel)]="model.name" name="name" required>
+        <input type="number" matInput placeholder="Amount" [(ngModel)]="model.credit" name="credit" [required]="isCredit">
       </mat-form-field>
-      TODO: remove this: {{model.name}}
+    </div>
+    <div class="form-group" [fxHide]="isCredit">
+      <mat-form-field>
+        <input type="number" matInput placeholder="Amount" [(ngModel)]="model.debit" name="debit" [required]="!isCredit">
+      </mat-form-field>
     </div>
     <div class="form-group">
       <mat-form-field class="example-container">
-        <input class="my-class" #fun (dateChange)="updateEndDate(fun.value)"  matInput [matDatepicker]="picker1" placeholder="Projected End Date" [formControl]="date">
+        <input class="my-class" #fun [(ngModel)]="model.trans_date" matInput [matDatepicker]="picker1" placeholder="" [formControl]="date">
       <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
       <mat-datepicker touchUi="true" #picker1></mat-datepicker>
       </mat-form-field>
     </div>
     <div class="form-group">
       <mat-form-field>
-        <mat-select placeholder="Credit/Debit">
-          <mat-option *ngFor="let type of typeTrans" [value]="type.value">{{type.viewValue}}</mat-option>
+        <mat-select (selectionChange)="showType($event.value)" placeholder="Credit/Debit" [value]="typeTrans[1].value" >
+          <mat-option *ngFor="let type of typeTrans" [value]="type.value" >{{type.viewValue}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
     <div class="form-group">
       <mat-form-field>
-        <input type="text" placeholder="Store" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+        <input type="text" [(ngModel)]="model.store.store_name"  placeholder="Store" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
             {{ option }}
@@ -32,13 +37,13 @@
     </div>
     <div class="form-group">
     <mat-form-field>
-      <mat-select placeholder="Category">
-        <mat-option *ngFor="let option of options" [value]="option"> {{ option }}</mat-option>
+      <mat-select placeholder="Category" [(ngModel)]="model.category.id" name="category.id">
+        <mat-option *ngFor="let option of categories" [value]="option.value"> {{ option.viewValue }}</mat-option>
       </mat-select>
     </mat-form-field>
     </div>
     <div class="form-group" fxLayoutAlign="center center">
-      <button type="submit" color="primary" mat-button>Submit</button>
+      <button type="submit" color="primary" mat-button [disabled]="!ledgerEntryForm.form.valid">Submit</button>
     </div>
   </form>
 </div>
