@@ -2,14 +2,14 @@
   <form>
     <div class="form-group">
       <mat-form-field>
-        <input matInput placeholder="Amount" [(ngModel)]="model.name" name="name" required>
+        <input type="number" matInput placeholder="Amount" [(ngModel)]="model.name" name="name" required>
       </mat-form-field>
       TODO: remove this: {{model.name}}
     </div>
     <div class="form-group">
       <mat-form-field>
-        <mat-select placeholder="Type">
-          <mat-option value="option">Option</mat-option>
+        <mat-select placeholder="Credit/Debit">
+          <mat-option *ngFor="let type of typeTrans" [value]="type.value">{{type.viewValue}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -29,6 +29,9 @@
         <mat-option *ngFor="let option of options" [value]="option"> {{ option }}</mat-option>
       </mat-select>
     </mat-form-field>
+    </div>
+    <div class="form-group" fxLayoutAlign="center center">
+      <button type="submit" color="primary" mat-button>Submit</button>
     </div>
   </form>
 </div>

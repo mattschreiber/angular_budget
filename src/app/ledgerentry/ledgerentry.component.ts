@@ -21,6 +21,11 @@ export class LedgerentryComponent implements OnInit {
     'Three'
   ];
 
+  typeTrans = [
+    {value: 'credit', viewValue: 'Credit'},
+    {value: 'debit', viewValue: 'Debit'},
+  ];
+
   filteredOptions: Observable<string[]>;
 
   constructor() { }
