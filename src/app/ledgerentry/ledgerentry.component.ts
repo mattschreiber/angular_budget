@@ -5,6 +5,8 @@ import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
+import { DateService } from '../services/date.service';
+
 @Component({
   selector: 'app-ledgerentry',
   templateUrl: './ledgerentry.component.html',
@@ -14,6 +16,7 @@ export class LedgerentryComponent implements OnInit {
 
   model = {remember: false, username: "Matt"};
   myControl: FormControl = new FormControl();
+  date = new FormControl(this.dateservice.todayDate);
 
   options = [
     'One',
@@ -28,7 +31,7 @@ export class LedgerentryComponent implements OnInit {
 
   filteredOptions: Observable<string[]>;
 
-  constructor() { }
+  constructor(private dateservice: DateService) { }
 
   ngOnInit() {
     this.filteredOptions = this.myControl.valueChanges
