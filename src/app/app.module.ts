@@ -18,6 +18,7 @@ import { AuthService } from './services/auth.service';
 import { DateService } from './services/date.service';
 import { LedgerService } from './services/ledger.service';
 import { DatatableService } from './services/datatable.service';
+import { StoreandcatService} from './services/storeandcat.service';
 
 import { AuthInterceptor } from './auth.interceptor';
 
@@ -27,9 +28,10 @@ import { HomeComponent } from './home/home.component';
 import { TableLedgerComponent } from './table-ledger/table-ledger.component';
 import { HeaderComponent } from './header/header.component';
 import { BudgetComponent } from './budget/budget.component';
+import { LedgerentryComponent } from './ledgerentry/ledgerentry.component';
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
-import { LedgerentryComponent } from './ledgerentry/ledgerentry.component';
+
 
 
 @NgModule({
@@ -56,7 +58,7 @@ import { LedgerentryComponent } from './ledgerentry/ledgerentry.component';
     MatTableModule, MatSortModule, MatNativeDateModule, MatAutocompleteModule,
     AppRoutingModule,
   ],
-  providers: [HttpClientModule, AuthService, DateService, LedgerService, DatatableService,
+  providers: [HttpClientModule, AuthService, DateService, LedgerService, DatatableService, StoreandcatService,
     {
       provide : HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
