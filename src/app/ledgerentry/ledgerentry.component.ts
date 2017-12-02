@@ -22,7 +22,7 @@ export class LedgerentryComponent implements OnInit {
 
   storeAndCat: StoreAndCat = {category: [], store: []};
 
-  model: Ledger = {credit: null, debit: null, trans_date: this.dateservice.todayDate,
+  model: Ledger = {credit: 0, debit: 0, trans_date: this.dateservice.todayDate,
     category: {id: 0, category_name: ''},
     store: {id: 0, store_name: '', default_credit: 0, default_debit:0}};
 
@@ -58,11 +58,10 @@ export class LedgerentryComponent implements OnInit {
   }
 
   showType(val): void {
-    console.log(val);
     // isCredit is a boolean that determines whether the entry is credit or debit
     // reset amounts to 0 when switching between types
-    this.model.credit = null;
-    this.model.debit = null;
+    this.model.credit = 0;
+    this.model.debit = 0;
     if (val === 'credit') {
       this.isCredit = true;
     }
@@ -76,7 +75,6 @@ export class LedgerentryComponent implements OnInit {
     .subscribe(data =>
       {
         this.storeAndCat = data;
-        console.log(this.storeAndCat);
     },
     (err: HttpErrorResponse) => {
        if (err.error instanceof Error) {
@@ -95,6 +93,10 @@ export class LedgerentryComponent implements OnInit {
   }
   private display(store): string {
     //access component "this" here
+    if (store != null) {
+      this.model.credit = store.default_credit;
+      this.model.debit = store.default_debit;
+    }
     return store ? store.store_name : store;
   }
 
