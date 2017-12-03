@@ -8,14 +8,15 @@ import { ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent implements OnInit {
-
+  ledgerType: string = "ledger";
+  budgetType: string = "budget";
   constructor() { }
 
   ngOnInit() {
   }
 
-  openNewEntry(entryType: string) {
-    console.log("new entry: " + entryType);
-  }
+  // openNewEntry(entryType: string) {
+  //   console.log("new entry: " + entryType);
+  // }
 
 }

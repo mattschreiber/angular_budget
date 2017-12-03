@@ -2,14 +2,14 @@
   <mat-toolbar color="primary">
   <mat-toolbar-row>
   <!-- <span><img src="/assets/images/logo.png" height=30 width=41></span> -->
-  <!-- <img src="/assets/images/budget-logo.svg" alt="Logo" width="50" height="50px"> -->
+  <img src="/assets/images/budget-logo.svg" alt="Logo" width="50" height="50px">
   <a mat-button routerLink="/home" routerLinkActive="active">Home</a>
   <!-- <a mat-button>Ledger</a> -->
   <a mat-button routerLink="/budget" routerLinkActive="active">Budget</a>
   <a mat-button [matMenuTriggerFor]="menu" routerLinkActive="active">Enter Amount</a>
   <mat-menu #menu="matMenu">
-    <button routerLink="/ledgerentry" mat-menu-item routerLinkActive="active">Ledger</button>
-    <button mat-menu-item routerLinkActive="active">Budget</button>
+    <button [routerLink]="['/ledgerentry', this.ledgerType]" mat-menu-item routerLinkActive="active">Ledger</button>
+    <button [routerLink]="['/ledgerentry', this.budgetType]" mat-menu-item routerLinkActive="active">Budget</button>
   </mat-menu>
   <span class="flex-spacer"></span>
   <a mat-button fxHide.lt-md (click)="openLoginForm()">Login</a>

@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {FormControl} from '@angular/forms';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+
 import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
+import  'rxjs/add/operator/switchMap';
+
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 import { DateService } from '../services/date.service';
@@ -21,6 +25,8 @@ import { Store } from '../shared/store';
 })
 export class LedgerentryComponent implements OnInit {
 
+  // a route parameter that determines whether the entry should be posted as ledger or budget
+  entryType: string;
   // object used to load store autocomplete and category select boxes
   storeAndCat: StoreAndCat = {category: [], store: []};
   //intialize model
@@ -43,12 +49,16 @@ export class LedgerentryComponent implements OnInit {
   // observable for store autocomplet
   filteredOptions: Observable<Store[]>;
 
-  // storesAndCats: StoreandcatService | null;
-
   constructor(private http: HttpClient, private dateservice: DateService,
-    private ledgerservice: LedgerService, private storeandcatservice: StoreandcatService) { }
+    private ledgerservice: LedgerService, private storeandcatservice: StoreandcatService,
+    private route: ActivatedRoute, private router: Router,) { }
 
   ngOnInit() {
+
+    this.route.paramMap.subscribe( params =>{ this.entryType = params.get('entrytype')
+    console.log(this.entryType)});
+
+
     this.getStoreAndCat()
     // this.storesAndCats = new StoreandcatService(this.http);
     this.filteredOptions = this.myControl.valueChanges

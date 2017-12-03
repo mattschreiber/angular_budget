@@ -20,6 +20,8 @@ import { LedgerService } from './services/ledger.service';
 import { DatatableService } from './services/datatable.service';
 import { StoreandcatService} from './services/storeandcat.service';
 
+import { EntrytypeGuard } from './guards/entrytype.guard';
+
 import { AuthInterceptor } from './auth.interceptor';
 
 
@@ -59,6 +61,7 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
     AppRoutingModule,
   ],
   providers: [HttpClientModule, AuthService, DateService, LedgerService, DatatableService, StoreandcatService,
+    EntrytypeGuard,
     {
       provide : HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
