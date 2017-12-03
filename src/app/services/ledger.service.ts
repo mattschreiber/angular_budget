@@ -12,6 +12,7 @@ import 'rxjs/add/operator/switchMap';
 
 import { DateService } from '../services/date.service';
 
+import { CONFIGS } from '../shared/configurations';
 import { Ledger } from '../shared/ledger';
 
 
@@ -19,5 +20,12 @@ import { Ledger } from '../shared/ledger';
 export class LedgerService {
 
   constructor(private http: HttpClient, private dateservice: DateService) { }
+
+  createNewEntry(ledger): Observable<Ledger> {
+    // method accepts a ledger object and posts a new entry.
+    const href = CONFIGS.baseUrl;
+    const requestUrl =`${href}createledger`;
+    return this.http.post<Ledger>(requestUrl, ledger);
+  }
 
 }

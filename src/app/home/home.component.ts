@@ -45,8 +45,6 @@ export class HomeComponent implements OnInit {
 
   updateEndDate(val: Date): void {
     this.getProjectedValue(this.dateservice.parseDate(val));
-    console.log(this.dateservice.firstOfMonth(val));
-    console.log(this.dateservice.lastOfMonth(val));
   }
 
   getProjectedValue(date: string): void {
