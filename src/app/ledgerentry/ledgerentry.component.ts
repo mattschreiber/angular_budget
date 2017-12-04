@@ -27,6 +27,9 @@ export class LedgerentryComponent implements OnInit {
 
   // a route parameter that determines whether the entry should be posted as ledger or budget
   entryType: string;
+  entryTypeLabel: string; // Used in <h3> tag of template to capitalize first letter.
+  flashMessage: string; // Add message indicating if new entry successful
+  isError: boolean = false;
   // object used to load store autocomplete and category select boxes
   storeAndCat: StoreAndCat = {category: [], store: []};
   //intialize model
@@ -34,7 +37,7 @@ export class LedgerentryComponent implements OnInit {
     category: {id: null, category_name: null},
     store: {id: null, store_name: null, default_credit: 0, default_debit:0}};
 
-  myControl: FormControl = new FormControl();
+  storeControl: FormControl = new FormControl();
   date = new FormControl(this.dateservice.todayDate);
 
   // used to determine whether entry is a credit or debit (attached to form fields in template)
@@ -55,13 +58,14 @@ export class LedgerentryComponent implements OnInit {
 
   ngOnInit() {
 
-    this.route.paramMap.subscribe( params =>{ this.entryType = params.get('entrytype')
-    console.log(this.entryType)});
+    this.route.paramMap.subscribe( params =>{ this.entryType = params.get('entrytype');
+    this.entryTypeLabel = this.entryType[0].toUpperCase() + this.entryType.substring(1);
+  });
 
 
     this.getStoreAndCat()
     // this.storesAndCats = new StoreandcatService(this.http);
-    this.filteredOptions = this.myControl.valueChanges
+    this.filteredOptions = this.storeControl.valueChanges
     .pipe(
     startWith(''),
     map(val => this.filter(val))
@@ -88,13 +92,27 @@ export class LedgerentryComponent implements OnInit {
     this.model.credit = this.model.credit * 100;
     this.model.debit = this.model.debit * 100;
     // post new entry
-    const req = this.ledgerservice.createNewEntry(JSON.stringify(this.model));
+    const req = this.ledgerservice.createNewEntry(JSON.stringify(this.model), this.entryType);
     req.subscribe(data => { console.log(data.id);
-      //reset model after successful entry
+      // reset model after successful entry
+      this.isError = false;
       this.model = {id: null, credit: 0, debit: 0, trans_date: this.dateservice.todayDate,
         category: {id: null, category_name: null},
         store: {id: null, store_name: null, default_credit: 0, default_debit:0}};
-    });
+    },
+    (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          // A client-side or network error occurred. Handle it accordingly.
+          console.log('An error occurred:', err.error.message);
+          this.flashMessage = err.error.message;
+        } else {
+          // The backend returned an unsuccessful response code.
+          // The response body may contain clues as to what went wrong,
+          this.isError = true;
+          this.flashMessage = err.error;
+          console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+          }
+        });
   }
 
   showType(val): void {
