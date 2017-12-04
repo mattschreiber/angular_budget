@@ -49,10 +49,7 @@ export class TableLedgerComponent implements AfterViewInit   {
 
     // console.log(CONFIG.baseUrl);
     this.tableEntries = new DatatableService(this.http, this.dateservice);
-     // If the user changes the sort order, reset back to the first page.
-     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
      this.dataSource.paginator = this.paginator;
-     this.dataSource.sort = this.sort;
 
      this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.todayDate));
      this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.todayDate));
@@ -71,7 +68,6 @@ export class TableLedgerComponent implements AfterViewInit   {
    })
    .subscribe(data => {
      this.dataSource.data = data;
-     this.dataSource.sort = this.sort;
    })
  }
 

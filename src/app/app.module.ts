@@ -33,6 +33,7 @@ import { BudgetComponent } from './budget/budget.component';
 import { LedgerentryComponent } from './ledgerentry/ledgerentry.component';
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 
@@ -43,7 +44,8 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
     TableLedgerComponent,
     HeaderComponent,
     BudgetComponent,
-    LedgerentryComponent
+    LedgerentryComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

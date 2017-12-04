@@ -75,19 +75,33 @@ export class LedgerentryComponent implements OnInit {
 
   // Adds new entry for ledger or budget
   onSubmit() {
-    // first convert amounts from dollars and cents to cents for storing in db
+  // default amounts are loaded into the model for some stores. This sets the unused amount to zero.
+  // ie. if store has defaul debit amount, but doing a credit. the debit should be set to zero
+  // before submitting the form
+    if (this.isCredit) {
+      this.model.debit = 0;
+    }
+    else {
+      this.model.credit = 0;
+    }
+      // first convert amounts from dollars and cents to cents for storing in db
     this.model.credit = this.model.credit * 100;
     this.model.debit = this.model.debit * 100;
     // post new entry
     const req = this.ledgerservice.createNewEntry(JSON.stringify(this.model));
-    req.subscribe(data => console.log(data.id));
+    req.subscribe(data => { console.log(data.id);
+      //reset model after successful entry
+      this.model = {id: null, credit: 0, debit: 0, trans_date: this.dateservice.todayDate,
+        category: {id: null, category_name: null},
+        store: {id: null, store_name: null, default_credit: 0, default_debit:0}};
+    });
   }
 
   showType(val): void {
     // isCredit is a boolean that determines whether the entry is credit or debit
     // reset amounts to 0 when switching between types
-    this.model.credit = 0;
-    this.model.debit = 0;
+    // this.model.credit = 0;
+    // this.model.debit = 0;
     if (val === 'credit') {
       this.isCredit = true;
     }
