@@ -21,10 +21,11 @@ export class LedgerService {
 
   constructor(private http: HttpClient, private dateservice: DateService) { }
 
-  createNewEntry(ledger): Observable<Ledger> {
+  createNewEntry(ledger, urlFrag: string): Observable<Ledger> {
     // method accepts a ledger object and posts a new entry.
+    // urlFrag
     const href = CONFIGS.baseUrl;
-    const requestUrl =`${href}createledger`;
+    const requestUrl =`${href}create${urlFrag}`;
     return this.http.post<Ledger>(requestUrl, ledger);
   }
 
