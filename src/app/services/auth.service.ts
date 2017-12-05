@@ -6,8 +6,11 @@ export class AuthService {
   constructor() { }
 
   public getToken(): string {
-   // return localStorage.getItem('`Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic29tZW9uZSIsImFkbWluIjp0cnVlLCJleHAiOjE1MTE0NTM4NTh9.Ce08Z_pnQDxBN8XxPDhY1gTCwECaZSWNLZNLug09s5A`');
-   return "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic29tZW9uZSIsImFkbWluIjp0cnVlLCJleHAiOjE1MTQwNDY5OTh9.3xExPd_SufRyFco84P6aYiHrfurVSIJGKp_CfgC2lUE"
-    }
+   return "Bearer " + localStorage.getItem('mattsToken');
+  }
+
+  public setToken(token: string) {
+    localStorage.setItem('mattsToken', token);
+  }
 
 }

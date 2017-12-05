@@ -59,7 +59,7 @@ export class LedgerentryComponent implements OnInit {
 
   constructor(private http: HttpClient, private dateservice: DateService,
     private ledgerservice: LedgerService, private storeandcatservice: StoreandcatService,
-    private route: ActivatedRoute, private router: Router,) { }
+    private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
 

@@ -12,10 +12,10 @@
     <button [routerLink]="['/ledgerentry', this.budgetType]" mat-menu-item routerLinkActive="active">Budget</button>
   </mat-menu>
   <span class="flex-spacer"></span>
-  <a mat-button fxHide.lt-md (click)="openLoginForm()">Login</a>
+  <a mat-button fxHide.lt-md routerLink="/login">Login</a>
   </mat-toolbar-row>
   <mat-toolbar-row fxHide.gt-sm>
-    <a mat-button (click)="openLoginForm()">Login</a>
+    <a mat-button routerLink="/login">Login</a>
   </mat-toolbar-row>
 </mat-toolbar>
 <!-- </div> -->

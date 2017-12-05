@@ -19,10 +19,12 @@ import { DateService } from './services/date.service';
 import { LedgerService } from './services/ledger.service';
 import { DatatableService } from './services/datatable.service';
 import { StoreandcatService} from './services/storeandcat.service';
+import { UserloginService} from './services/userlogin.service';
 
 import { EntrytypeGuard } from './guards/entrytype.guard';
 
 import { AuthInterceptor } from './auth.interceptor';
+import { JwtInterceptor } from './jwt.interceptor';
 
 
 import { AppComponent } from './app.component';
@@ -34,6 +36,7 @@ import { LedgerentryComponent } from './ledgerentry/ledgerentry.component';
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LoginComponent } from './login/login.component';
 
 
 
@@ -45,7 +48,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     HeaderComponent,
     BudgetComponent,
     LedgerentryComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -63,11 +67,15 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     AppRoutingModule,
   ],
   providers: [HttpClientModule, AuthService, DateService, LedgerService, DatatableService, StoreandcatService,
-    EntrytypeGuard,
+    UserloginService, EntrytypeGuard,
     {
       provide : HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi   : true,
+    },{
+      provide : HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
     },
   ],
   bootstrap: [AppComponent]
