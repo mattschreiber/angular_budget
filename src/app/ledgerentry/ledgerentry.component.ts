@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {FormControl} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import {Observable} from 'rxjs/Observable';
@@ -24,6 +24,11 @@ import { Store } from '../shared/store';
   styleUrls: ['./ledgerentry.component.scss']
 })
 export class LedgerentryComponent implements OnInit {
+
+ //  myForm = new FormGroup ({
+ //   storeControl: new FormControl(),
+ //   date: new FormControl(this.dateservice.todayDate),
+ // });
 
   // a route parameter that determines whether the entry should be posted as ledger or budget
   entryType: string;
@@ -89,8 +94,8 @@ export class LedgerentryComponent implements OnInit {
       this.model.credit = 0;
     }
       // first convert amounts from dollars and cents to cents for storing in db
-    this.model.credit = this.model.credit * 100;
-    this.model.debit = this.model.debit * 100;
+    this.model.credit = +(this.model.credit * 100).toFixed(2);
+    this.model.debit = +(this.model.debit * 100).toFixed(2);
     // post new entry
     const req = this.ledgerservice.createNewEntry(JSON.stringify(this.model), this.entryType);
     req.subscribe(data => { console.log(data.id);
@@ -99,6 +104,12 @@ export class LedgerentryComponent implements OnInit {
       this.model = {id: null, credit: 0, debit: 0, trans_date: this.dateservice.todayDate,
         category: {id: null, category_name: null},
         store: {id: null, store_name: null, default_credit: 0, default_debit:0}};
+        // navigate to entries page after successfully creating new entry
+        if (this.entryType == 'ledger') {
+          this.router.navigate(['/home'])
+        } else {
+        this.router.navigate(['/budget'])
+      }
     },
     (err: HttpErrorResponse) => {
         if (err.error instanceof Error) {

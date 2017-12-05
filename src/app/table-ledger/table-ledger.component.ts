@@ -33,8 +33,9 @@ export class TableLedgerComponent implements AfterViewInit   {
   // Dates used to initially configure Date Pickers which are used to populate the datatable
   firstOfMonth: Date = this.dateservice.firstDayMonth;
   todayDate: Date = this.dateservice.todayDate;
+  lastOfMonth: Date = this.dateservice.lastDayMonth;
   startDate = new FormControl(this.firstOfMonth);
-  endDate = new FormControl(this.todayDate);
+  endDate = new FormControl(this.lastOfMonth);
 
   displayedColumns = ['date', 'credit', 'debit', 'store', 'category'];
   dataSource = new MatTableDataSource();
@@ -51,8 +52,8 @@ export class TableLedgerComponent implements AfterViewInit   {
     this.tableEntries = new DatatableService(this.http, this.dateservice);
      this.dataSource.paginator = this.paginator;
 
-     this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.todayDate));
-     this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.todayDate));
+     this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
+     this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
  }
 
 // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
