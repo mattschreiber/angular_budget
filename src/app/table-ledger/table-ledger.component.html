@@ -19,13 +19,13 @@
 </div>
 
 <div fxLayout.lt-sm="column" fxLayoutGap="20px">
-  <div [fxShow]="showBalance">
+  <div *ngIf="showBalance">
     <mat-form-field class="example-container">
       <input matInput placeholder="Estimated Amount" disabled [value]="bal.budgetamount / 100 ">
     </mat-form-field>
   </div>
   <div>
-    <div [fxShow]="showBalance">
+    <div *ngIf="showBalance">
       <mat-form-field class="example-container">
         <input matInput placeholder="Actual Amount" disabled [value]="bal.ledgeramount / 100">
       </mat-form-field>
@@ -35,28 +35,23 @@
 <div fxLayout.lt-sm="column" fxLayoutGap="20px">
 <div class="table-container mat-elevation-z8" fxFlex.lt-sm="300px" fxFlex.sm="500px">
 
-  <mat-table #table [dataSource]="dataSource" class="table-table"
-             >
-
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
+  <mat-table #table [dataSource]="dataSource" class="table-table">
 
           <!-- Date Column -->
     <ng-container matColumnDef="date">
       <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.trans_date | date:'MMM d, y':'GMT'
-
-}}</mat-cell>
+      <mat-cell *matCellDef="let row">{{ row.trans_date | date:'MMM d, y':'GMT'}}
+      </mat-cell>
     </ng-container>
     <!-- Credit Column -->
     <ng-container matColumnDef="credit">
-      <mat-header-cell *matHeaderCellDef >Credit</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Credit</mat-header-cell>
       <mat-cell *matCellDef="let row">{{ row.credit / 100 }}</mat-cell>
     </ng-container>
 
     <!-- Debit Column -->
     <ng-container matColumnDef="debit">
-      <mat-header-cell *matHeaderCellDef >Debit</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Debit</mat-header-cell>
       <mat-cell *matCellDef="let row">{{ row.debit / 100 }}</mat-cell>
     </ng-container>
 
@@ -72,8 +67,14 @@
       <mat-cell *matCellDef="let row">{{ row.category.category_name }}</mat-cell>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <div *ngIf="displayMobile === false">
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </div>
+    <div *ngIf="displayMobile === true">
+      <mat-header-row *matHeaderRowDef="displayedColumnsMobile"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumnsMobile;"></mat-row>
+    </div>
   </mat-table>
 
     <mat-paginator [length]="resultsLength" [pageSize]="15">

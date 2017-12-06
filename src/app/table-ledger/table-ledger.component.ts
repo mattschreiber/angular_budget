@@ -1,4 +1,4 @@
-import {Component, Input, AfterViewInit, ViewChild, OnDestroy} from '@angular/core';
+import {Component, Input, AfterViewInit, ViewChild, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
@@ -38,6 +38,8 @@ export class TableLedgerComponent implements AfterViewInit   {
   endDate = new FormControl(this.lastOfMonth);
 
   displayedColumns = ['date', 'credit', 'debit', 'store', 'category'];
+  displayedColumnsMobile = ['date', 'credit', 'debit', 'store'];
+  displayMobile: boolean;
   dataSource = new MatTableDataSource();
   resultsLength = 0;
 
@@ -46,14 +48,24 @@ export class TableLedgerComponent implements AfterViewInit   {
 
   tableEntries: DatatableService | null;
   constructor(private http: HttpClient, private dateservice: DateService, datatableserve: DatatableService) {}
+
+  ngOnInit(){
+    // need to determine screenwidth before trying to load data table
+    if (window.screen.width < 500) {
+      this.displayMobile = true;
+    }
+    else {
+      this.displayMobile = false;
+    }
+  }
   ngAfterViewInit() {
 
     // console.log(CONFIG.baseUrl);
     this.tableEntries = new DatatableService(this.http, this.dateservice);
-     this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator;
 
-     this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
-     this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
+    this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
+    this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
  }
 
 // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
@@ -76,12 +88,10 @@ export class TableLedgerComponent implements AfterViewInit   {
       if (err.error instanceof Error) {
         // A client-side or network error occurred. Handle it accordingly.
         console.log('An error occurred:', err.error.message);
-        this.dataSource = null;
       } else {
         // The backend returned an unsuccessful response code.
         // The response body may contain clues as to what went wrong,
         console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
-        this.dataSource = null;
       }
     })
  }
@@ -110,6 +120,7 @@ export class TableLedgerComponent implements AfterViewInit   {
       }
     }
  );}
+
 }
 
 //   const href = 'http://localhost:5000/ledger-entries/';
