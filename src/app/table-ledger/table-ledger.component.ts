@@ -59,9 +59,11 @@ export class TableLedgerComponent implements AfterViewInit   {
 // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
 // call service to get back a list of table entries. These could be for ledger or budget
  getTableEntries(startDate: string, endDate: string): void {
- console.log(startDate, endDate);
    this.tableEntries.getEntries(this.dataType, startDate, endDate)
    .map(data => {
+     if (data == null){
+       throw Error;
+     }
      return data;
    })
    .catch(() => {
@@ -69,14 +71,25 @@ export class TableLedgerComponent implements AfterViewInit   {
    })
    .subscribe(data => {
      this.dataSource.data = data;
-   })
+   },
+   (err: HttpErrorResponse) => {
+      if (err.error instanceof Error) {
+        // A client-side or network error occurred. Handle it accordingly.
+        console.log('An error occurred:', err.error.message);
+        this.dataSource = null;
+      } else {
+        // The backend returned an unsuccessful response code.
+        // The response body may contain clues as to what went wrong,
+        console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+        this.dataSource = null;
+      }
+    })
  }
 
  updateDate(startDate: Date, endDate: Date): void {
    this.getTableEntries(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
    // Only update Ledger and Budget balances if they are visible for the component view
    if (this.showBalance) {
-    console.log("show balance");
     this.getBalances(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
    }
  }
