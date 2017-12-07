@@ -37,6 +37,7 @@ import { LedgerentryComponent } from './ledgerentry/ledgerentry.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoginComponent } from './login/login.component';
+import { UpdateEntryComponent } from './update-entry/update-entry.component';
 
 
 
@@ -49,7 +50,8 @@ import { LoginComponent } from './login/login.component';
     BudgetComponent,
     LedgerentryComponent,
     PageNotFoundComponent,
-    LoginComponent
+    LoginComponent,
+    UpdateEntryComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +67,9 @@ import { LoginComponent } from './login/login.component';
     MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule,
     MatTableModule, MatSortModule, MatNativeDateModule, MatAutocompleteModule, MatProgressBarModule, MatTooltipModule,
     AppRoutingModule,
+  ],
+  entryComponents: [
+    UpdateEntryComponent
   ],
   providers: [HttpClientModule, AuthService, DateService, LedgerService, DatatableService, StoreandcatService,
     UserloginService, EntrytypeGuard,

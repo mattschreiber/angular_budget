@@ -1,7 +1,8 @@
-import {Component, Input, AfterViewInit, ViewChild, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, AfterViewInit, ViewChild, OnDestroy, OnInit, Inject} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {MatPaginator, MatSort, MatTableDataSource, MatTooltip} from '@angular/material';
+import {MatPaginator, MatSort, MatTableDataSource, MatTooltip,
+  MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/of';
@@ -10,6 +11,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/switchMap';
 
+import { UpdateEntryComponent } from '../update-entry/update-entry.component';
 import { DateService } from '../services/date.service';
 import { DatatableService } from '../services/datatable.service';
 
@@ -47,7 +49,8 @@ export class TableLedgerComponent implements AfterViewInit   {
   @ViewChild(MatSort) sort: MatSort;
 
   tableEntries: DatatableService | null;
-  constructor(private http: HttpClient, private dateservice: DateService, datatableserve: DatatableService) {}
+  constructor(private http: HttpClient, private dateservice: DateService, private datatableserve: DatatableService,
+              public dialog: MatDialog) {}
 
   ngOnInit(){
     // need to determine screenwidth before trying to load data table
@@ -121,7 +124,10 @@ export class TableLedgerComponent implements AfterViewInit   {
     }
  );}
 
- openUpdate(row){
-   console.log(row);
+ openUpdate(row): void {
+   let dialogRef = this.dialog.open(UpdateEntryComponent, {
+     width: '250px',
+     data: { id: row.id, debit: row.debit, credit: row.credit }
+   });
  }
 }

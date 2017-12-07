@@ -15,7 +15,7 @@ import { User, Token } from '../shared/user';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup; // <--- heroForm is of type FormGroup
+  loginForm: FormGroup;
   user: User;
 
   constructor(private fb: FormBuilder, private userloginservice: UserloginService,

@@ -69,8 +69,8 @@
 
     <!--if the display is mobile then don't include category coloumn -->
     <div *ngIf="displayMobile === false">
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openUpdate(row)" matTooltip="Click row to Update" matTooltipPosition="above"></mat-row>
+      <mat-header-row *matHeaderRowDef="displayedColumns" matTooltip="Click on a Row to Update" matTooltipPosition="above"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openUpdate(row)"></mat-row>
     </div>
     <div *ngIf="displayMobile === true">
       <mat-header-row *matHeaderRowDef="displayedColumnsMobile"></mat-header-row>
