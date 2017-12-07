@@ -67,13 +67,14 @@
       <mat-cell *matCellDef="let row">{{ row.category.category_name }}</mat-cell>
     </ng-container>
 
+    <!--if the display is mobile then don't include category coloumn -->
     <div *ngIf="displayMobile === false">
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openUpdate(row)" matTooltip="Click row to Update" matTooltipPosition="above"></mat-row>
     </div>
     <div *ngIf="displayMobile === true">
       <mat-header-row *matHeaderRowDef="displayedColumnsMobile"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumnsMobile;"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumnsMobile;" (click)="openUpdate(row)"></mat-row>
     </div>
   </mat-table>
 

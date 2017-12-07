@@ -1,7 +1,7 @@
 import {Component, Input, AfterViewInit, ViewChild, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSort, MatTableDataSource, MatTooltip} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/of';
@@ -121,31 +121,7 @@ export class TableLedgerComponent implements AfterViewInit   {
     }
  );}
 
+ openUpdate(row){
+   console.log(row);
+ }
 }
-
-//   const href = 'http://localhost:5000/ledger-entries/';
-//   const requestUrl =`${href}${this.dateservice.parseDate(this.dateservice.firstDayMonth)}/${this.dateservice.parseDate(this.dateservice.todayDate)}`;
-//   console.log(requestUrl);
-//   this.http.get<LedgerEntries[]>(requestUrl)
-//   .map(data => {
-//     this.resultsLength = data.length;
-//     this.paginator.pageSize = 10;
-//     return data;
-//   })
-//   .subscribe(data => {
-//    this.dataSource.data = data;
-//  });
-
-// Observable.merge(this.sort.sortChange, this.paginator.page)
-//     .startWith(null)
-//     .switchMap(() => {
-//       return this.exampleDatabase!.getRepoIssues(
-//           this.sort.active, this.sort.direction, this.paginator.pageIndex);
-//     })
-//     .map(data => {
-//       return data;
-//     })
-//     .catch(() => {
-//       return Observable.of([]);
-//     })
-//     .subscribe(data => this.dataSource.data = data)

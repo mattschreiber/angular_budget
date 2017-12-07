@@ -10,7 +10,7 @@ import { MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldMo
   MatInputModule, MatRadioModule, MatSelectModule, MatSliderModule,
   MatSlideToggleModule, MatToolbarModule, MatListModule, MatGridListModule,
   MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule, MatTableModule, MatSortModule,
-  MatNativeDateModule, MatAutocompleteModule, MatProgressBarModule} from '@angular/material';
+  MatNativeDateModule, MatAutocompleteModule, MatProgressBarModule, MatTooltipModule} from '@angular/material';
 
 import 'hammerjs';
 
@@ -63,7 +63,7 @@ import { LoginComponent } from './login/login.component';
     MatInputModule, MatRadioModule, MatSelectModule, MatSliderModule,
     MatSlideToggleModule, MatToolbarModule, MatListModule, MatGridListModule,
     MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule,
-    MatTableModule, MatSortModule, MatNativeDateModule, MatAutocompleteModule, MatProgressBarModule,
+    MatTableModule, MatSortModule, MatNativeDateModule, MatAutocompleteModule, MatProgressBarModule, MatTooltipModule,
     AppRoutingModule,
   ],
   providers: [HttpClientModule, AuthService, DateService, LedgerService, DatatableService, StoreandcatService,
