@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
   date = new FormControl(this.dateservice.todayDate);
   tableEntries = new DatatableService(this.http, this.dateservice);
 
-  constructor(private http: HttpClient, private dateservice: DateService) { }
+  constructor(private http: HttpClient, public dateservice: DateService) { }
 
   ngOnInit() {
     this.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));

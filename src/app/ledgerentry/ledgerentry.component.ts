@@ -160,10 +160,10 @@ export class LedgerentryComponent implements OnInit {
 
   // next to functions are used to enable the store autocomplete to display the name while
   // making the value equal to the entire store object. THis is necessary for posting the correct data.
-  private getDisplayFn() {
+  getDisplayFn() {
     return (val) => this.display(val);
   }
-  private display(store): string {
+  display(store): string {
     if (store != null) {
       this.model.credit = store.default_credit;
       this.model.debit = store.default_debit;

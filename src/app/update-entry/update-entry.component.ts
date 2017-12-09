@@ -25,6 +25,10 @@ export class UpdateEntryComponent implements OnInit {
    });
  }
 
+ onSubmit() {
+
+ }
+
   ngOnInit() {
     if (this.data.debit > 0) {
       this.updateEntryForm.get('amount').setValue(this.data.debit / 100);
