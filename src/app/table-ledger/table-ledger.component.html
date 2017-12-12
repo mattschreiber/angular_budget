@@ -46,13 +46,13 @@
     <!-- Credit Column -->
     <ng-container matColumnDef="credit">
       <mat-header-cell *matHeaderCellDef>Credit</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.credit / 100 }}</mat-cell>
+      <mat-cell *matCellDef="let row">$&nbsp;{{ row.credit / 100 }}</mat-cell>
     </ng-container>
 
     <!-- Debit Column -->
     <ng-container matColumnDef="debit">
       <mat-header-cell *matHeaderCellDef>Debit</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.debit / 100 }}</mat-cell>
+      <mat-cell *matCellDef="let row">$&nbsp;{{ row.debit / 100 }}</mat-cell>
     </ng-container>
 
     <!-- Store Column -->
