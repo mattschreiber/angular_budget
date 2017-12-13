@@ -98,7 +98,7 @@ export class LedgerentryComponent implements OnInit {
     this.model.debit = +(this.model.debit * 100).toFixed(2);
     // post new entry
     const req = this.ledgerservice.createNewEntry(JSON.stringify(this.model), this.entryType);
-    req.subscribe(data => { console.log(data.id);
+    req.subscribe(data => {
       // reset model after successful entry
       this.isError = false;
       this.model = {id: null, credit: 0, debit: 0, trans_date: this.dateservice.todayDate,
