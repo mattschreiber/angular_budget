@@ -29,4 +29,10 @@ export class LedgerService {
     return this.http.post<Ledger>(requestUrl, ledger);
   }
 
+  deleteEntry(id: number, urlFrag: string) {
+    const href = CONFIGS.baseUrl;
+    const requestUrl =`${href}${urlFrag}-entry/${id}`;
+    return this.http.delete<number>(requestUrl);
+  }
+
 }

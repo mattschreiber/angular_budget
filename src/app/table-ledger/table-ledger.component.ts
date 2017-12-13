@@ -124,10 +124,20 @@ export class TableLedgerComponent implements AfterViewInit   {
     }
  );}
 
- openUpdate(row): void {
+ openUpdate(row, entryType): void {
    let dialogRef = this.dialog.open(UpdateEntryComponent, {
-     width: '250px',
-     data: { id: row.id, debit: row.debit, credit: row.credit }
+     width: '300px',
+     height: '200px',
+     data: { id: row.id, debit: row.debit, credit: row.credit, entryType: this.entryType }
+   });
+
+   dialogRef.afterClosed()
+   .subscribe(result => {
+     // this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
+     // window.location.reload();
+     if (result === "updated") {
+      window.location.reload();
+    }
    });
  }
 }

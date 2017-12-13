@@ -1,12 +1,22 @@
-<div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px" fxLayoutAlign="center center">
+<div class="updateEntryToolbar">
+<mat-toolbar color="primary"><span>Delete Entry</span>
+  <span class="flex-spacer"></span>
+  <button mat-button mat-dialog-close>&times;</button>
+</mat-toolbar>
+</div>
+<div fxLayout.lt-sm="column" fxLayoutGap="20px" class="add-padding">
   <form [formGroup]="updateEntryForm" (ngSubmit)="onSubmit()" novalidate>
-    <div class="form-group">
+    <mat-dialog-content>
+    <div class="form-group" fxLayoutAlign="center center">
       <mat-form-field>
+        <span matPrefix>$&nbsp;</span>
         <input matInput placeholder="Amount" formControlName="amount">
       </mat-form-field>
     </div>
     <div class="form-group" fxLayoutAlign="center center">
-      <button type="submit" color="primary" mat-button>Submit</button>
+      <button mat-dialog-close color="primary" mat-button>Cancel</button>
+      <button type="submit" color="primary" mat-button>Delete</button>
     </div>
+  </mat-dialog-content>
   </form>
 </div>
