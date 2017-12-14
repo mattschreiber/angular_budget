@@ -133,9 +133,8 @@ export class TableLedgerComponent implements AfterViewInit   {
 
    dialogRef.afterClosed()
    .subscribe(result => {
-     // this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
-     // window.location.reload();
      if (result === "updated") {
+       // reload page if delete was successful
       window.location.reload();
     }
    });
