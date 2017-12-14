@@ -15,6 +15,7 @@ export class UserloginService {
   public loginUser(user: User): Observable<Token> {
     // method accepts a ledger object and posts a new entry.
     // urlFrag
+    user.username = user.username.toLowerCase();
     const href = CONFIGS.baseUrl;
     const requestUrl =`${href}login`;
     return this.http.post<Token>(requestUrl, user);
