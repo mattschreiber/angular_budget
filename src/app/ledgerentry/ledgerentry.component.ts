@@ -78,6 +78,7 @@ export class LedgerentryComponent implements OnInit {
   }
   // filter for store autocomplete
   filter(val: string): Store[] {
+  val = val.toString().toLowerCase();
   return this.storeAndCat.store.filter(option =>
     option.store_name.toLowerCase().indexOf(val) === 0);
   }
