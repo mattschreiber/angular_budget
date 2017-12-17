@@ -10,7 +10,7 @@ import { MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldMo
   MatInputModule, MatRadioModule, MatSelectModule, MatSliderModule,
   MatSlideToggleModule, MatToolbarModule, MatListModule, MatGridListModule,
   MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule, MatTableModule, MatSortModule,
-  MatNativeDateModule, MatAutocompleteModule, MatProgressBarModule, MatTooltipModule} from '@angular/material';
+  MatNativeDateModule, MatAutocompleteModule, MatProgressBarModule, MatTooltipModule, MatSidenavModule} from '@angular/material';
 
 import 'hammerjs';
 
@@ -20,6 +20,7 @@ import { LedgerService } from './services/ledger.service';
 import { DatatableService } from './services/datatable.service';
 import { StoreandcatService} from './services/storeandcat.service';
 import { UserloginService} from './services/userlogin.service';
+import { SidenavService } from './services/sidenav.service';
 
 import { EntrytypeGuard } from './guards/entrytype.guard';
 
@@ -61,7 +62,7 @@ import { UpdateEntryComponent } from './update-entry/update-entry.component';
     HttpModule,
     HttpClientModule,
     FlexLayoutModule,
-    MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldModule,
+    MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldModule, MatSidenavModule,
     MatInputModule, MatRadioModule, MatSelectModule, MatSliderModule,
     MatSlideToggleModule, MatToolbarModule, MatListModule, MatGridListModule,
     MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule,
@@ -72,7 +73,7 @@ import { UpdateEntryComponent } from './update-entry/update-entry.component';
     UpdateEntryComponent
   ],
   providers: [HttpClientModule, AuthService, DateService, LedgerService, DatatableService, StoreandcatService,
-    UserloginService, EntrytypeGuard,
+    UserloginService, SidenavService, EntrytypeGuard,
     {
       provide : HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

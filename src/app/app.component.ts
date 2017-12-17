@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import {MatSidenav} from '@angular/material/sidenav';
+import { SidenavService } from './services/sidenav.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+  @ViewChild('sidenav') public sidenav: MatSidenav;
+
+  constructor(private sidenavService: SidenavService ){}
+
+  ngOnInit(): void {
+  // Store sidenav to service
+  this.sidenavService
+    .setSidenav(this.sidenav);
+  }
 }

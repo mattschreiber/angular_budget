@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
+
+import { SidenavService } from '../services/sidenav.service';
 
 @Component({
   selector: 'app-header',
@@ -10,13 +12,13 @@ import { ViewEncapsulation } from '@angular/core';
 export class HeaderComponent implements OnInit {
   ledgerType: string = "ledger";
   budgetType: string = "budget";
-  constructor() { }
+  constructor(private sidenavService: SidenavService) { }
 
   ngOnInit() {
   }
 
-  // openNewEntry(entryType: string) {
-  //   console.log("new entry: " + entryType);
-  // }
+  public toggleSidenav() {
+   this.sidenavService.sidenavToggle();
+ }
 
 }

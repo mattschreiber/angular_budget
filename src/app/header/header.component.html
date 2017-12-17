@@ -1,8 +1,8 @@
 <!-- <div class="container" fxLayout="row" fxLayoutGap="20px"> -->
-  <mat-toolbar color="primary">
-  <mat-toolbar-row>
+  <mat-toolbar class="zero-padding" color="primary">
   <!-- <span><img src="/assets/images/logo.png" height=30 width=41></span> -->
-  <img src="assets/budget-logo.svg" alt="Logo" width="50" height="50px">
+  <!-- <img src="assets/budget-logo.svg" alt="Logo" width="50" height="50px"> -->
+  <button mat-button (click)="toggleSidenav()" class="fa fa-bars fa-lg"></button>
   <a mat-button routerLink="/home" routerLinkActive="active">Home</a>
   <!-- <a mat-button>Ledger</a> -->
   <a mat-button routerLink="/budget" routerLinkActive="active">Budget</a>
@@ -13,9 +13,8 @@
   </mat-menu>
   <span class="flex-spacer"></span>
   <a mat-button fxHide.lt-md routerLink="/login">Login</a>
-  </mat-toolbar-row>
-  <mat-toolbar-row fxHide.gt-sm>
+  <!-- <mat-toolbar-row fxHide.gt-sm>
     <a mat-button routerLink="/login">Login</a>
-  </mat-toolbar-row>
+  </mat-toolbar-row> -->
 </mat-toolbar>
 <!-- </div> -->
