@@ -20,13 +20,13 @@
 
 <div fxLayout.lt-sm="column" fxLayoutGap="20px">
   <div *ngIf="showBalance">
-    <mat-form-field class="example-container">
+    <mat-form-field class="push-right">
       <input matInput placeholder="Estimated Amount" disabled [value]="bal.budgetamount / 100 ">
     </mat-form-field>
   </div>
   <div>
     <div *ngIf="showBalance">
-      <mat-form-field class="example-container">
+      <mat-form-field>
         <input matInput placeholder="Actual Amount" disabled [value]="bal.ledgeramount / 100">
       </mat-form-field>
     </div>
