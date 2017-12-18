@@ -3,16 +3,7 @@
   <!-- <span><img src="/assets/images/logo.png" height=30 width=41></span> -->
   <!-- <img src="assets/budget-logo.svg" alt="Logo" width="50" height="50px"> -->
   <button mat-button (click)="toggleSidenav()" class="fa fa-bars fa-lg fill-highlight-icon"></button>
-  <a mat-button routerLink="/home" routerLinkActive="active" class="no-highlight">Home</a>
-  <!-- <a mat-button>Ledger</a> -->
-  <a mat-button routerLink="/budget" routerLinkActive="active" class="no-highlight">Budget</a>
-  <a mat-button [matMenuTriggerFor]="menu" routerLinkActive="active" class="no-highlight">Enter Amount</a>
-  <mat-menu #menu="matMenu">
-    <button [routerLink]="['/ledgerentry', this.ledgerType]" mat-menu-item routerLinkActive="active">Ledger</button>
-    <button [routerLink]="['/ledgerentry', this.budgetType]" mat-menu-item routerLinkActive="active">Budget</button>
-  </mat-menu>
-  <span class="flex-spacer"></span>
-  <a mat-button fxHide.lt-md routerLink="/login">Login</a>
+  <span style="font-size:16px;">Financial Management Software </span>
   <!-- <mat-toolbar-row fxHide.gt-sm>
     <a mat-button routerLink="/login">Login</a>
   </mat-toolbar-row> -->

@@ -10,8 +10,6 @@ import { SidenavService } from '../services/sidenav.service';
   encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent implements OnInit {
-  ledgerType: string = "ledger";
-  budgetType: string = "budget";
   constructor(private sidenavService: SidenavService) { }
 
   ngOnInit() {

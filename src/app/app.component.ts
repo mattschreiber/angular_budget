@@ -8,6 +8,8 @@ import { SidenavService } from './services/sidenav.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  ledgerType: string = "ledger";
+  budgetType: string = "budget";
   @ViewChild('sidenav') public sidenav: MatSidenav;
 
   constructor(private sidenavService: SidenavService ){}
