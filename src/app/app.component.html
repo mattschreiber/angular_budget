@@ -1,7 +1,12 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <app-header> </app-header>
 <mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side">Start</mat-sidenav>
+  <mat-sidenav #sidenav mode="side">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/home" routerLinkActive="active"> Ledger </a>
+      <a mat-list-item routerLink="/budget" routerLinkActive="active"> Budget </a>
+    </mat-nav-list>
+  </mat-sidenav>
   <mat-sidenav-content>
 
 
