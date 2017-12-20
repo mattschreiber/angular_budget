@@ -1,4 +1,4 @@
-import {Component, Input, AfterViewInit, ViewChild, OnDestroy, OnInit, Inject} from '@angular/core';
+import {Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, OnDestroy, OnInit, Inject} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {MatPaginator, MatSort, MatTableDataSource, MatTooltip,
@@ -30,6 +30,7 @@ export class TableLedgerComponent implements AfterViewInit   {
   // set show balance to true in order to display Ledger Amount and/or Budget Amount
   @Input() showBalance: boolean;
   @Input() entryType: string; // Used to set heading to Budget or Ledger in html template
+  @Output() onUpdate = new EventEmitter<boolean>();
   bal: Balance = new Balance;
 
   // Dates used to initially configure Date Pickers which are used to populate the datatable
@@ -53,22 +54,24 @@ export class TableLedgerComponent implements AfterViewInit   {
               public dialog: MatDialog) {}
 
   ngOnInit(){
-    // need to determine screenwidth before trying to load data table
-    if (window.screen.width < 500) {
-      this.displayMobile = true;
-    }
-    else {
+    // // need to determine screenwidth before trying to load data table
+    // if (window.screen.width < 500) {
+    //   this.displayMobile = true;
+    // }
+    // else {
       this.displayMobile = false;
-    }
+    // }
   }
   ngAfterViewInit() {
 
-    // console.log(CONFIG.baseUrl);
     this.tableEntries = new DatatableService(this.http, this.dateservice);
     this.dataSource.paginator = this.paginator;
 
     this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
-    this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
+   // Only update Ledger and Budget balances if they are visible for the component view
+    if (this.showBalance) {
+      this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth))
+    }
  }
 
 // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
@@ -133,10 +136,22 @@ export class TableLedgerComponent implements AfterViewInit   {
 
    dialogRef.afterClosed()
    .subscribe(result => {
+     // Only update Ledger and Budget balances if they are visible for the component view
      if (result === "updated") {
-       // reload page if delete was successful
-      window.location.reload();
+       this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
+       if (this.showBalance) {
+         this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth))
+       }
+       // only updatr home component values if the entry being deleted is from the ledger
+       if (this.showBalance === false) {
+         this.updateHome(true);
+       }
     }
    });
+ }
+
+// emit event to home component that triggers refresh of it's fields
+ updateHome(update: boolean){
+   this.onUpdate.emit(update);
  }
 }

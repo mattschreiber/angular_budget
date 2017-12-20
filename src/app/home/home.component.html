@@ -20,11 +20,7 @@
   </div>
 </div>
 
-
-
-<!-- <div class="container" fxFlex>
-  <app-table-ledger></app-table-ledger>
-</div> -->
 <div class="container" fxLayout="column" fxLayoutGap="20px">
-<app-table-ledger [dataType]="dataType" [showBalance]="showBalance" [entryType]="entryType"></app-table-ledger>
+<app-table-ledger [dataType]="dataType" [showBalance]="showBalance"
+  (onUpdate)="onUpdate($event)" [entryType]="entryType"></app-table-ledger>
 <div>

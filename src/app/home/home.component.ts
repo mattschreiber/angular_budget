@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
-    this.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate))
+    this.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
   }
 
   updateEndDate(val: Date): void {
@@ -84,7 +84,14 @@ export class HomeComponent implements OnInit {
          console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
        }
      }
-  );
+   );
+  }
+
+  // this is called when an entry is successfully deleted in the table ledger component.
+  // the projbalance and actual balance should be updated
+  onUpdate(update: boolean) {
+  this.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
+  this.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
   }
 }
 
