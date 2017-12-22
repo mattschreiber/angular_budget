@@ -47,7 +47,7 @@ export class TableLedgerComponent implements AfterViewInit   {
   endDate = new FormControl(this.lastOfMonth);
 
   displayedColumns = ['date', 'credit', 'debit', 'store', 'category'];
-  displayedColumnsMobile = ['date', 'credit', 'debit', 'store'];
+  // displayedColumnsMobile = ['date', 'credit', 'debit', 'store'];
   displayMobile: boolean;
   dataSource = new MatTableDataSource();
   resultsLength = 0;
@@ -57,7 +57,7 @@ export class TableLedgerComponent implements AfterViewInit   {
 
   tableEntries: DatatableService | null;
   constructor(private http: HttpClient, private dateservice: DateService, private datatableserve: DatatableService,
-              public dialog: MatDialog, public media: ObservableMedia) {
+              public dialog: MatDialog, private media: ObservableMedia) {
                 this.watcher = media.subscribe((change: MediaChange) => {
                   this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
                   if ( change.mqAlias == 'xs' || change.mqAlias == 'sm') {
