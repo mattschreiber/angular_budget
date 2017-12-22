@@ -1,4 +1,6 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import {Subscription} from "rxjs/Subscription";
+import {MediaChange, ObservableMedia} from "@angular/flex-layout";
 import {MatSidenav} from '@angular/material/sidenav';
 import { SidenavService } from './services/sidenav.service';
 
@@ -10,13 +12,41 @@ import { SidenavService } from './services/sidenav.service';
 export class AppComponent {
   ledgerType: string = "ledger";
   budgetType: string = "budget";
+  displayType: string;
   @ViewChild('sidenav') public sidenav: MatSidenav;
 
-  constructor(private sidenavService: SidenavService ){}
+  // used to determine screen size
+  watcher: Subscription;
+  activeMediaQuery = "";
+  close: boolean;
+
+  constructor(private sidenavService: SidenavService,  private media: ObservableMedia ){
+    this.watcher = media.subscribe((change: MediaChange) => {
+      this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
+      if ( change.mqAlias == 'xs' || change.mqAlias == 'sm') {
+         this.displayType = "over";
+         this.close = true;
+       }
+       else {
+         this.displayType = "side";
+         this.close = false;
+       }
+     });
+  }
 
   ngOnInit(): void {
   // Store sidenav to service
   this.sidenavService
     .setSidenav(this.sidenav);
+  }
+
+  ngOnDestroy() {
+    this.watcher.unsubscribe();
+  }
+
+  closeSidenav() {
+    if (this.close === true) {
+      this.sidenavService.closeSidenav();
+    }
   }
 }

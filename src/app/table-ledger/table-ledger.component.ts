@@ -70,6 +70,11 @@ export class TableLedgerComponent implements AfterViewInit   {
               }
 
   ngOnInit(){
+    if (this.media.isActive('xs') || this.media.isActive('sm')) {
+      this.displayMobile = true;
+    } else {
+      this.displayMobile = false;
+    }
   }
   ngAfterViewInit() {
 

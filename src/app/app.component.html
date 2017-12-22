@@ -1,8 +1,8 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <app-header> </app-header>
 <mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side">
-    <mat-nav-list>
+  <mat-sidenav #sidenav [mode]="displayType">
+    <mat-nav-list (click)="closeSidenav()">
       <a mat-list-item routerLink="/home" routerLinkActive="active"> Ledger </a>
       <a mat-list-item routerLink="/budget" routerLinkActive="active"> Budget </a>
       <a mat-list-item [routerLink]="['/ledgerentry', this.ledgerType]" routerLinkActive="active"> Enter Ledger </a>
