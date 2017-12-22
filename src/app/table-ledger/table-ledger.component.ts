@@ -4,6 +4,8 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {MatPaginator, MatSort, MatTableDataSource, MatTooltip,
   MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
+import {Subscription} from "rxjs/Subscription";
+import {MediaChange, ObservableMedia} from "@angular/flex-layout";
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
@@ -33,6 +35,10 @@ export class TableLedgerComponent implements AfterViewInit   {
   @Output() onUpdate = new EventEmitter<boolean>();
   bal: Balance = new Balance;
 
+  // used to determine screen size
+  watcher: Subscription;
+  activeMediaQuery = "";
+
   // Dates used to initially configure Date Pickers which are used to populate the datatable
   firstOfMonth: Date = this.dateservice.firstDayMonth;
   todayDate: Date = this.dateservice.todayDate;
@@ -51,16 +57,19 @@ export class TableLedgerComponent implements AfterViewInit   {
 
   tableEntries: DatatableService | null;
   constructor(private http: HttpClient, private dateservice: DateService, private datatableserve: DatatableService,
-              public dialog: MatDialog) {}
+              public dialog: MatDialog, public media: ObservableMedia) {
+                this.watcher = media.subscribe((change: MediaChange) => {
+                  this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
+                  if ( change.mqAlias == 'xs' || change.mqAlias == 'sm') {
+                     this.displayMobile = true;
+                   }
+                   else {
+                     this.displayMobile = false;
+                   }
+                 });
+              }
 
   ngOnInit(){
-    // // need to determine screenwidth before trying to load data table
-    // if (window.screen.width < 500) {
-    //   this.displayMobile = true;
-    // }
-    // else {
-      this.displayMobile = false;
-    // }
   }
   ngAfterViewInit() {
 
@@ -73,6 +82,11 @@ export class TableLedgerComponent implements AfterViewInit   {
       this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth))
     }
  }
+
+ ngOnDestroy() {
+    this.watcher.unsubscribe();
+  }
+
 
 // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
 // call service to get back a list of table entries. These could be for ledger or budget
