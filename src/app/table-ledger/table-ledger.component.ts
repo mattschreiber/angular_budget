@@ -2,7 +2,7 @@ import {Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, OnDest
 import {FormControl} from '@angular/forms';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {MatPaginator, MatSort, MatTableDataSource, MatTooltip,
-  MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+  MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatExpansionPanel} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
 import {Subscription} from "rxjs/Subscription";
 import {MediaChange, ObservableMedia} from "@angular/flex-layout";
@@ -77,7 +77,6 @@ export class TableLedgerComponent implements AfterViewInit   {
     }
   }
   ngAfterViewInit() {
-
     this.tableEntries = new DatatableService(this.http, this.dateservice);
     this.dataSource.paginator = this.paginator;
 
@@ -90,6 +89,13 @@ export class TableLedgerComponent implements AfterViewInit   {
 
  ngOnDestroy() {
     this.watcher.unsubscribe();
+  }
+
+  // method to filter table entry results
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
   }
 
 
@@ -107,7 +113,7 @@ export class TableLedgerComponent implements AfterViewInit   {
      return Observable.of([]);
    })
    .subscribe(data => {
-     this.dataSource.data = data;
+     this.flattenData(data);
    },
    (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
@@ -119,6 +125,26 @@ export class TableLedgerComponent implements AfterViewInit   {
         console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
       }
     })
+ }
+
+
+// flatten the data returned from api to make filter simpler to implement
+ flattenData(data) {
+   let i: number;
+   let flatData: {id: number, credit: number, debit: number, category_name: string, store_name: string, trans_date: Date};
+   let arr = [];
+   for (i=0; i<data.length; i++) {
+     flatData = {
+       id: data[i].id,
+       credit: data[i].credit,
+       debit: data[i].debit,
+       category_name: data[i].category.category_name,
+       store_name: data[i].store.store_name,
+       trans_date: data[i].trans_date
+    }
+     arr.push(flatData);
+   }
+   this.dataSource.data = arr;
  }
 
  updateDate(startDate: Date, endDate: Date): void {

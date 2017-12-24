@@ -10,7 +10,7 @@ import { MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldMo
   MatInputModule, MatRadioModule, MatSelectModule, MatSliderModule,
   MatSlideToggleModule, MatToolbarModule, MatListModule, MatGridListModule,
   MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule, MatTableModule, MatSortModule,
-  MatNativeDateModule, MatAutocompleteModule, MatProgressBarModule, MatTooltipModule, MatSidenavModule} from '@angular/material';
+  MatNativeDateModule, MatAutocompleteModule, MatProgressBarModule, MatTooltipModule, MatSidenavModule, MatExpansionModule} from '@angular/material';
 
 import 'hammerjs';
 
@@ -65,7 +65,7 @@ import { UpdateEntryComponent } from './update-entry/update-entry.component';
     MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldModule, MatSidenavModule,
     MatInputModule, MatRadioModule, MatSelectModule, MatSliderModule,
     MatSlideToggleModule, MatToolbarModule, MatListModule, MatGridListModule,
-    MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule,
+    MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule, MatExpansionModule,
     MatTableModule, MatSortModule, MatNativeDateModule, MatAutocompleteModule, MatProgressBarModule, MatTooltipModule,
     AppRoutingModule,
   ],

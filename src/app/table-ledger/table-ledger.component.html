@@ -32,11 +32,13 @@
     </div>
   </div>
 </div>
+
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
 <div fxLayout.lt-sm="column" fxLayoutGap="20px">
 <div class="table-container mat-elevation-z8" fxFlex.lt-sm="100%" fxFlex.sm="100%">
-
   <mat-table #table [dataSource]="dataSource" class="table-table">
-
           <!-- Date Column -->
     <ng-container matColumnDef="date">
       <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
@@ -58,13 +60,13 @@
     <!-- Store Column -->
     <ng-container matColumnDef="store">
       <mat-header-cell *matHeaderCellDef>Store</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.store.store_name }}</mat-cell>
+      <mat-cell *matCellDef="let row">{{ row.store_name }}</mat-cell>
     </ng-container>
 
     <!-- Category Column -->
     <ng-container matColumnDef="category">
       <mat-header-cell [fxHide]="displayMobile" *matHeaderCellDef>Category</mat-header-cell>
-      <mat-cell [fxHide]="displayMobile" *matCellDef="let row">{{ row.category.category_name }}</mat-cell>
+      <mat-cell [fxHide]="displayMobile" *matCellDef="let row">{{ row.category_name }}</mat-cell>
     </ng-container>
 
     <!--if the display is mobile then don't include category coloumn -->
