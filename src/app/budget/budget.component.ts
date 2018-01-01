@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-budget',
   templateUrl: './budget.component.html',
-  styleUrls: ['./budget.component.scss']
+  styleUrls: ['./budget.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class BudgetComponent implements OnInit {
   // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
