@@ -6,12 +6,12 @@ import {MatPaginator, MatSort, MatTableDataSource, MatTooltip,
 import {Observable} from 'rxjs/Observable';
 import {Subscription} from "rxjs/Subscription";
 import {MediaChange, ObservableMedia} from "@angular/flex-layout";
-import 'rxjs/add/observable/merge';
+// import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/switchMap';
+// import 'rxjs/add/operator/startWith';
+// import 'rxjs/add/operator/switchMap';
 
 import { UpdateEntryComponent } from '../update-entry/update-entry.component';
 import { DateService } from '../services/date.service';
@@ -51,6 +51,8 @@ export class TableLedgerComponent implements AfterViewInit   {
   displayMobile: boolean;
   dataSource = new MatTableDataSource();
   resultsLength = 0;
+  pageSize = 10;
+  pageSizeOptions = [5, 10, 25, 100];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -183,9 +185,10 @@ export class TableLedgerComponent implements AfterViewInit   {
    .subscribe(result => {
      // Only update Ledger and Budget balances if they are visible for the component view
      if (result === "updated") {
-       this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
+
+       this.getTableEntries(this.dateservice.parseDate(this.startDate.value), this.dateservice.parseDate(this.endDate.value));
        if (this.showBalance) {
-         this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth))
+         this.getBalances(this.dateservice.parseDate(this.startDate.value), this.dateservice.parseDate(this.endDate.value));
        }
        // only updatr home component values if the entry being deleted is from the ledger
        if (this.showBalance === false) {
