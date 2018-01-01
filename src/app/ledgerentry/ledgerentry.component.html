@@ -6,7 +6,6 @@
 </div>
 <div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
   <form (ngSubmit)="onSubmit()" #ledgerEntryForm="ngForm">
-      <!-- TODO: remove this:{{ model | json }} -->
     <div class="form-group">
       <mat-form-field class="example-container">
         <input class="my-class" #fun [(ngModel)]="model.trans_date" matInput [matDatepicker]="picker1" placeholder="" [formControl]="date">
