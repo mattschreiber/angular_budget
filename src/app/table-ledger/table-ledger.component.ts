@@ -151,6 +151,7 @@ export class TableLedgerComponent implements AfterViewInit   {
 
  updateDate(startDate: Date, endDate: Date): void {
    this.getTableEntries(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
+   this.paginator.pageIndex = 0;
    // Only update Ledger and Budget balances if they are visible for the component view
    if (this.showBalance) {
     this.getBalances(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
