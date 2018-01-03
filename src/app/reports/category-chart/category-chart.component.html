@@ -1,6 +1,18 @@
-<mat-grid-list cols="2" rowHeight="2:1" gutterSize="10px">
+<!-- <mat-grid-list cols="2" rowHeight="2:1" gutterSize="10px">
   <mat-grid-tile style="background: blue">1</mat-grid-tile>
   <mat-grid-tile style="background: red">2</mat-grid-tile>
   <mat-grid-tile style="background: yellow">3</mat-grid-tile>
   <mat-grid-tile style="background: black">4</mat-grid-tile>
-</mat-grid-list>
+</mat-grid-list> -->
+
+<h1>
+  {{title}}
+</h1>
+<fusioncharts
+    [id]="id"
+    [width]="width"
+    [height]="height"
+    [type]="type"
+    [dataFormat]="dataFormat"
+    [dataSource]="dataSource"
+></fusioncharts>
