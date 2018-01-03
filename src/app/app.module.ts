@@ -36,6 +36,7 @@ import { BudgetComponent } from './budget/budget.component';
 import { LedgerentryComponent } from './ledgerentry/ledgerentry.component';
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { ReportsModule } from './reports/reports.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoginComponent } from './login/login.component';
 import { UpdateEntryComponent } from './update-entry/update-entry.component';
@@ -67,6 +68,7 @@ import { UpdateEntryComponent } from './update-entry/update-entry.component';
     MatSlideToggleModule, MatToolbarModule, MatListModule, MatGridListModule,
     MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule, MatExpansionModule,
     MatTableModule, MatSortModule, MatNativeDateModule, MatAutocompleteModule, MatProgressBarModule, MatTooltipModule,
+    ReportsModule,
     AppRoutingModule,
   ],
   entryComponents: [
