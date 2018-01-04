@@ -19,8 +19,8 @@ import { MONTHS } from '../../shared/months';
 @Component({
   selector: 'app-category-chart',
   templateUrl: './category-chart.component.html',
-  styleUrls: ['./category-chart.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./category-chart.component.scss']
+  // encapsulation: ViewEncapsulation.None
 })
 
 export class CategoryChartComponent implements OnInit {
@@ -70,7 +70,7 @@ export class CategoryChartComponent implements OnInit {
                 "caption": "Harry's SuperMart",
                 "subCaption": "Top 5 stores in last month by revenue",
                 "numberprefix": "$",
-                "theme": "fint"
+                "theme": "zune"
             },
             "data": [
                 {

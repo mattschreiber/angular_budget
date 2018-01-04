@@ -1,33 +1,36 @@
-<mat-grid-list cols="2" rowHeight="2:1" gutterSize="10px">
+<div class="container" fxLayout="column" fxLayoutGap="10px">
+  <!-- <div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
+  <mat-form-field>
+  <mat-select placeholder="Months" [formControl]="monthSelect">
+    <mat-option *ngFor="let m of month" [value]="m.monthValue">
+      {{ m.month }}
+    </mat-option>
+  </mat-select>
+  </mat-form-field> -->
+<!-- </div> -->
+<!-- <div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px"> -->
+  <!-- <mat-form-field>
+  <mat-select placeholder="Years" [formControl]="yearSelect">
+    <mat-option *ngFor="let y of years" [value]="y">
+      {{ y }}
+    </mat-option>
+  </mat-select>
+  </mat-form-field>
+</div> -->
+<!-- <mat-grid-list cols="2" rowHeight="200px" gutterSize="10px">
   <mat-grid-tile>
-    <div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
-    <mat-form-field class="example-container">
-    <mat-select placeholder="Months" [formControl]="monthSelect">
-      <mat-option *ngFor="let m of month" [value]="m.monthValue">
-        {{ m.month }}
-      </mat-option>
-    </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
-    <mat-form-field class="example-container">
-    <mat-select placeholder="Years" [formControl]="yearSelect">
-      <mat-option *ngFor="let y of years" [value]="y">
-        {{ y }}
-      </mat-option>
-    </mat-select>
-    </mat-form-field>
-  </div>
+    <p>This is some text that is very long and I hope it wraps so this doesn't look really silly.</p>
   </mat-grid-tile>
   <mat-grid-tile style="background: red">2</mat-grid-tile>
   <mat-grid-tile style="background: yellow">3</mat-grid-tile>
   <mat-grid-tile style="background: black">4</mat-grid-tile>
-</mat-grid-list>
-
-
-<!-- <h1>
+</mat-grid-list> -->
+<div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
+<h1>
   {{title}}
 </h1>
+</div>
+<div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
 <fusioncharts
     [id]="id"
     [width]="width"
@@ -35,4 +38,25 @@
     [type]="type"
     [dataFormat]="dataFormat"
     [dataSource]="dataSource"
-></fusioncharts> -->
+></fusioncharts>
+</div>
+
+<div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
+<mat-form-field>
+<mat-select placeholder="Months" [formControl]="monthSelect">
+  <mat-option *ngFor="let m of month" [value]="m.monthValue">
+    {{ m.month }}
+  </mat-option>
+</mat-select>
+</mat-form-field>
+<!-- </div> -->
+<!-- <div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px"> -->
+<mat-form-field>
+<mat-select placeholder="Years" [formControl]="yearSelect">
+  <mat-option *ngFor="let y of years" [value]="y">
+    {{ y }}
+  </mat-option>
+</mat-select>
+</mat-form-field>
+</div>
+</div>
