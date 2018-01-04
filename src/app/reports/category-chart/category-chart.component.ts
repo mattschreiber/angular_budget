@@ -1,11 +1,35 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+
+import {Observable} from 'rxjs/Observable';
+import {merge} from 'rxjs/observable/merge';
+import {startWith} from 'rxjs/operators/startWith';
+import {map} from 'rxjs/operators/map';
+import {of as observableOf} from 'rxjs/observable/of';
+import {catchError} from 'rxjs/operators/catchError';
+import  'rxjs/add/operator/debounceTime';
+// import {switchMap} from 'rxjs/operators/switchMap';
+
+
+
+import { DateService } from '../../services/date.service';
+import { MONTHS } from '../../shared/months';
 
 @Component({
   selector: 'app-category-chart',
   templateUrl: './category-chart.component.html',
   styleUrls: ['./category-chart.component.scss']
 })
+
 export class CategoryChartComponent implements OnInit {
+
+  month = MONTHS;
+  years: number[] = this.dateservice.listOfYears();
+
+  monthSelect = new FormControl();
+  yearSelect = new FormControl();
+  filteredOptions: Observable<string>;
+
 
   id = 'chart1';
   width = 600;
@@ -15,10 +39,27 @@ export class CategoryChartComponent implements OnInit {
   dataSource;
   title = 'Angular4 FusionCharts Sample';
 
-  constructor() {
+  constructor(private dateservice: DateService) {
   }
 
   ngOnInit() {
+
+    merge(this.monthSelect.valueChanges, this.yearSelect.valueChanges)
+      .debounceTime(2000)
+      .pipe(
+        startWith({}),
+        map(data => {
+          return data;
+        }),
+        catchError(() => {
+          return observableOf([]);
+        })
+      ).subscribe(data => console.log(data));
+
+    // this.monthSelect.valueChanges.subscribe(
+    //   val => {console.log(`Here is the month: ${val}`)}
+    // )
+
     this.dataSource = {
             "chart": {
                 "caption": "Harry's SuperMart",
