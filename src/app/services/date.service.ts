@@ -23,18 +23,32 @@ export class DateService {
     return selectedDate;
   }
 
-  firstOfMonth(val: Date): string {
-    console.log('first of month: ' + val);
-    let parseDate = new Date(Date.parse(val + 'EST'));
-    let firstDay = parseDate.getFullYear()+'-'+(parseDate.getMonth()+1)+'-'+1;
-    return firstDay;
+  listOfYears(): number[] {
+    let startYear: number = 2017;
+    let currentYear: number = new Date().getFullYear();
+    let years: number[] = [];
+
+    let numYears: number = currentYear - startYear;
+
+    for (var i=0; i <= numYears; i++) {
+      years.push(currentYear);
+      currentYear = currentYear - 1;
+    }
+    return years;
   }
 
-  lastOfMonth(val: Date): string {
-    console.log("last of month " + val);
-    let selectedDate = new Date(Date.parse(val + 'EST'));
-    let parseDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
-    let lastDayMonth  = parseDate.getFullYear()+'-'+(parseDate.getMonth()+1)+'-'+parseDate.getDate();
-    return lastDayMonth;
-  }
+  // firstOfMonth(val: Date): string {
+  //   console.log('first of month: ' + val);
+  //   let parseDate = new Date(Date.parse(val + 'EST'));
+  //   let firstDay = parseDate.getFullYear()+'-'+(parseDate.getMonth()+1)+'-'+1;
+  //   return firstDay;
+  // }
+  //
+  // lastOfMonth(val: Date): string {
+  //   console.log("last of month " + val);
+  //   let selectedDate = new Date(Date.parse(val + 'EST'));
+  //   let parseDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
+  //   let lastDayMonth  = parseDate.getFullYear()+'-'+(parseDate.getMonth()+1)+'-'+parseDate.getDate();
+  //   return lastDayMonth;
+  // }
 }
