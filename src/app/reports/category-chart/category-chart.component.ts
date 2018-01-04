@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ViewEncapsulation } from '@angular/core';
 
 import {Observable} from 'rxjs/Observable';
 import {merge} from 'rxjs/observable/merge';
@@ -8,7 +9,7 @@ import {map} from 'rxjs/operators/map';
 import {of as observableOf} from 'rxjs/observable/of';
 import {catchError} from 'rxjs/operators/catchError';
 import  'rxjs/add/operator/debounceTime';
-// import {switchMap} from 'rxjs/operators/switchMap';
+import {switchMap} from 'rxjs/operators/switchMap';
 
 
 
@@ -18,7 +19,8 @@ import { MONTHS } from '../../shared/months';
 @Component({
   selector: 'app-category-chart',
   templateUrl: './category-chart.component.html',
-  styleUrls: ['./category-chart.component.scss']
+  styleUrls: ['./category-chart.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class CategoryChartComponent implements OnInit {
@@ -26,10 +28,8 @@ export class CategoryChartComponent implements OnInit {
   month = MONTHS;
   years: number[] = this.dateservice.listOfYears();
 
-  monthSelect = new FormControl();
-  yearSelect = new FormControl();
-  filteredOptions: Observable<string>;
-
+  monthSelect = new FormControl(this.month[new Date().getMonth()].monthValue);
+  yearSelect = new FormControl(new Date().getFullYear());
 
   id = 'chart1';
   width = 600;
@@ -45,9 +45,14 @@ export class CategoryChartComponent implements OnInit {
   ngOnInit() {
 
     merge(this.monthSelect.valueChanges, this.yearSelect.valueChanges)
-      .debounceTime(2000)
+      .debounceTime(1000)
       .pipe(
         startWith({}),
+        // switchMap(() => {
+        //   this.isLoadingResults = true;
+        //   return this.exampleDatabase!.getRepoIssues(
+        //     this.sort.active, this.sort.direction, this.paginator.pageIndex);
+        // }),
         map(data => {
           return data;
         }),
