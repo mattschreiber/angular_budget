@@ -32,26 +32,20 @@ export class CategoryChartComponent implements OnInit {
   monthSelect = new FormControl(this.month[new Date().getMonth()].monthValue);
   yearSelect = new FormControl(new Date().getFullYear());
 
-  // variables for storing data needed to create chart
-  categoryData: Category[];
-  budgetData: Budget[];
-  ledgerData: Ledger[];
-
   // fusionchart for comparing budget vs ledger spent for given month
   id = 'chart1';
-  width = 600;
-  height = 400;
-  type = 'column2d';
+  width = 900;
+  height = 600;
+  type = 'mscolumn2d';
   dataFormat = 'json';
   dataSource;
-  title = 'Angular4 FusionCharts Sample';
+  title = 'Budget vs Actual';
 
   constructor(private dateservice: DateService, private reportservice: ReportService) {
   }
 
   ngOnInit() {
 
-    // let list: number[][] = [[1,2,3], [3,2,1]];
 
     merge(this.monthSelect.valueChanges, this.yearSelect.valueChanges)
       // .debounceTime(1000)
@@ -68,53 +62,8 @@ export class CategoryChartComponent implements OnInit {
         catchError(() => {
           return observableOf([]);
         })
-      ).subscribe(data => console.log(data));
-
-    // this.monthSelect.valueChanges.subscribe(
-    //   val => {console.log(`Here is the month: ${val}`)}
-    // )
-
-    this.dataSource = {
-            "chart": {
-                "caption": "Harry's SuperMart",
-                "subCaption": "Top 5 stores in last month by revenue",
-                "numberprefix": "$",
-                "theme": "carbon"
-            },
-            "data": [
-                {
-                    "label": "Bakersfield Central",
-                    "value": "880000"
-                },
-                {
-                    "label": "Garden Groove harbour",
-                    "value": "730000"
-                },
-                {
-                    "label": "Los Angeles Topanga",
-                    "value": "590000"
-                },
-                {
-                    "label": "Compton-Rancho Dom",
-                    "value": "520000"
-                },
-                {
-                    "label": "Daly City Serramonte",
-                    "value": "330000"
-                }
-            ]
-        }
+      ).subscribe(data => {
+        this.dataSource = this.reportservice.prepareCategoryAmounts(data);
+      });
   }
-}
-
-interface Category {
-  label: string;
-}
-
-interface Budget {
-  value: number;
-}
-
-interface Ledger {
-  value: number;
 }

@@ -19,10 +19,59 @@ export class ReportService {
     return this.http.get<ReportCategoryAmounts[]>(requestUrl, {params: Params});
   }
 
+  // convert raw data retrieved from db into format for fusion chart mscolumn2d
+  prepareCategoryAmounts(data: ReportCategoryAmounts[]) {
+  // variables for storing data needed to create chart
+  let categoryData: Category[] = [];
+  let budgetData: Budget[] = [];
+  let ledgerData: Ledger[] = [];
+    if (data != null) {
+      for (let cat of data) {
+        budgetData.push({value: cat.budget / 100});
+        categoryData.push({label: cat.category});
+        ledgerData.push({value: cat.ledger / 100});
+      }
+    } else {
+      return {}
+    }
+    return {
+        "chart": {
+            "caption": "Comparison of Budget to Actual Amounts Spent",
+            "xAxisname": "Category",
+            "yAxisName": "Amounts (In USD)",
+            "numberPrefix": "$",
+            "plotFillAlpha": "80",
+            "theme": "fint"
+        },
+        "categories": [{
+            "category": categoryData
+        }],
+        "dataset": [{
+            "seriesname": "Budget",
+            "data": budgetData
+        }, {
+            "seriesname": "Actual",
+            "data": ledgerData
+        }]
+      }
+  }
+
 }
 
 export interface ReportCategoryAmounts {
   category: string;
   ledger: number;
   budget: number;
+}
+
+interface Category {
+  label: string;
+}
+
+interface Budget {
+  value: number;
+}
+
+interface Ledger {
+  value: number;
 }

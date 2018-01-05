@@ -5,8 +5,8 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import * as FusionCharts from 'fusioncharts';
 import * as Charts from 'fusioncharts/fusioncharts.charts';
-// import * as FintTheme from 'fusioncharts/themes/fusioncharts.theme.fint';
-import * as CarbonTheme from 'fusioncharts/themes/fusioncharts.theme.carbon';
+import * as FintTheme from 'fusioncharts/themes/fusioncharts.theme.fint';
+// import * as CarbonTheme from 'fusioncharts/themes/fusioncharts.theme.carbon';
 // import * as ZuneTheme from 'fusioncharts/themes/fusioncharts.theme.zune';
 // import * as OceanTheme from 'fusioncharts/themes/fusioncharts.theme.ocean';
 import { FusionChartsModule } from 'angular4-fusioncharts';
@@ -27,7 +27,7 @@ import { ReportService } from './services/report.service';
 
 import 'hammerjs';
 
-FusionChartsModule.fcRoot(FusionCharts, Charts, CarbonTheme);
+FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
 
 @NgModule({
   imports: [
