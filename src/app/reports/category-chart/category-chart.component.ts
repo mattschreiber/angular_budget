@@ -11,10 +11,11 @@ import {catchError} from 'rxjs/operators/catchError';
 import  'rxjs/add/operator/debounceTime';
 import {switchMap} from 'rxjs/operators/switchMap';
 
-
-
 import { DateService } from '../../services/date.service';
+import { ReportService } from '../services/report.service';
+
 import { MONTHS } from '../../shared/months';
+import { ReportCategoryAmounts } from '../services/report.service';
 
 @Component({
   selector: 'app-category-chart',
@@ -25,12 +26,18 @@ import { MONTHS } from '../../shared/months';
 
 export class CategoryChartComponent implements OnInit {
 
+  // used to populate select boxes in template
   month = MONTHS;
   years: number[] = this.dateservice.listOfYears();
-
   monthSelect = new FormControl(this.month[new Date().getMonth()].monthValue);
   yearSelect = new FormControl(new Date().getFullYear());
 
+  // variables for storing data needed to create chart
+  categoryData: Category[];
+  budgetData: Budget[];
+  ledgerData: Ledger[];
+
+  // fusionchart for comparing budget vs ledger spent for given month
   id = 'chart1';
   width = 600;
   height = 400;
@@ -39,13 +46,15 @@ export class CategoryChartComponent implements OnInit {
   dataSource;
   title = 'Angular4 FusionCharts Sample';
 
-  constructor(private dateservice: DateService) {
+  constructor(private dateservice: DateService, private reportservie: ReportService) {
   }
 
   ngOnInit() {
 
+    // let list: number[][] = [[1,2,3], [3,2,1]];
+
     merge(this.monthSelect.valueChanges, this.yearSelect.valueChanges)
-      .debounceTime(1000)
+      // .debounceTime(1000)
       .pipe(
         startWith({}),
         // switchMap(() => {
@@ -53,9 +62,9 @@ export class CategoryChartComponent implements OnInit {
         //   return this.exampleDatabase!.getRepoIssues(
         //     this.sort.active, this.sort.direction, this.paginator.pageIndex);
         // }),
-        map(data => {
-          return data;
-        }),
+        // map(data => {
+        //   return data;
+        // }),
         catchError(() => {
           return observableOf([]);
         })
@@ -70,7 +79,7 @@ export class CategoryChartComponent implements OnInit {
                 "caption": "Harry's SuperMart",
                 "subCaption": "Top 5 stores in last month by revenue",
                 "numberprefix": "$",
-                "theme": "zune"
+                "theme": "carbon"
             },
             "data": [
                 {
@@ -96,5 +105,16 @@ export class CategoryChartComponent implements OnInit {
             ]
         }
   }
+}
 
+interface Category {
+  label: string;
+}
+
+interface Budget {
+  value: number;
+}
+
+interface Ledger {
+  value: number;
 }

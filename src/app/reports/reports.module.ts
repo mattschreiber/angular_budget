@@ -6,8 +6,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import * as FusionCharts from 'fusioncharts';
 import * as Charts from 'fusioncharts/fusioncharts.charts';
 // import * as FintTheme from 'fusioncharts/themes/fusioncharts.theme.fint';
-// import * as CarbonTheme from 'fusioncharts/themes/fusioncharts.theme.carbon';
-import * as ZuneTheme from 'fusioncharts/themes/fusioncharts.theme.zune';
+import * as CarbonTheme from 'fusioncharts/themes/fusioncharts.theme.carbon';
+// import * as ZuneTheme from 'fusioncharts/themes/fusioncharts.theme.zune';
 // import * as OceanTheme from 'fusioncharts/themes/fusioncharts.theme.ocean';
 import { FusionChartsModule } from 'angular4-fusioncharts';
 import { CommonModule } from '@angular/common';
@@ -19,6 +19,7 @@ import { ReportsRoutingModule } from './reports-routing.module';
 import { CategoryChartComponent } from './category-chart/category-chart.component';
 
 import { DateService } from '../services/date.service';
+import { ReportService } from './services/report.service';
 // import { AuthInterceptor } from '../auth.interceptor';
 // import { JwtInterceptor } from '../jwt.interceptor';
 
@@ -26,7 +27,7 @@ import { DateService } from '../services/date.service';
 
 import 'hammerjs';
 
-FusionChartsModule.fcRoot(FusionCharts, Charts, ZuneTheme);
+FusionChartsModule.fcRoot(FusionCharts, Charts, CarbonTheme);
 
 @NgModule({
   imports: [
@@ -42,7 +43,7 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, ZuneTheme);
     ReportsRoutingModule
   ],
   declarations: [CategoryChartComponent],
-  providers: [HttpClientModule, DateService,
+  providers: [HttpClientModule, DateService, ReportService,
     // AuthService,
     // {
     //   provide : HTTP_INTERCEPTORS,

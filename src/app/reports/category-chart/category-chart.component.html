@@ -43,7 +43,7 @@
 
 <div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
 <mat-form-field>
-<mat-select placeholder="Months" [formControl]="monthSelect">
+<mat-select placeholder="Month" [formControl]="monthSelect">
   <mat-option *ngFor="let m of month" [value]="m.monthValue">
     {{ m.month }}
   </mat-option>
@@ -52,7 +52,7 @@
 <!-- </div> -->
 <!-- <div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px"> -->
 <mat-form-field>
-<mat-select placeholder="Years" [formControl]="yearSelect">
+<mat-select placeholder="Year" [formControl]="yearSelect">
   <mat-option *ngFor="let y of years" [value]="y">
     {{ y }}
   </mat-option>
