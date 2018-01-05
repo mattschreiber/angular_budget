@@ -46,7 +46,7 @@ export class CategoryChartComponent implements OnInit {
   dataSource;
   title = 'Angular4 FusionCharts Sample';
 
-  constructor(private dateservice: DateService, private reportservie: ReportService) {
+  constructor(private dateservice: DateService, private reportservice: ReportService) {
   }
 
   ngOnInit() {
@@ -57,14 +57,14 @@ export class CategoryChartComponent implements OnInit {
       // .debounceTime(1000)
       .pipe(
         startWith({}),
-        // switchMap(() => {
-        //   this.isLoadingResults = true;
-        //   return this.exampleDatabase!.getRepoIssues(
-        //     this.sort.active, this.sort.direction, this.paginator.pageIndex);
-        // }),
-        // map(data => {
-        //   return data;
-        // }),
+        switchMap(() => {
+          // this.isLoadingResults = true;
+          return this.reportservice.getReportCategoryAmounts(
+            this.monthSelect.value, this.yearSelect.value);
+        }),
+        map(data => {
+          return data;
+        }),
         catchError(() => {
           return observableOf([]);
         })

@@ -13,8 +13,8 @@ export class ReportService {
 
   getReportCategoryAmounts(month: string, year: string): Observable<ReportCategoryAmounts[]> {
     let Params = new HttpParams();
-    Params = Params.append('firstParameter', month);
-    Params = Params.append('secondParameter', year);
+    Params = Params.append('month', month);
+    Params = Params.append('year', year);
     const requestUrl =`${href}reports/categories`;
     return this.http.get<ReportCategoryAmounts[]>(requestUrl, {params: Params});
   }
