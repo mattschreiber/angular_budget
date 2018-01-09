@@ -84,9 +84,9 @@ export class TableLedgerComponent implements AfterViewInit   {
 
     this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
    // Only update Ledger and Budget balances if they are visible for the component view
-    if (this.showBalance) {
+    // if (this.showBalance) {
       this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth))
-    }
+    // }
  }
 
  ngOnDestroy() {
@@ -149,13 +149,24 @@ export class TableLedgerComponent implements AfterViewInit   {
    this.dataSource.data = arr;
  }
 
- updateDate(startDate: Date, endDate: Date): void {
+ updateDate(startDate: string, endDate: string): void {
+
+   // convert to dates so comparison works
+   let startD = new Date(startDate);
+   let endD = new Date(endDate);
+
+   if (startD <= endD) {
+     this.getTableEntries(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
+     this.paginator.pageIndex = 0;
+     // Only update Ledger and Budget balances if they are visible for the component view
+     // if (this.showBalance) {
+      this.getBalances(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
+     // }
+   } else {
+   //The end date should not be before the start date. set table and balances to zero
    this.getTableEntries(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
-   this.paginator.pageIndex = 0;
-   // Only update Ledger and Budget balances if they are visible for the component view
-   if (this.showBalance) {
-    this.getBalances(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
-   }
+   this.bal ={ledgeramount: 0, budgetamount: 0};
+  }
  }
 
  getBalances(startDate: string, endDate: string) {
