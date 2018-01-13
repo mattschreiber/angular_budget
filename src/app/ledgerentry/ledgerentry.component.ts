@@ -94,11 +94,9 @@ export class LedgerentryComponent implements OnInit {
     else {
       this.model.credit = 0;
     }
-      // first convert amounts from dollars and cents to cents for storing in db
-    this.model.credit = +(this.model.credit * 100).toFixed(2);
-    this.model.debit = +(this.model.debit * 100).toFixed(2);
     // post new entry
-    const req = this.ledgerservice.createNewEntry(JSON.stringify(this.model), this.entryType);
+    // const req = this.ledgerservice.createNewEntry(JSON.stringify(this.model), this.entryType);
+    const req = this.ledgerservice.createNewEntry(this.model, this.entryType);
     req.subscribe(data => {
       // reset model after successful entry
       this.isError = false;
