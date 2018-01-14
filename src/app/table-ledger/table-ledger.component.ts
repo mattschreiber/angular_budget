@@ -199,13 +199,13 @@ export class TableLedgerComponent implements AfterViewInit   {
      if (result === "updated") {
 
        this.getTableEntries(this.dateservice.parseDate(this.startDate.value), this.dateservice.parseDate(this.endDate.value));
-       if (this.showBalance) {
+       // if (this.showBalance) {
          this.getBalances(this.dateservice.parseDate(this.startDate.value), this.dateservice.parseDate(this.endDate.value));
-       }
+       // }
        // only updatr home component values if the entry being deleted is from the ledger
-       if (this.showBalance === false) {
+       // if (this.showBalance === false) {
          this.updateHome(true);
-       }
+       // }
     }
    });
  }
