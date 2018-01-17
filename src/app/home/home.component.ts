@@ -9,12 +9,14 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/switchMap';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 
 import { DateService } from '../services/date.service';
 import { DatatableService } from '../services/datatable.service';
 
 import { CONFIGS } from '../shared/configurations';
 import { Balance } from '../shared/balance';
+import { ProjectedBalance } from '../services/datatable.service';
 
 @Component({
   selector: 'app-home',
@@ -39,18 +41,15 @@ export class HomeComponent implements OnInit {
   constructor(private http: HttpClient, public dateservice: DateService) { }
 
   ngOnInit() {
-    this.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
-    this.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
+    this.getValues();
   }
 
   updateEndDate(val: Date): void {
     this.getProjectedValue(this.dateservice.parseDate(val));
   }
 
-  getProjectedValue(date: string): void {
-    const href = CONFIGS.baseUrl;
-    const requestUrl =`${href}projected-balance/${date}`;
-    this.http.get<ProjectedBalance>(requestUrl)
+  getProjectedValue(date: string) {
+    this.tableEntries.getProjectedValue(date)
     .subscribe(data => {
      this.projBalance = data.projBalance / 100;
    },
@@ -87,15 +86,20 @@ export class HomeComponent implements OnInit {
    );
   }
 
+  getValues() {
+    let projectedValue = this.tableEntries.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
+    let balances = this.tableEntries.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
+    forkJoin(projectedValue, balances).subscribe( data => {
+      this.projBalance = data[0].projBalance / 100;
+      this.bal.ledgeramount = data[1].ledgeramount / 100;
+    });
+  }
+
   // this is called when an entry is successfully deleted in the table ledger component.
   // the projbalance and actual balance should be updated
   onUpdate(update: boolean) {
-  this.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
-  this.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
+    this.getValues();
+  // this.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
+  // this.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
   }
-}
-
-
-export interface ProjectedBalance {
-  projBalance: number;
 }
