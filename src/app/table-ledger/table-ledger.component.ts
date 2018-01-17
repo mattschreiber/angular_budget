@@ -85,7 +85,7 @@ export class TableLedgerComponent implements AfterViewInit   {
     this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
    // Only update Ledger and Budget balances if they are visible for the component view
     // if (this.showBalance) {
-      this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth))
+    this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth))
     // }
  }
 
