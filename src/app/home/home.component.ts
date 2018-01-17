@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {FormControl} from '@angular/forms';
 import { ViewEncapsulation } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/switchMap';
+
+import { timer } from 'rxjs/observable/timer';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 
 import { DateService } from '../services/date.service';
@@ -32,6 +32,8 @@ export class HomeComponent implements OnInit {
   entryType: string = "Ledger" // Sets header for table-ledger to either Ledger or Budget
   // end input variables
 
+  isLoadingResults = false;
+
   balLedger: number;
   projBalance: number;
   bal: Balance = new Balance;
@@ -41,6 +43,7 @@ export class HomeComponent implements OnInit {
   constructor(private http: HttpClient, public dateservice: DateService) { }
 
   ngOnInit() {
+
     this.getValues();
   }
 
@@ -67,10 +70,18 @@ export class HomeComponent implements OnInit {
     );// end current
   } // getProjectedValue
 
-  getBalances(startDate: string, endDate: string) {
-    this.tableEntries.getBalances(startDate, endDate)
-    .subscribe(data =>
-      { this.bal.ledgeramount = data.ledgeramount / 100;
+
+// get projectedValue and actual ledger balance as of today
+  getValues() {
+
+    this.isLoadingResults = true;
+    let projectedValue = this.tableEntries.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
+    let balances = this.tableEntries.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
+    forkJoin(projectedValue, balances)
+    .subscribe( data => {
+      this.projBalance = data[0].projBalance / 100;
+      this.bal.ledgeramount = data[1].ledgeramount / 100;
+      this.isLoadingResults = false;
     },
     (err: HttpErrorResponse) => {
        if (err.error instanceof Error) {
@@ -79,27 +90,16 @@ export class HomeComponent implements OnInit {
        } else {
          // The backend returned an unsuccessful response code.
          // The response body may contain clues as to what went wrong,
-         this.balLedger = null;
+         this.projBalance = null;
          console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
-       }
      }
-   );
-  }
+  });
 
-  getValues() {
-    let projectedValue = this.tableEntries.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
-    let balances = this.tableEntries.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
-    forkJoin(projectedValue, balances).subscribe( data => {
-      this.projBalance = data[0].projBalance / 100;
-      this.bal.ledgeramount = data[1].ledgeramount / 100;
-    });
   }
 
   // this is called when an entry is successfully deleted in the table ledger component.
   // the projbalance and actual balance should be updated
   onUpdate(update: boolean) {
     this.getValues();
-  // this.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
-  // this.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
   }
 }
