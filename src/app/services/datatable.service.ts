@@ -34,6 +34,12 @@ export class DatatableService {
     const requestUrl =`${href}balances/${startDate}/${endDate}`;
     return this.http.get<Balance>(requestUrl);
   }
+
+  getProjectedValue(date: string): Observable<ProjectedBalance> {
+    const href = CONFIGS.baseUrl;
+    const requestUrl =`${href}projected-balance/${date}`;
+    return this.http.get<ProjectedBalance>(requestUrl)
+  } // getProjectedValue
 }
 
 export interface TableEntries {
@@ -53,4 +59,8 @@ export interface Category {
 export interface Store {
   id: number;
   store_name: string;
+}
+
+export interface ProjectedBalance {
+  projBalance: number;
 }
