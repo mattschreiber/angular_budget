@@ -13,6 +13,7 @@ export class AppComponent {
   ledgerType: string = "ledger";
   budgetType: string = "budget";
   displayType: string;
+  opened: boolean = true;
   @ViewChild('sidenav') public sidenav: MatSidenav;
 
   // used to determine screen size
@@ -26,10 +27,12 @@ export class AppComponent {
       if ( change.mqAlias == 'xs' || change.mqAlias == 'sm') {
          this.displayType = "over";
          this.close = true;
+         this.opened = false;
        }
        else {
          this.displayType = "side";
          this.close = false;
+         this.opened = true;
        }
      });
   }

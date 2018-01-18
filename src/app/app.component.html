@@ -1,7 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <app-header> </app-header>
 <mat-sidenav-container>
-  <mat-sidenav #sidenav [mode]="displayType">
+  <mat-sidenav #sidenav [mode]="displayType" [opened] ="opened">
     <mat-nav-list>
       <a mat-list-item routerLink="/home" routerLinkActive="active" (click)="closeSidenav()"> Ledger </a>
       <a mat-list-item routerLink="/budget" routerLinkActive="active" (click)="closeSidenav()"> Budget </a>
