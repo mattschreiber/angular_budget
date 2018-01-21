@@ -17,6 +17,7 @@ import {MatSelectModule} from '@angular/material/select';
 
 import { ReportsRoutingModule } from './reports-routing.module';
 import { CategoryChartComponent } from './category-chart/category-chart.component';
+import { BudgetLedgerAmountChartComponent } from './budget-ledger-amount-chart/budget-ledger-amount-chart.component';
 
 import { DateService } from '../services/date.service';
 import { ReportService } from './services/report.service';
@@ -42,7 +43,7 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FintTheme);
     MatSelectModule,
     ReportsRoutingModule
   ],
-  declarations: [CategoryChartComponent],
+  declarations: [CategoryChartComponent, BudgetLedgerAmountChartComponent],
   providers: [HttpClientModule, DateService, ReportService,
     // AuthService,
     // {

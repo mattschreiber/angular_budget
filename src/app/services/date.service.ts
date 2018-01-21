@@ -37,6 +37,24 @@ export class DateService {
     return years;
   }
 
+  subtractMonth(date: Date, numMonths: number): Date {
+    date.setMonth(date.getMonth() - numMonths);
+    return date;
+  }
+
+  addMonth(date: Date, numMonths: number): Date {
+    date.setMonth(date.getMonth() + numMonths);
+    return date;
+  }
+
+  // let months: string[] = [];
+  // let d = new Date(), locale = "en-us";
+  // for (let i=0; i<12; i++) {
+  //   months[i] = d.toLocaleString(locale, { month: "long" });
+  //   d.setMonth(d.getMonth()-1);
+  // }
+  // console.log(months.reverse());
+
   // firstOfMonth(val: Date): string {
   //   console.log('first of month: ' + val);
   //   let parseDate = new Date(Date.parse(val + 'EST'));

@@ -75,7 +75,6 @@ export class ReportService {
         categoryData.push({label: cat.month});
         ledgerData.push({value: cat.ledger_total / 100});
       }
-      console.log(budgetData);
     } else {
       return {}
     }
