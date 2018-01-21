@@ -21,13 +21,16 @@ export class BudgetLedgerAmountChartComponent implements OnInit {
   dataSource;
   title = 'Budget vs Actual';
 
-  startDate: Date = new Date('2017-2-1');
-  endDate: Date = new Date('2018-2-1');
-
   constructor(private dateservice: DateService, private reportservice: ReportService) { }
 
   ngOnInit() {
-    this.reportservice.getMonthlyTotalAmounts(this.dateservice.parseDate(this.startDate), this.dateservice.parseDate(this.endDate))
+    // start and end date for db query
+    let startDate: Date = this.dateservice.subtractMonth(new Date(), 11);
+    startDate.setDate(1);
+    let endDate: Date = this.dateservice.addMonth(new Date(), 1);
+    endDate.setDate(1);
+
+    this.reportservice.getMonthlyTotalAmounts(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate))
     .pipe(
       catchError(() => {
         return observableOf([]);
