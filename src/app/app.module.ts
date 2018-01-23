@@ -40,6 +40,7 @@ import { ReportsModule } from './reports/reports.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoginComponent } from './login/login.component';
 import { UpdateEntryComponent } from './update-entry/update-entry.component';
+import { CreateStoreComponent } from './create-store/create-store.component';
 
 
 
@@ -53,7 +54,8 @@ import { UpdateEntryComponent } from './update-entry/update-entry.component';
     LedgerentryComponent,
     PageNotFoundComponent,
     LoginComponent,
-    UpdateEntryComponent
+    UpdateEntryComponent,
+    CreateStoreComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,6 @@
-<div class="loading-shade" *ngIf="isLoadingResults">
-  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+<!-- <div class="loading-shade" *ngIf="isLoadingResults"> -->
+<div *ngIf="isLoadingResults">
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoadingResults"></mat-progress-bar>
 </div>
 <div *ngIf="!isLoadingResults">
 <div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
@@ -23,9 +24,10 @@
     </mat-form-field>
   </div>
 </div>
-</div>
+
 
 <div class="container" fxLayout="column" fxLayoutGap="20px">
 <app-table-ledger [dataType]="dataType" [showBalance]="showBalance"
   (onUpdate)="onUpdate($event)" [entryType]="entryType"></app-table-ledger>
+</div>
 </div>

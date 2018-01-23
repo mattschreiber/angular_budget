@@ -18,6 +18,13 @@ export class StoreandcatService {
     return this.http.get<StoreAndCat>(requestUrl);
   }
 
+  createStore(store: Store): Observable<Store> {
+    // let ledgerCopy = Object.assign({}, ledger);
+    const href = CONFIGS.baseUrl;
+    const requestUrl =`${href}createstore`;
+    return this.http.post<Store>(requestUrl, store);
+  }
+
 }
 
 export interface StoreAndCat {

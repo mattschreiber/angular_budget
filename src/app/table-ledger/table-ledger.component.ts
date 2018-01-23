@@ -10,6 +10,8 @@ import {MediaChange, ObservableMedia} from "@angular/flex-layout";
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import {of as observableOf} from 'rxjs/observable/of';
+import {catchError} from 'rxjs/operators/catchError';
 // import 'rxjs/add/operator/startWith';
 // import 'rxjs/add/operator/switchMap';
 
@@ -160,19 +162,20 @@ export class TableLedgerComponent implements AfterViewInit   {
      this.paginator.pageIndex = 0;
      // Only update Ledger and Budget balances if they are visible for the component view
      // if (this.showBalance) {
-      this.getBalances(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
+     this.getBalances(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
      // }
    } else {
-   //The end date should not be before the start date. set table and balances to zero
-   this.getTableEntries(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
-   this.bal ={ledgeramount: 0, budgetamount: 0};
+     //The end date should not be before the start date. set table and balances to zero
+     this.getTableEntries(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
+     this.bal ={ledgeramount: 0, budgetamount: 0};
   }
  }
 
  getBalances(startDate: string, endDate: string) {
    this.tableEntries.getBalances(startDate, endDate)
    .subscribe(data =>
-     { this.bal = data;
+     {
+       this.bal = data;
    },
    (err: HttpErrorResponse) => {
       if (err.error instanceof Error) {
@@ -184,7 +187,8 @@ export class TableLedgerComponent implements AfterViewInit   {
         console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
       }
     }
- );}
+ );
+}
 
  openUpdate(row, entryType): void {
    let dialogRef = this.dialog.open(UpdateEntryComponent, {

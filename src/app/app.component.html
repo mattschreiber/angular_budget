@@ -7,6 +7,7 @@
       <a mat-list-item routerLink="/budget" routerLinkActive="active" (click)="closeSidenav()"> Budget </a>
       <a mat-list-item [routerLink]="['/ledgerentry', this.ledgerType]" routerLinkActive="active" (click)="closeSidenav()"> Enter Ledger </a>
       <a mat-list-item [routerLink]="['/ledgerentry', this.budgetType]" routerLinkActive="active" (click)="closeSidenav()" > Enter Budget </a>
+      <a mat-list-item routerLink="/createstore" routerLinkActive="active" (click)="closeSidenav()" > Add Store </a>
       <mat-expansion-panel class="mat-elevation-z0" >
         <mat-expansion-panel-header>
           <mat-panel-title>
