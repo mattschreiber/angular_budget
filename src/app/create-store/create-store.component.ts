@@ -35,6 +35,7 @@ export class CreateStoreComponent implements OnInit {
     const req = this.storeandcatservice.createStore(this.store);
     req.subscribe(data => {
           this.addStoreForm.reset();
+          this.addStoreForm.controls.store_name.setErrors(null);
           console.log(data.id);
     },
     (err: HttpErrorResponse) => {
