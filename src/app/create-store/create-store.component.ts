@@ -13,7 +13,6 @@ import { Store } from '../shared/store';
 export class CreateStoreComponent implements OnInit {
 
   addStoreForm: FormGroup;
-  store: Store;
 
   constructor(private storeandcatservice: StoreandcatService, private fb: FormBuilder,
     private http: HttpClient,) {
@@ -30,9 +29,10 @@ export class CreateStoreComponent implements OnInit {
   }
 
   onSubmit() {
-    this.store = this.addStoreForm.value;
-    this.store.store_name = this.store.store_name.toLowerCase();
-    const req = this.storeandcatservice.createStore(this.store);
+    let store: Store;
+    store = this.addStoreForm.value;
+    store.store_name = store.store_name.toLowerCase();
+    const req = this.storeandcatservice.createStore(store);
     req.subscribe(data => {
           this.addStoreForm.reset();
           this.addStoreForm.controls.store_name.setErrors(null);
