@@ -12,8 +12,8 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent},
-  { path: 'home',  component: HomeComponent },
-  { path: 'budget',     component: BudgetComponent },
+  { path: 'ledger/:entrytype/:datatype', component: TableLedgerComponent},
+  { path: 'budget/:entrytype/:datatype', component: TableLedgerComponent},
   { path: 'ledgerentry/:entrytype', component: LedgerentryComponent, canActivate: [EntrytypeGuard] },
   { path: 'createstore', component: CreateStoreComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
