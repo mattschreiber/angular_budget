@@ -105,9 +105,9 @@ export class LedgerentryComponent implements OnInit {
         store: {id: null, store_name: null, default_credit: 0, default_debit:0}};
         // navigate to entries page after successfully creating new entry
         if (this.entryType == 'ledger') {
-          this.router.navigate(['/home'])
+          this.router.navigate(['/ledger/ledger/ledger-entries']);
         } else {
-        this.router.navigate(['/budget'])
+        this.router.navigate(['/budget/budget/budget-entries']);
       }
     },
     (err: HttpErrorResponse) => {
@@ -120,7 +120,7 @@ export class LedgerentryComponent implements OnInit {
           // The response body may contain clues as to what went wrong,
           this.isError = true;
           this.flashMessage = err.error;
-          console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+          console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
           }
         });
   }
