@@ -34,15 +34,9 @@ export class TableLedgerComponent implements AfterViewInit   {
   currentBal: Balance = new Balance;
   bal: Balance = new Balance; // for both budget and ledger balances from table date pickers
   dataType: string;
-  // Orginal code below
-  // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
-  // @Input() dataType: string;
-  // set show balance to true in order to display Ledger Amount and/or Budget Amount
-  // @Input() showBalance: boolean;
-  // @Input() entryType: string; // Used to set heading to Budget or Ledger in html template
-
 
   isLoading: boolean = true;
+  isLedger: boolean = true;
 
   // used to determine screen size
   watcher: Subscription;
@@ -93,6 +87,9 @@ export class TableLedgerComponent implements AfterViewInit   {
       let temp: string = params.get('entrytype');
       this.entryType = temp[0].toUpperCase() + temp.slice(1);
       this.dataType = params.get('datatype');
+      // if (this.entryType === 'Budget') {
+      //   this.isLedger = false;
+      // }
     });
 
     this.tableEntries = new DatatableService(this.http, this.dateservice);
@@ -106,7 +103,8 @@ export class TableLedgerComponent implements AfterViewInit   {
  }
 
 // updates table along with Estimated and Actual Amounts, but not projected or actual as of today
- getValues(startDate: string, endDate: string) {
+getValues(startDate: string, endDate: string) {
+   this.isLoading = true;
    let table = this.tableEntries.getEntries(this.dataType, startDate, endDate);
    let balances =  this.tableEntries.getBalances(startDate, endDate);
 
@@ -130,7 +128,6 @@ export class TableLedgerComponent implements AfterViewInit   {
 
 // used to populate projected value and actual as of today textboxes
  getActualAndProj() {
-
    let projectedValue = this.tableEntries.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
    let balances = this.tableEntries.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
    forkJoin(projectedValue, balances)

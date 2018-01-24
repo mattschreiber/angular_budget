@@ -1,8 +1,9 @@
 <!-- <div class="loading-shade" *ngIf="isLoadingResults"> -->
-<!-- <div *ngIf="isLoadingHome && !isLoadingTable">
-  <mat-progress-bar mode="indeterminate" *ngIf="isLoadingHome && !isLoadingTable"></mat-progress-bar>
-</div> -->
-<div *ngIf="!isLoadingHome && !isLoadingTable">
+<div *ngIf="isLoading">
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+</div>
+<div [fxHide]="isLoading">
+<div *ngIf="isLedger">
 <div fxLayout.lt-sm="column" fxLayoutGap="20px">
   <div>
     <mat-form-field>
@@ -24,9 +25,9 @@
     </mat-form-field>
   </div>
 </div>
+</div>
 
 <!-- table code -->
-<div [fxHide]="isLoading">
 <div>
 <h3> {{ entryType }} Entries</h3>
 </div>
