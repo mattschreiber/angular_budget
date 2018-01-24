@@ -13,6 +13,8 @@ import { Store } from '../shared/store';
 export class CreateStoreComponent implements OnInit {
 
   addStoreForm: FormGroup;
+  flashMessage: string; // Add message indicating if new entry successful
+  showFlashMessage: boolean = false;
 
   constructor(private storeandcatservice: StoreandcatService, private fb: FormBuilder,
     private http: HttpClient,) {
@@ -32,10 +34,11 @@ export class CreateStoreComponent implements OnInit {
     let store: Store;
     store = this.addStoreForm.value;
     store.store_name = store.store_name.toLowerCase();
-    const req = this.storeandcatservice.createStore(store);
-    req.subscribe(data => {
+    this.storeandcatservice.createStore(store)
+    .subscribe(data => {
           this.addStoreForm.reset();
-          this.addStoreForm.controls.store_name.setErrors(null);
+          this.showFlashMessage = true;
+          this.flashMessage = "Successfully added store: " + store.store_name;
           console.log(data.id);
     },
     (err: HttpErrorResponse) => {
