@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     this.user = this.loginForm.value;
     this.userloginservice.loginUser(this.user).subscribe(data => {
     this.authservice.setToken(data.token)
-    this.router.navigate(['/home']);
+    this.router.navigate(['/ledger/ledger/ledger-entries']);
   },
   (err: HttpErrorResponse) => {
     this.loginForm.reset();
