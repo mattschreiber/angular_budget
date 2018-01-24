@@ -1,3 +1,31 @@
+<!-- <div class="loading-shade" *ngIf="isLoadingResults"> -->
+<!-- <div *ngIf="isLoadingHome && !isLoadingTable">
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoadingHome && !isLoadingTable"></mat-progress-bar>
+</div> -->
+<div *ngIf="!isLoadingHome && !isLoadingTable">
+<div fxLayout.lt-sm="column" fxLayoutGap="20px">
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="Projected Budget" disabled [value]="projBalance">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field >
+      <input class="my-class" #fun (dateChange)="updateEndDate(fun.value)"  matInput [matDatepicker]="picker1" placeholder="Projected End Date" [formControl]="date">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker touchUi="true" #picker1></mat-datepicker>
+    </mat-form-field>
+  </div>
+</div>
+<div fxLayout.lt-sm="column" fxLayoutGap="20px">
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="Actual Balance as of {{this.dateservice.todayDate | date:'shortDate'}}" disabled value={{currentBal.ledgeramount}} >
+    </mat-form-field>
+  </div>
+</div>
+
+<!-- table code -->
 <div [fxHide]="isLoading">
 <div>
 <h3> {{ entryType }} Entries</h3>

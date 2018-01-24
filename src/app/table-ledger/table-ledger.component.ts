@@ -1,17 +1,15 @@
 import {Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, OnDestroy, OnInit, Inject} from '@angular/core';
 import {FormControl} from '@angular/forms';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {MatPaginator, MatSort, MatTableDataSource, MatTooltip,
   MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatExpansionPanel} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
 import {Subscription} from "rxjs/Subscription";
 import {MediaChange, ObservableMedia} from "@angular/flex-layout";
-// import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
+import { ViewEncapsulation } from '@angular/core';
+
 import {of as observableOf} from 'rxjs/observable/of';
-import {catchError} from 'rxjs/operators/catchError';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 
 import { UpdateEntryComponent } from '../update-entry/update-entry.component';
@@ -23,19 +21,27 @@ import { Balance } from '../shared/balance';
 @Component({
   selector: 'app-table-ledger',
   templateUrl: './table-ledger.component.html',
-  styleUrls: ['./table-ledger.component.scss']
+  styleUrls: ['./table-ledger.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
 
 export class TableLedgerComponent implements AfterViewInit   {
+
+  entryType: string = "Ledger";
+  balLedger: number;
+  projBalance: number;
+  currentBal: Balance = new Balance;
+  bal: Balance = new Balance; // for both budget and ledger balances from table date pickers
+  dataType: string;
+  // Orginal code below
   // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
-  @Input() dataType: string;
+  // @Input() dataType: string;
   // set show balance to true in order to display Ledger Amount and/or Budget Amount
-  @Input() showBalance: boolean;
-  @Input() entryType: string; // Used to set heading to Budget or Ledger in html template
-  @Output() onUpdate = new EventEmitter<boolean>();
-  @Output() isLoaded = new EventEmitter<boolean>();
-  bal: Balance = new Balance;
+  // @Input() showBalance: boolean;
+  // @Input() entryType: string; // Used to set heading to Budget or Ledger in html template
+
+
   isLoading: boolean = true;
 
   // used to determine screen size
@@ -46,6 +52,7 @@ export class TableLedgerComponent implements AfterViewInit   {
   firstOfMonth: Date = this.dateservice.firstDayMonth;
   todayDate: Date = this.dateservice.todayDate;
   lastOfMonth: Date = this.dateservice.lastDayMonth;
+  date = new FormControl(this.dateservice.todayDate); //for projBalance
   startDate = new FormControl(this.firstOfMonth);
   endDate = new FormControl(this.lastOfMonth);
 
@@ -62,6 +69,7 @@ export class TableLedgerComponent implements AfterViewInit   {
 
   tableEntries: DatatableService | null;
   constructor(private http: HttpClient, private dateservice: DateService, private datatableserve: DatatableService,
+              private route: ActivatedRoute, private router: Router,
               public dialog: MatDialog, private media: ObservableMedia) {
                 this.watcher = media.subscribe((change: MediaChange) => {
                   this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
@@ -80,13 +88,24 @@ export class TableLedgerComponent implements AfterViewInit   {
     } else {
       this.displayMobile = false;
     }
+    this.route.paramMap
+    .subscribe( params =>{
+      let temp: string = params.get('entrytype');
+      this.entryType = temp[0].toUpperCase() + temp.slice(1);
+      this.dataType = params.get('datatype');
+    });
+
+    this.tableEntries = new DatatableService(this.http, this.dateservice);
   }
   ngAfterViewInit() {
-    this.tableEntries = new DatatableService(this.http, this.dateservice);
+    // this.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
+    this.getActualAndProj();
+    // table methods
     this.dataSource.paginator = this.paginator;
     this.getValues(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
  }
 
+// updates table along with Estimated and Actual Amounts, but not projected or actual as of today
  getValues(startDate: string, endDate: string) {
    let table = this.tableEntries.getEntries(this.dataType, startDate, endDate);
    let balances =  this.tableEntries.getBalances(startDate, endDate);
@@ -95,7 +114,6 @@ export class TableLedgerComponent implements AfterViewInit   {
    .subscribe( data => {
      this.flattenData(data[0]);
      this.bal = data[1];
-     this.loading(true);
      this.isLoading = false;
    },
    (err: HttpErrorResponse) => {
@@ -108,6 +126,30 @@ export class TableLedgerComponent implements AfterViewInit   {
         console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
     }
  });
+ }
+
+// used to populate projected value and actual as of today textboxes
+ getActualAndProj() {
+
+   let projectedValue = this.tableEntries.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
+   let balances = this.tableEntries.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
+   forkJoin(projectedValue, balances)
+   .subscribe( data => {
+     this.projBalance = data[0].projBalance / 100;
+     this.currentBal.ledgeramount = data[1].ledgeramount / 100;
+   },
+   (err: HttpErrorResponse) => {
+      if (err.error instanceof Error) {
+        // A client-side or network error occurred. Handle it accordingly.
+        console.log('An error occurred:', err.error.message);
+      } else {
+        // The backend returned an unsuccessful response code.
+        // The response body may contain clues as to what went wrong,
+        this.projBalance = null;
+        console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+    }
+ });
+
  }
 
  ngOnDestroy() {
@@ -175,20 +217,36 @@ export class TableLedgerComponent implements AfterViewInit   {
      if (result === "updated") {
       this.getValues(this.dateservice.parseDate(this.startDate.value), this.dateservice.parseDate(this.endDate.value));
        // only updatr home component values if the entry being deleted is from the ledger
-       // if (this.showBalance === false) {
-      this.updateHome(true);
-       // }
+     if (this.entryType === "Ledger" ) {
+      this.getActualAndProj()
+     }
     }
    });
  }
 
-// emit event to home component that triggers refresh of it's fields
- updateHome(update: boolean) {
-   this.onUpdate.emit(update);
+ //  methods from HomeComponent
+ getProjectedValue(date: string) {
+   this.tableEntries.getProjectedValue(date)
+   .subscribe(data => {
+    this.projBalance = data.projBalance / 100;
+  },
+  (err: HttpErrorResponse) => {
+     if (err.error instanceof Error) {
+       // A client-side or network error occurred. Handle it accordingly.
+       console.log('An error occurred:', err.error.message);
+     } else {
+       // The backend returned an unsuccessful response code.
+       // The response body may contain clues as to what went wrong,
+       this.projBalance = null;
+       console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+     }
+   }
+   );// end current
+ } // getProjectedValue
+ updateEndDate(val: Date): void {
+   this.getProjectedValue(this.dateservice.parseDate(val));
  }
 
- loading(finishLoading: boolean) {
-  this.isLoaded.emit(finishLoading);
- }
+
 
 }
