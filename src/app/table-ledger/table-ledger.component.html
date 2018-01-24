@@ -1,5 +1,5 @@
 <!-- <div class="loading-shade" *ngIf="isLoadingResults"> -->
-<div *ngIf="isLoading">
+<div class="container" *ngIf="isLoading">
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
 </div>
 <div [fxHide]="isLoading">
@@ -104,7 +104,7 @@
     </div>
   </mat-table>
 
-  <mat-paginator [length]="resultsLength" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]">
+  <mat-paginator [length]="resultsLength" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions">
   </mat-paginator>
 </div>
 </div>

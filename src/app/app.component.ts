@@ -15,7 +15,7 @@ export class AppComponent {
   ledgerUrl: string = "ledger-entries";
   budgetUrl: string = "budget-entries";
   displayType: string;
-  opened: boolean = true;
+  opened: boolean = false;
   @ViewChild('sidenav') public sidenav: MatSidenav;
 
   // used to determine screen size
@@ -34,7 +34,7 @@ export class AppComponent {
        else {
          this.displayType = "side";
          this.close = false;
-         this.opened = true;
+         this.opened = false;
        }
      });
   }

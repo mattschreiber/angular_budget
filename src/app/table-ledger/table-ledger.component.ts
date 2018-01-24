@@ -55,8 +55,8 @@ export class TableLedgerComponent implements AfterViewInit   {
   displayMobile: boolean;
   dataSource = new MatTableDataSource();
   resultsLength = 0;
-  pageSize = 10;
-  pageSizeOptions = [5, 10, 25, 100];
+  pageSize = 25;
+  pageSizeOptions = [10, 25, 100];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -87,16 +87,18 @@ export class TableLedgerComponent implements AfterViewInit   {
       let temp: string = params.get('entrytype');
       this.entryType = temp[0].toUpperCase() + temp.slice(1);
       this.dataType = params.get('datatype');
-      // if (this.entryType === 'Budget') {
-      //   this.isLedger = false;
-      // }
+      if (this.entryType === 'Budget') {
+        this.isLedger = false;
+      }
     });
 
     this.tableEntries = new DatatableService(this.http, this.dateservice);
   }
   ngAfterViewInit() {
     // this.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
-    this.getActualAndProj();
+    if (this.entryType === 'Ledger') {
+      this.getActualAndProj();
+    }
     // table methods
     this.dataSource.paginator = this.paginator;
     this.getValues(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
