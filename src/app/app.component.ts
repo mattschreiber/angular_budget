@@ -12,6 +12,8 @@ import { SidenavService } from './services/sidenav.service';
 export class AppComponent {
   ledgerType: string = "ledger";
   budgetType: string = "budget";
+  ledgerUrl: string = "ledger-entries";
+  budgetUrl: string = "budget-entries";
   displayType: string;
   opened: boolean = true;
   @ViewChild('sidenav') public sidenav: MatSidenav;

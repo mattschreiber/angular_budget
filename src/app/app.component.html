@@ -3,8 +3,8 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav [mode]="displayType" [opened] ="opened">
     <mat-nav-list>
-      <a mat-list-item routerLink="/home" routerLinkActive="active" (click)="closeSidenav()"> Ledger </a>
-      <a mat-list-item routerLink="/budget" routerLinkActive="active" (click)="closeSidenav()"> Budget </a>
+      <a mat-list-item [routerLink]="['/ledger', this.ledgerType, this.ledgerUrl]" routerLinkActive="active" (click)="closeSidenav()"> Ledger </a>
+      <a mat-list-item [routerLink]="['/budget', this.budgetType, this.budgetUrl]" routerLinkActive="active" (click)="closeSidenav()"> Budget </a>
       <a mat-list-item [routerLink]="['/ledgerentry', this.ledgerType]" routerLinkActive="active" (click)="closeSidenav()"> Enter Ledger </a>
       <a mat-list-item [routerLink]="['/ledgerentry', this.budgetType]" routerLinkActive="active" (click)="closeSidenav()" > Enter Budget </a>
       <a mat-list-item routerLink="/createstore" routerLinkActive="active" (click)="closeSidenav()" > Add Store </a>
