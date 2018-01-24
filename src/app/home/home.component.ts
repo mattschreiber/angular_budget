@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
   // This is passed to the query that populates the datatable within the table-ledger component
   dataType: string = 'ledger-entries';
   showBalance: boolean = false; // Determines whether or not to show Ledger and Budget Amounts
-  entryType: string = "Ledger" // Sets header for table-ledger to either Ledger or Budget
+  entryType: string = "Ledger";// Sets header for table-ledger to either Ledger or Budget
   // end input variables
 
   isLoadingHome: boolean = false;
@@ -107,6 +107,9 @@ export class HomeComponent implements OnInit {
   isLoaded(finishedLoading: boolean) {
     if (finishedLoading === true) {
       this.isLoadingTable = false;
+    }
+    else {
+      this.isLoadingTable = true;
     }
   }
 }

@@ -27,7 +27,10 @@
 
 
 <div class="container" fxLayout="column" fxLayoutGap="20px">
-<app-table-ledger [dataType]="dataType" [showBalance]="showBalance"
-  (onUpdate)="onUpdate($event)" (isLoaded)="isLoaded($event)" [entryType]="entryType"></app-table-ledger>
+<app-table-ledger
+  (onUpdate)="onUpdate($event)" (isLoaded)="isLoaded($event)" ></app-table-ledger>
 </div>
 </div>
+<!-- [showBalance]="showBalance" -->
+<!-- [entryType]="entryType" -->
+<!-- [dataType]="dataType" -->
