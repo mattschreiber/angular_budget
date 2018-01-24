@@ -1,3 +1,4 @@
+<div [fxHide]="isLoading">
 <div>
 <h3> {{ entryType }} Entries</h3>
 </div>
@@ -76,5 +77,6 @@
 
   <mat-paginator [length]="resultsLength" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]">
   </mat-paginator>
+</div>
 </div>
 </div>

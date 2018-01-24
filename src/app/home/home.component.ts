@@ -32,7 +32,8 @@ export class HomeComponent implements OnInit {
   entryType: string = "Ledger" // Sets header for table-ledger to either Ledger or Budget
   // end input variables
 
-  isLoadingResults = false;
+  isLoadingHome: boolean = false;
+  isLoadingTable: boolean = false;
 
   balLedger: number;
   projBalance: number;
@@ -74,14 +75,14 @@ export class HomeComponent implements OnInit {
 // get projectedValue and actual ledger balance as of today
   getValues() {
 
-    this.isLoadingResults = true;
+    this.isLoadingHome = true;
     let projectedValue = this.tableEntries.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
     let balances = this.tableEntries.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
     forkJoin(projectedValue, balances)
     .subscribe( data => {
       this.projBalance = data[0].projBalance / 100;
       this.bal.ledgeramount = data[1].ledgeramount / 100;
-      this.isLoadingResults = false;
+      this.isLoadingHome = false;
     },
     (err: HttpErrorResponse) => {
        if (err.error instanceof Error) {
@@ -101,5 +102,11 @@ export class HomeComponent implements OnInit {
   // the projbalance and actual balance should be updated
   onUpdate(update: boolean) {
     this.getValues();
+  }
+
+  isLoaded(finishedLoading: boolean) {
+    if (finishedLoading === true) {
+      this.isLoadingTable = false;
+    }
   }
 }

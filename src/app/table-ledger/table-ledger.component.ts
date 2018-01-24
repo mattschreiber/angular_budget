@@ -12,8 +12,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import {of as observableOf} from 'rxjs/observable/of';
 import {catchError} from 'rxjs/operators/catchError';
-// import 'rxjs/add/operator/startWith';
-// import 'rxjs/add/operator/switchMap';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 
 import { UpdateEntryComponent } from '../update-entry/update-entry.component';
 import { DateService } from '../services/date.service';
@@ -35,7 +34,9 @@ export class TableLedgerComponent implements AfterViewInit   {
   @Input() showBalance: boolean;
   @Input() entryType: string; // Used to set heading to Budget or Ledger in html template
   @Output() onUpdate = new EventEmitter<boolean>();
+  @Output() isLoaded = new EventEmitter<boolean>();
   bal: Balance = new Balance;
+  isLoading: boolean = true;
 
   // used to determine screen size
   watcher: Subscription;
@@ -83,12 +84,30 @@ export class TableLedgerComponent implements AfterViewInit   {
   ngAfterViewInit() {
     this.tableEntries = new DatatableService(this.http, this.dateservice);
     this.dataSource.paginator = this.paginator;
+    this.getValues(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
+ }
 
-    this.getTableEntries(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth));
-   // Only update Ledger and Budget balances if they are visible for the component view
-    // if (this.showBalance) {
-    this.getBalances(this.dateservice.parseDate(this.firstOfMonth), this.dateservice.parseDate(this.lastOfMonth))
-    // }
+ getValues(startDate: string, endDate: string) {
+   let table = this.tableEntries.getEntries(this.dataType, startDate, endDate);
+   let balances =  this.tableEntries.getBalances(startDate, endDate);
+
+   forkJoin(table, balances)
+   .subscribe( data => {
+     this.flattenData(data[0]);
+     this.bal = data[1];
+     this.loading(true);
+     this.isLoading = false;
+   },
+   (err: HttpErrorResponse) => {
+      if (err.error instanceof Error) {
+        // A client-side or network error occurred. Handle it accordingly.
+        console.log('An error occurred:', err.error.message);
+      } else {
+        // The backend returned an unsuccessful response code.
+        // The response body may contain clues as to what went wrong,
+        console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+    }
+ });
  }
 
  ngOnDestroy() {
@@ -103,52 +122,28 @@ export class TableLedgerComponent implements AfterViewInit   {
   }
 
 
-// dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
-// call service to get back a list of table entries. These could be for ledger or budget
- getTableEntries(startDate: string, endDate: string): void {
-   this.tableEntries.getEntries(this.dataType, startDate, endDate)
-   .map(data => {
-     if (data == null){
-       throw Error;
-     }
-     return data;
-   })
-   .catch(() => {
-     return Observable.of([]);
-   })
-   .subscribe(data => {
-     this.flattenData(data);
-   },
-   (err: HttpErrorResponse) => {
-      if (err.error instanceof Error) {
-        // A client-side or network error occurred. Handle it accordingly.
-        console.log('An error occurred:', err.error.message);
-      } else {
-        // The backend returned an unsuccessful response code.
-        // The response body may contain clues as to what went wrong,
-        console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
-      }
-    })
- }
-
-
 // flatten the data returned from api to make filter simpler to implement
  flattenData(data) {
-   let i: number;
-   let flatData: {id: number, credit: number, debit: number, category_name: string, store_name: string, trans_date: Date};
-   let arr = [];
-   for (i=0; i<data.length; i++) {
-     flatData = {
-       id: data[i].id,
-       credit: data[i].credit,
-       debit: data[i].debit,
-       category_name: data[i].category.category_name,
-       store_name: data[i].store.store_name,
-       trans_date: data[i].trans_date
+  if(data != null) {
+    let i: number;
+    let flatData: {id: number, credit: number, debit: number, category_name: string, store_name: string, trans_date: Date};
+    let arr = [];
+    for (i=0; i<data.length; i++) {
+      flatData = {
+        id: data[i].id,
+        credit: data[i].credit,
+        debit: data[i].debit,
+        category_name: data[i].category.category_name,
+        store_name: data[i].store.store_name,
+        trans_date: data[i].trans_date
+     }
+      arr.push(flatData);
     }
-     arr.push(flatData);
-   }
-   this.dataSource.data = arr;
+    this.dataSource.data = arr;
+  }
+  else {
+    this.dataSource.data = [];
+  }
  }
 
  updateDate(startDate: string, endDate: string): void {
@@ -158,37 +153,14 @@ export class TableLedgerComponent implements AfterViewInit   {
    let endD = new Date(endDate);
 
    if (startD <= endD) {
-     this.getTableEntries(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
+     this.getValues(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
      this.paginator.pageIndex = 0;
-     // Only update Ledger and Budget balances if they are visible for the component view
-     // if (this.showBalance) {
-     this.getBalances(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
-     // }
    } else {
      //The end date should not be before the start date. set table and balances to zero
-     this.getTableEntries(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
+     this.dataSource.data = [];
      this.bal ={ledgeramount: 0, budgetamount: 0};
   }
  }
-
- getBalances(startDate: string, endDate: string) {
-   this.tableEntries.getBalances(startDate, endDate)
-   .subscribe(data =>
-     {
-       this.bal = data;
-   },
-   (err: HttpErrorResponse) => {
-      if (err.error instanceof Error) {
-        // A client-side or network error occurred. Handle it accordingly.
-        console.log('An error occurred:', err.error.message);
-      } else {
-        // The backend returned an unsuccessful response code.
-        // The response body may contain clues as to what went wrong,
-        console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
-      }
-    }
- );
-}
 
  openUpdate(row, entryType): void {
    let dialogRef = this.dialog.open(UpdateEntryComponent, {
@@ -201,21 +173,22 @@ export class TableLedgerComponent implements AfterViewInit   {
    .subscribe(result => {
      // Only update Ledger and Budget balances if they are visible for the component view
      if (result === "updated") {
-
-       this.getTableEntries(this.dateservice.parseDate(this.startDate.value), this.dateservice.parseDate(this.endDate.value));
-       // if (this.showBalance) {
-         this.getBalances(this.dateservice.parseDate(this.startDate.value), this.dateservice.parseDate(this.endDate.value));
-       // }
+      this.getValues(this.dateservice.parseDate(this.startDate.value), this.dateservice.parseDate(this.endDate.value));
        // only updatr home component values if the entry being deleted is from the ledger
        // if (this.showBalance === false) {
-         this.updateHome(true);
+      this.updateHome(true);
        // }
     }
    });
  }
 
 // emit event to home component that triggers refresh of it's fields
- updateHome(update: boolean){
+ updateHome(update: boolean) {
    this.onUpdate.emit(update);
  }
+
+ loading(finishLoading: boolean) {
+  this.isLoaded.emit(finishLoading);
+ }
+
 }
