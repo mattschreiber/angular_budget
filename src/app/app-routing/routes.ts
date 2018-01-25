@@ -16,6 +16,6 @@ export const routes: Routes = [
   { path: 'budget/:entrytype/:datatype', component: TableLedgerComponent},
   { path: 'ledgerentry/:entrytype', component: LedgerentryComponent, canActivate: [EntrytypeGuard] },
   { path: 'createstore', component: CreateStoreComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/ledger/ledger/ledger-entries', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
