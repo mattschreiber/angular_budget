@@ -21,7 +21,7 @@ export class UpdateEntryComponent implements OnInit {
   entryType: string;
   entryId: number;
 
-  constructor(private fb: FormBuilder, private router: Router,private http: HttpClient, private ledgerservice: LedgerService,
+  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient, private ledgerservice: LedgerService,
      public dialogRef: MatDialogRef<UpdateEntryComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.createForm();
   }
@@ -33,7 +33,7 @@ export class UpdateEntryComponent implements OnInit {
  ngOnInit() {
    if (this.data.debit > 0) {
      this.updateEntryForm.get('amount').setValue(this.data.debit / 100);
-   }else{
+   } else {
      this.updateEntryForm.get('amount').setValue(this.data.credit / 100);
    }
    this.entryType = this.data.entryType.toLowerCase();
@@ -53,7 +53,7 @@ export class UpdateEntryComponent implements OnInit {
          } else {
            // The backend returned an unsuccessful response code.
            // The response body may contain clues as to what went wrong,
-           console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+           console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
          }
      });
    }

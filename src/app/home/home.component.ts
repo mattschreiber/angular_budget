@@ -2,14 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {FormControl} from '@angular/forms';
 import { ViewEncapsulation } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-
-import { timer } from 'rxjs/observable/timer';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { Observable ,  timer ,  forkJoin } from 'rxjs';
 
 import { DateService } from '../services/date.service';
 import { DatatableService } from '../services/datatable.service';
@@ -27,13 +20,13 @@ import { ProjectedBalance } from '../services/datatable.service';
 export class HomeComponent implements OnInit {
   // dataType must be either budget-entries or ledger-entries. It is used to query for type of datatable entries.
   // This is passed to the query that populates the datatable within the table-ledger component
-  dataType: string = 'ledger-entries';
-  showBalance: boolean = false; // Determines whether or not to show Ledger and Budget Amounts
-  entryType: string = "Ledger";// Sets header for table-ledger to either Ledger or Budget
+  dataType = 'ledger-entries';
+  showBalance = false; // Determines whether or not to show Ledger and Budget Amounts
+  entryType = 'Ledger'; // Sets header for table-ledger to either Ledger or Budget
   // end input variables
 
-  isLoadingHome: boolean = false;
-  isLoadingTable: boolean = false;
+  isLoadingHome = false;
+  isLoadingTable = false;
 
   balLedger: number;
   projBalance: number;
@@ -65,10 +58,10 @@ export class HomeComponent implements OnInit {
         // The backend returned an unsuccessful response code.
         // The response body may contain clues as to what went wrong,
         this.projBalance = null;
-        console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+        console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
       }
     }
-    );// end current
+    ); // end current
   } // getProjectedValue
 
 
@@ -76,8 +69,8 @@ export class HomeComponent implements OnInit {
   getValues() {
 
     this.isLoadingHome = true;
-    let projectedValue = this.tableEntries.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
-    let balances = this.tableEntries.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
+    const projectedValue = this.tableEntries.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
+    const balances = this.tableEntries.getBalances('1900-1-1', this.dateservice.parseDate(this.dateservice.todayDate));
     forkJoin(projectedValue, balances)
     .subscribe( data => {
       this.projBalance = data[0].projBalance / 100;
@@ -92,7 +85,7 @@ export class HomeComponent implements OnInit {
          // The backend returned an unsuccessful response code.
          // The response body may contain clues as to what went wrong,
          this.projBalance = null;
-         console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+         console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
      }
   });
 
@@ -107,8 +100,7 @@ export class HomeComponent implements OnInit {
   isLoaded(finishedLoading: boolean) {
     if (finishedLoading === true) {
       this.isLoadingTable = false;
-    }
-    else {
+    } else {
       this.isLoadingTable = true;
     }
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { CONFIGS } from '../../shared/configurations';
 
@@ -15,7 +15,7 @@ export class ReportService {
     let Params = new HttpParams();
     Params = Params.append('month', month);
     Params = Params.append('year', year);
-    const requestUrl =`${href}reports/categories`;
+    const requestUrl = `${href}reports/categories`;
     return this.http.get<ReportCategoryAmounts[]>(requestUrl, {params: Params});
   }
 
@@ -30,73 +30,73 @@ export class ReportService {
   // convert raw data retrieved from db into format for fusion chart mscolumn2d
   prepareCategoryAmounts(data: ReportCategoryAmounts[]) {
   // variables for storing data needed to create chart
-  let categoryData: Category[] = [];
-  let budgetData: Budget[] = [];
-  let ledgerData: Ledger[] = [];
+  const categoryData: Category[] = [];
+  const budgetData: Budget[] = [];
+  const ledgerData: Ledger[] = [];
     if (data != null) {
-      for (let cat of data) {
+      for (const cat of data) {
         budgetData.push({value: cat.budget / 100});
         categoryData.push({label: cat.category});
         ledgerData.push({value: cat.ledger / 100});
       }
     } else {
-      return {}
+      return {};
     }
     return {
-        "chart": {
-            "caption": "Comparison of Budget to Actual Amounts Spent",
-            "xAxisname": "Category",
-            "yAxisName": "Amounts (In USD)",
-            "numberPrefix": "$",
-            "plotFillAlpha": "80",
-            "theme": "fint"
+        'chart': {
+            'caption': 'Comparison of Budget to Actual Amounts Spent',
+            'xAxisname': 'Category',
+            'yAxisName': 'Amounts (In USD)',
+            'numberPrefix': '$',
+            'plotFillAlpha': '80',
+            'theme': 'fint'
         },
-        "categories": [{
-            "category": categoryData
+        'categories': [{
+            'category': categoryData
         }],
-        "dataset": [{
-            "seriesname": "Budget",
-            "data": budgetData
+        'dataset': [{
+            'seriesname': 'Budget',
+            'data': budgetData
         }, {
-            "seriesname": "Actual",
-            "data": ledgerData
+            'seriesname': 'Actual',
+            'data': ledgerData
         }]
-      }
+      };
   }
 
   prepareMonthlyAmounts(data: MonthlyTotals[]) {
-    let categoryData: Category[] = [];
-    let budgetData: Budget[] = [];
-    let ledgerData: Ledger[] = [];
+    const categoryData: Category[] = [];
+    const budgetData: Budget[] = [];
+    const ledgerData: Ledger[] = [];
 
     if (data != null) {
-      for (let cat of data) {
+      for (const cat of data) {
         budgetData.push({value: cat.budget_total / 100});
         categoryData.push({label: cat.month});
         ledgerData.push({value: cat.ledger_total / 100});
       }
     } else {
-      return {}
+      return {};
     }
     return {
-        "chart": {
-            "caption": "Monthly Totals",
-            "subcation": "Last 12 Months",
-            "xAxisname": "Month",
-            "showValues": "0",
-            "theme": "fint"
+        'chart': {
+            'caption': 'Monthly Totals',
+            'subcation': 'Last 12 Months',
+            'xAxisname': 'Month',
+            'showValues': '0',
+            'theme': 'fint'
         },
-        "categories": [{
-            "category": categoryData
+        'categories': [{
+            'category': categoryData
         }],
-        "dataset": [{
-          "seriesname": "Budget",
-          "data": budgetData
+        'dataset': [{
+          'seriesname': 'Budget',
+          'data': budgetData
         }, {
-          "seriesname": "Actual",
-          "data": ledgerData
+          'seriesname': 'Actual',
+          'data': ledgerData
         }]
-      }
+      };
   }
 }
 

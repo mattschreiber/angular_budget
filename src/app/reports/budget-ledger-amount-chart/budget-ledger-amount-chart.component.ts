@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {of as observableOf} from 'rxjs/observable/of';
-import {catchError} from 'rxjs/operators/catchError';
+import {of as observableOf} from 'rxjs';
+import {catchError} from 'rxjs/operators';
 
 import { DateService } from '../../services/date.service';
 import { ReportService } from '../services/report.service';
@@ -25,9 +25,9 @@ export class BudgetLedgerAmountChartComponent implements OnInit {
 
   ngOnInit() {
     // start and end date for db query
-    let startDate: Date = this.dateservice.subtractMonth(new Date(), 11);
+    const startDate: Date = this.dateservice.subtractMonth(new Date(), 11);
     startDate.setDate(1);
-    let endDate: Date = this.dateservice.addMonth(new Date(), 1);
+    const endDate: Date = this.dateservice.addMonth(new Date(), 1);
     endDate.setDate(1);
 
     this.reportservice.getMonthlyTotalAmounts(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate))
@@ -37,7 +37,7 @@ export class BudgetLedgerAmountChartComponent implements OnInit {
       })
     ).subscribe(data => {
       this.dataSource = this.reportservice.prepareMonthlyAmounts(data);
-    })
+    });
   }
 
 }

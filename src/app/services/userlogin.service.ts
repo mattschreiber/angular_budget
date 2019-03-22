@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 
 import { User, Token } from '../shared/user';
 import { CONFIGS } from '../shared/configurations';
@@ -17,7 +17,7 @@ export class UserloginService {
     // urlFrag
     user.username = user.username.toLowerCase();
     const href = CONFIGS.baseUrl;
-    const requestUrl =`${href}login`;
+    const requestUrl = `${href}login`;
     return this.http.post<Token>(requestUrl, user);
   }
 }

@@ -6,7 +6,7 @@ export class AuthService {
   constructor() { }
 
   public getToken(): string {
-   return "Bearer " + localStorage.getItem('mattsToken');
+   return 'Bearer ' + localStorage.getItem('mattsToken');
   }
 
   public setToken(token: string) {

@@ -14,7 +14,7 @@ export class CreateStoreComponent implements OnInit {
 
   addStoreForm: FormGroup;
   flashMessage: string; // Add message indicating if new entry successful
-  showFlashMessage: boolean = false;
+  showFlashMessage = false;
 
   constructor(private storeandcatservice: StoreandcatService, private fb: FormBuilder,
     private http: HttpClient,) {

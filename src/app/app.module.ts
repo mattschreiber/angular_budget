@@ -10,7 +10,8 @@ import { MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldMo
   MatInputModule, MatRadioModule, MatSelectModule, MatSliderModule,
   MatSlideToggleModule, MatToolbarModule, MatListModule, MatGridListModule,
   MatCardModule, MatIconModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, MatPaginatorModule, MatTableModule, MatSortModule,
-  MatNativeDateModule, MatAutocompleteModule, MatProgressBarModule, MatTooltipModule, MatSidenavModule, MatExpansionModule} from '@angular/material';
+  MatNativeDateModule, MatAutocompleteModule, MatProgressBarModule, MatTooltipModule,
+  MatSidenavModule, MatExpansionModule} from '@angular/material';
 
 import 'hammerjs';
 
@@ -82,7 +83,7 @@ import { CreateStoreComponent } from './create-store/create-store.component';
       provide : HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi   : true,
-    },{
+    }, {
       provide : HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
       multi: true,

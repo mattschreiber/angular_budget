@@ -7,6 +7,7 @@ export class SidenavService {
   constructor() { }
 
   public setSidenav(sidenav: MatSidenav) {
+    console.log('set sidenav');
    this.sidenav = sidenav;
  }
 

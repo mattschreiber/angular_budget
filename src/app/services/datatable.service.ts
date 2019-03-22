@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/switchMap';
+import {Observable} from 'rxjs';
+
+
+
+
+
+
 
 import { DateService } from '../services/date.service';
 
@@ -25,20 +25,20 @@ export class DatatableService {
   getEntries(dataType: string, startDate: string, endDate: string): Observable<TableEntries[]> {
     // const href = 'http://localhost:5000/';
     const href = CONFIGS.baseUrl;
-    const requestUrl =`${href}${dataType}/${startDate}/${endDate}`;
+    const requestUrl = `${href}${dataType}/${startDate}/${endDate}`;
     return this.http.get<TableEntries[]>(requestUrl);
   }
 
   getBalances(startDate: string, endDate: string): Observable<Balance> {
     const href = CONFIGS.baseUrl;
-    const requestUrl =`${href}balances/${startDate}/${endDate}`;
+    const requestUrl = `${href}balances/${startDate}/${endDate}`;
     return this.http.get<Balance>(requestUrl);
   }
 
   getProjectedValue(date: string): Observable<ProjectedBalance> {
     const href = CONFIGS.baseUrl;
-    const requestUrl =`${href}projected-balance/${date}`;
-    return this.http.get<ProjectedBalance>(requestUrl)
+    const requestUrl = `${href}projected-balance/${date}`;
+    return this.http.get<ProjectedBalance>(requestUrl);
   } // getProjectedValue
 }
 

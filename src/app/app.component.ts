@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import {Subscription} from "rxjs/Subscription";
-import {MediaChange, ObservableMedia} from "@angular/flex-layout";
+import {Subscription} from 'rxjs';
+import {MediaChange, MediaObserver} from '@angular/flex-layout';
 import {MatSidenav} from '@angular/material/sidenav';
 import { SidenavService } from './services/sidenav.service';
 
@@ -9,30 +9,29 @@ import { SidenavService } from './services/sidenav.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  ledgerType: string = "ledger";
-  budgetType: string = "budget";
-  ledgerUrl: string = "ledger-entries";
-  budgetUrl: string = "budget-entries";
+export class AppComponent implements OnInit, OnDestroy {
+  ledgerType = 'ledger';
+  budgetType = 'budget';
+  ledgerUrl = 'ledger-entries';
+  budgetUrl = 'budget-entries';
   displayType: string;
-  opened: boolean = false;
+  opened = false;
   @ViewChild('sidenav') public sidenav: MatSidenav;
 
   // used to determine screen size
   watcher: Subscription;
-  activeMediaQuery = "";
+  activeMediaQuery = '';
   close: boolean;
 
-  constructor(private sidenavService: SidenavService,  private media: ObservableMedia ){
-    this.watcher = media.subscribe((change: MediaChange) => {
-      this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
-      if ( change.mqAlias == 'xs' || change.mqAlias == 'sm') {
-         this.displayType = "over";
+  constructor(private sidenavService: SidenavService,  private media: MediaObserver ) {
+    this.watcher = media.media$.subscribe((change: MediaChange) => {
+      this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
+      if ( change.mqAlias === 'xs' || change.mqAlias === 'sm') {
+         this.displayType = 'over';
          this.close = true;
          this.opened = false;
-       }
-       else {
-         this.displayType = "side";
+       } else {
+         this.displayType = 'side';
          this.close = false;
          this.opened = false;
        }

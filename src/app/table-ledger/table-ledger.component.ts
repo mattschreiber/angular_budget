@@ -4,13 +4,9 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {MatPaginator, MatSort, MatTableDataSource, MatTooltip,
   MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatExpansionPanel} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
-import {Subscription} from "rxjs/Subscription";
-import {MediaChange, ObservableMedia} from "@angular/flex-layout";
+import {Observable, Subscription, of as observableOf,  forkJoin } from 'rxjs';
+import {MediaChange, MediaObserver} from '@angular/flex-layout';
 import { ViewEncapsulation } from '@angular/core';
-
-import {of as observableOf} from 'rxjs/observable/of';
-import { forkJoin } from 'rxjs/observable/forkJoin';
 
 import { UpdateEntryComponent } from '../update-entry/update-entry.component';
 import { DateService } from '../services/date.service';
@@ -26,27 +22,27 @@ import { Balance } from '../shared/balance';
 })
 
 
-export class TableLedgerComponent implements AfterViewInit   {
+export class TableLedgerComponent implements AfterViewInit, OnInit, OnDestroy   {
 
-  entryType: string = "Ledger";
+  entryType = 'Ledger';
   balLedger: number;
   projBalance: number;
   currentBal: Balance = new Balance;
   bal: Balance = new Balance; // for both budget and ledger balances from table date pickers
   dataType: string;
 
-  isLoading: boolean = true;
-  isLedger: boolean = true;
+  isLoading = true;
+  isLedger = true;
 
   // used to determine screen size
   watcher: Subscription;
-  activeMediaQuery = "";
+  activeMediaQuery = '';
 
   // Dates used to initially configure Date Pickers which are used to populate the datatable
   firstOfMonth: Date = this.dateservice.firstDayMonth;
   todayDate: Date = this.dateservice.todayDate;
   lastOfMonth: Date = this.dateservice.lastDayMonth;
-  date = new FormControl(this.dateservice.todayDate); //for projBalance
+  date = new FormControl(this.dateservice.todayDate); // for projBalance
   startDate = new FormControl(this.firstOfMonth);
   endDate = new FormControl(this.lastOfMonth);
 
@@ -64,27 +60,26 @@ export class TableLedgerComponent implements AfterViewInit   {
   tableEntries: DatatableService | null;
   constructor(private http: HttpClient, private dateservice: DateService, private datatableserve: DatatableService,
               private route: ActivatedRoute, private router: Router,
-              public dialog: MatDialog, private media: ObservableMedia) {
-                this.watcher = media.subscribe((change: MediaChange) => {
-                  this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
-                  if ( change.mqAlias == 'xs' || change.mqAlias == 'sm') {
+              public dialog: MatDialog, private media: MediaObserver) {
+                this.watcher = media.media$.subscribe((change: MediaChange) => {
+                  this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
+                  if ( change.mqAlias === 'xs' || change.mqAlias === 'sm') {
                      this.displayMobile = true;
-                   }
-                   else {
+                   } else {
                      this.displayMobile = false;
                    }
                  });
               }
 
-  ngOnInit(){
+  ngOnInit() {
     if (this.media.isActive('xs') || this.media.isActive('sm')) {
       this.displayMobile = true;
     } else {
       this.displayMobile = false;
     }
     this.route.paramMap
-    .subscribe( params =>{
-      let temp: string = params.get('entrytype');
+    .subscribe( params => {
+      const temp: string = params.get('entrytype');
       this.entryType = temp[0].toUpperCase() + temp.slice(1);
       this.dataType = params.get('datatype');
       if (this.entryType === 'Budget') {
@@ -107,8 +102,8 @@ export class TableLedgerComponent implements AfterViewInit   {
 // updates table along with Estimated and Actual Amounts, but not projected or actual as of today
 getValues(startDate: string, endDate: string) {
    this.isLoading = true;
-   let table = this.tableEntries.getEntries(this.dataType, startDate, endDate);
-   let balances =  this.tableEntries.getBalances(startDate, endDate);
+   const table = this.tableEntries.getEntries(this.dataType, startDate, endDate);
+   const balances =  this.tableEntries.getBalances(startDate, endDate);
 
    forkJoin(table, balances)
    .subscribe( data => {
@@ -123,15 +118,15 @@ getValues(startDate: string, endDate: string) {
       } else {
         // The backend returned an unsuccessful response code.
         // The response body may contain clues as to what went wrong,
-        console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+        console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
     }
  });
  }
 
 // used to populate projected value and actual as of today textboxes
  getActualAndProj() {
-   let projectedValue = this.tableEntries.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
-   let balances = this.tableEntries.getBalances('1900-1-1',this.dateservice.parseDate(this.dateservice.todayDate));
+   const projectedValue = this.tableEntries.getProjectedValue(this.dateservice.parseDate(this.dateservice.todayDate));
+   const balances = this.tableEntries.getBalances('1900-1-1', this.dateservice.parseDate(this.dateservice.todayDate));
    forkJoin(projectedValue, balances)
    .subscribe( data => {
      this.projBalance = data[0].projBalance / 100;
@@ -145,7 +140,7 @@ getValues(startDate: string, endDate: string) {
         // The backend returned an unsuccessful response code.
         // The response body may contain clues as to what went wrong,
         this.projBalance = null;
-        console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+        console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
     }
  });
 
@@ -165,11 +160,11 @@ getValues(startDate: string, endDate: string) {
 
 // flatten the data returned from api to make filter simpler to implement
  flattenData(data) {
-  if(data != null) {
+  if (data != null) {
     let i: number;
     let flatData: {id: number, credit: number, debit: number, category_name: string, store_name: string, trans_date: Date};
-    let arr = [];
-    for (i=0; i<data.length; i++) {
+    const arr = [];
+    for (i = 0; i < data.length; i++) {
       flatData = {
         id: data[i].id,
         credit: data[i].credit,
@@ -177,12 +172,11 @@ getValues(startDate: string, endDate: string) {
         category_name: data[i].category.category_name,
         store_name: data[i].store.store_name,
         trans_date: data[i].trans_date
-     }
+     };
       arr.push(flatData);
     }
     this.dataSource.data = arr;
-  }
-  else {
+  } else {
     this.dataSource.data = [];
   }
  }
@@ -190,21 +184,21 @@ getValues(startDate: string, endDate: string) {
  updateDate(startDate: string, endDate: string): void {
 
    // convert to dates so comparison works
-   let startD = new Date(startDate);
-   let endD = new Date(endDate);
+   const startD = new Date(startDate);
+   const endD = new Date(endDate);
 
    if (startD <= endD) {
      this.getValues(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
      this.paginator.pageIndex = 0;
    } else {
-     //The end date should not be before the start date. set table and balances to zero
+     // The end date should not be before the start date. set table and balances to zero
      this.dataSource.data = [];
-     this.bal ={ledgeramount: 0, budgetamount: 0};
+     this.bal = {ledgeramount: 0, budgetamount: 0};
   }
  }
 
  openUpdate(row, entryType): void {
-   let dialogRef = this.dialog.open(UpdateEntryComponent, {
+   const dialogRef = this.dialog.open(UpdateEntryComponent, {
      width: '300px',
      height: '200px',
      data: { id: row.id, debit: row.debit, credit: row.credit, entryType: this.entryType }
@@ -213,11 +207,11 @@ getValues(startDate: string, endDate: string) {
    dialogRef.afterClosed()
    .subscribe(result => {
      // Only update Ledger and Budget balances if they are visible for the component view
-     if (result === "updated") {
+     if (result === 'updated') {
       this.getValues(this.dateservice.parseDate(this.startDate.value), this.dateservice.parseDate(this.endDate.value));
        // only updatr home component values if the entry being deleted is from the ledger
-     if (this.entryType === "Ledger" ) {
-      this.getActualAndProj()
+     if (this.entryType === 'Ledger' ) {
+      this.getActualAndProj();
      }
     }
    });
@@ -237,10 +231,10 @@ getValues(startDate: string, endDate: string) {
        // The backend returned an unsuccessful response code.
        // The response body may contain clues as to what went wrong,
        this.projBalance = null;
-       console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+       console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
      }
    }
-   );// end current
+   ); // end current
  } // getProjectedValue
  updateEndDate(val: Date): void {
    this.getProjectedValue(this.dateservice.parseDate(val));

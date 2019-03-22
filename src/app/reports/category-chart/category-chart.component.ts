@@ -2,14 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ViewEncapsulation } from '@angular/core';
 
-import {Observable} from 'rxjs/Observable';
-import {merge} from 'rxjs/observable/merge';
-import {startWith} from 'rxjs/operators/startWith';
-import {map} from 'rxjs/operators/map';
-import {of as observableOf} from 'rxjs/observable/of';
-import {catchError} from 'rxjs/operators/catchError';
-import  'rxjs/add/operator/debounceTime';
-import {switchMap} from 'rxjs/operators/switchMap';
+import {Observable, merge, of as observableOf} from 'rxjs';
+import {startWith, map, catchError, switchMap} from 'rxjs/operators';
 
 import { DateService } from '../../services/date.service';
 import { ReportService } from '../services/report.service';

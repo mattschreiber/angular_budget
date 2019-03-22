@@ -10,12 +10,12 @@ export class DateService {
 
   parseDate(val): string {
     let selectedDate: string;
-    if (typeof val === "string") {
-      let temp = val.split('/');
+    if (typeof val === 'string') {
+      const temp = val.split('/');
       selectedDate = temp[2] + '-' + temp[0] + '-' + temp[1];
     }else {
-      let placeholder: Date = val;
-      let temp = placeholder.toLocaleDateString().split('/');
+      const placeholder: Date = val;
+      const temp = placeholder.toLocaleDateString().split('/');
       selectedDate = temp[2] + '-' + temp[0] + '-' + temp[1];
     }
     // let parseDate = new Date(Date.parse(val + 'EST'));
@@ -24,13 +24,13 @@ export class DateService {
   }
 
   listOfYears(): number[] {
-    let startYear: number = 2017;
+    const startYear = 2017;
     let currentYear: number = new Date().getFullYear();
-    let years: number[] = [];
+    const years: number[] = [];
 
-    let numYears: number = currentYear - startYear;
+    const numYears: number = currentYear - startYear;
 
-    for (var i=0; i <= numYears; i++) {
+    for (let i = 0; i <= numYears; i++) {
       years.push(currentYear);
       currentYear = currentYear - 1;
     }

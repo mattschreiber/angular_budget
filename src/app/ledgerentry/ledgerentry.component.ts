@@ -3,10 +3,9 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {FormControl, FormGroup} from '@angular/forms';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
-import {Observable} from 'rxjs/Observable';
-import {startWith} from 'rxjs/operators/startWith';
-import {map} from 'rxjs/operators/map';
-import  'rxjs/add/operator/switchMap';
+import {Observable} from 'rxjs';
+import {startWith, map} from 'rxjs/operators';
+
 
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
@@ -34,19 +33,19 @@ export class LedgerentryComponent implements OnInit {
   entryType: string;
   entryTypeLabel: string; // Used in <h3> tag of template to capitalize first letter.
   flashMessage: string; // Add message indicating if new entry successful
-  isError: boolean = false;
+  isError = false;
   // object used to load store autocomplete and category select boxes
   storeAndCat: StoreAndCat = {category: [], store: []};
-  //intialize model
+  // intialize model
   model: Ledger = {id: null, credit: 0, debit: 0, trans_date: this.dateservice.todayDate,
     category: {id: null, category_name: null},
-    store: {id: null, store_name: null, default_credit: 0, default_debit:0}};
+    store: {id: null, store_name: null, default_credit: 0, default_debit: 0}};
 
   storeControl: FormControl = new FormControl();
   date = new FormControl(this.dateservice.todayDate);
 
   // used to determine whether entry is a credit or debit (attached to form fields in template)
-  isCredit: boolean = false;
+  isCredit = false;
 
   // options for credit/debit select box
   typeTrans = [
@@ -63,12 +62,12 @@ export class LedgerentryComponent implements OnInit {
 
   ngOnInit() {
 
-    this.route.paramMap.subscribe( params =>{ this.entryType = params.get('entrytype');
+    this.route.paramMap.subscribe( params => { this.entryType = params.get('entrytype');
     this.entryTypeLabel = this.entryType[0].toUpperCase() + this.entryType.substring(1);
   });
 
 
-    this.getStoreAndCat()
+    this.getStoreAndCat();
     // this.storesAndCats = new StoreandcatService(this.http);
     this.filteredOptions = this.storeControl.valueChanges
     .pipe(
@@ -90,8 +89,7 @@ export class LedgerentryComponent implements OnInit {
   // before submitting the form
     if (this.isCredit) {
       this.model.debit = 0;
-    }
-    else {
+    } else {
       this.model.credit = 0;
     }
     // post new entry
@@ -102,9 +100,9 @@ export class LedgerentryComponent implements OnInit {
       this.isError = false;
       this.model = {id: null, credit: 0, debit: 0, trans_date: this.dateservice.todayDate,
         category: {id: null, category_name: null},
-        store: {id: null, store_name: null, default_credit: 0, default_debit:0}};
+        store: {id: null, store_name: null, default_credit: 0, default_debit: 0}};
         // navigate to entries page after successfully creating new entry
-        if (this.entryType == 'ledger') {
+        if (this.entryType === 'ledger') {
           this.router.navigate(['/ledger/ledger/ledger-entries']);
         } else {
         this.router.navigate(['/budget/budget/budget-entries']);
@@ -132,16 +130,14 @@ export class LedgerentryComponent implements OnInit {
     // this.model.debit = 0;
     if (val === 'credit') {
       this.isCredit = true;
-    }
-    else {
+    } else {
       this.isCredit = false;
     }
   }
   // get all stores and categories to display on entry form.
   getStoreAndCat(): void {
     this.storeandcatservice.getStoreAndCat()
-    .subscribe(data =>
-      {
+    .subscribe(data => {
         this.storeAndCat = data;
     },
     (err: HttpErrorResponse) => {
@@ -151,7 +147,7 @@ export class LedgerentryComponent implements OnInit {
        } else {
          // The backend returned an unsuccessful response code.
          // The response body may contain clues as to what went wrong,
-         console.log(`Backend returned code ${err.status}, body was: ${err.error}`)
+         console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
        }
      }
   );
@@ -173,6 +169,6 @@ export class LedgerentryComponent implements OnInit {
 }
 
 export interface StoreAndCat {
-  category: Category[]
+  category: Category[];
   store: Store[];
 }
