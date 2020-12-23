@@ -12,10 +12,12 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { DateService } from '../services/date.service';
 import { StoreandcatService } from '../services/storeandcat.service';
 import { LedgerService } from '../services/ledger.service';
+import { PaymenttypeService } from '../services/paymenttype.service';
 
 import { Ledger } from '../shared/ledger';
 import { Category } from '../shared/category';
 import { Store } from '../shared/store';
+import { PaymentType } from '../shared/paymenttype';
 
 @Component({
   selector: 'app-ledgerentry',
@@ -36,10 +38,13 @@ export class LedgerentryComponent implements OnInit {
   isError = false;
   // object used to load store autocomplete and category select boxes
   storeAndCat: StoreAndCat = {category: [], store: []};
+  // object used to load payment types drop down list
+  paymentTypes: PaymentType 
   // intialize model
   model: Ledger = {id: null, credit: 0, debit: 0, trans_date: this.dateservice.todayDate,
     category: {id: null, category_name: null},
-    store: {id: null, store_name: null, default_credit: 0, default_debit: 0}};
+    store: {id: null, store_name: null, default_credit: 0, default_debit: 0},
+    payment_type_id: null};
 
   storeControl: FormControl = new FormControl();
   date = new FormControl(this.dateservice.todayDate);
@@ -58,6 +63,7 @@ export class LedgerentryComponent implements OnInit {
 
   constructor(private http: HttpClient, private dateservice: DateService,
     private ledgerservice: LedgerService, private storeandcatservice: StoreandcatService,
+    private paymenttypeservice: PaymenttypeService,
     private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
@@ -74,6 +80,8 @@ export class LedgerentryComponent implements OnInit {
     startWith(''),
     map(val => this.filter(val))
     );
+
+    this.getPaymentTypes();
   }
   // filter for store autocomplete
   filter(val: string): Store[] {
@@ -100,7 +108,8 @@ export class LedgerentryComponent implements OnInit {
       this.isError = false;
       this.model = {id: null, credit: 0, debit: 0, trans_date: this.dateservice.todayDate,
         category: {id: null, category_name: null},
-        store: {id: null, store_name: null, default_credit: 0, default_debit: 0}};
+        store: {id: null, store_name: null, default_credit: 0, default_debit: 0},
+        payment_type_id: null};
         // navigate to entries page after successfully creating new entry
         if (this.entryType === 'ledger') {
           this.router.navigate(['/ledger/ledger/ledger-entries']);
@@ -153,7 +162,27 @@ export class LedgerentryComponent implements OnInit {
   );
   }
 
-  // next to functions are used to enable the store autocomplete to display the name while
+    // get all stores and categories to display on entry form.
+    getPaymentTypes(): void {
+      this.paymenttypeservice.getPaymentTypes()
+      .subscribe(data => {
+          this.paymentTypes = data;
+          console.log(this.paymentTypes);
+      },
+      (err: HttpErrorResponse) => {
+         if (err.error instanceof Error) {
+           // A client-side or network error occurred. Handle it accordingly.
+           console.log('An error occurred:', err.error.message);
+         } else {
+           // The backend returned an unsuccessful response code.
+           // The response body may contain clues as to what went wrong,
+           console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+         }
+       }
+    );
+    }
+
+  // next two functions are used to enable the store autocomplete to display the name while
   // making the value equal to the entire store object. THis is necessary for posting the correct data.
   getDisplayFn() {
     return (val) => this.display(val);

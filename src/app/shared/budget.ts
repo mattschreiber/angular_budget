@@ -5,4 +5,5 @@ export class Budget {
   trans_date: string;
   store_id: number;
   category_id: number;
+  payment_type_id: number;
 }

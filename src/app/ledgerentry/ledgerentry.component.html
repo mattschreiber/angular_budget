@@ -37,6 +37,13 @@
       </mat-select>
     </mat-form-field>
     </div>
+    <div class="form-group">
+      <mat-form-field>
+        <mat-select placeholder="Payment Type" [(ngModel)]="model.payment_type_id" name="payment_type_id" required>
+          <mat-option *ngFor="let pt of paymentTypes" [value]="pt.id"> {{ pt.payment_name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      </div>
     <div class="form-group" [fxShow]="isCredit">
       <mat-form-field>
         <input type="number" matInput placeholder="Amount" [(ngModel)]="model.credit" name="credit" [required]="isCredit">

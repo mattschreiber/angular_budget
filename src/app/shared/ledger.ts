@@ -8,4 +8,5 @@ export class Ledger {
   trans_date: Date;
   category: Category;
   store: Store;
+  payment_type_id: number;
 }
