@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+// import { HttpModule } from '@angular/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -20,6 +20,7 @@ import { DateService } from './services/date.service';
 import { LedgerService } from './services/ledger.service';
 import { DatatableService } from './services/datatable.service';
 import { StoreandcatService} from './services/storeandcat.service';
+import { PaymenttypeService } from './services/paymenttype.service';
 import { UserloginService} from './services/userlogin.service';
 import { SidenavService } from './services/sidenav.service';
 
@@ -63,7 +64,7 @@ import { CreateStoreComponent } from './create-store/create-store.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
+    // HttpModule,
     HttpClientModule,
     FlexLayoutModule,
     MatButtonModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldModule, MatSidenavModule,
@@ -77,7 +78,7 @@ import { CreateStoreComponent } from './create-store/create-store.component';
   entryComponents: [
     UpdateEntryComponent
   ],
-  providers: [HttpClientModule, AuthService, DateService, LedgerService, DatatableService, StoreandcatService,
+  providers: [HttpClientModule, AuthService, DateService, LedgerService, DatatableService, StoreandcatService, PaymenttypeService,
     UserloginService, SidenavService, EntrytypeGuard,
     {
       provide : HTTP_INTERCEPTORS,
