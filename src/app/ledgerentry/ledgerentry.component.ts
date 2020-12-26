@@ -44,10 +44,10 @@ export class LedgerentryComponent implements OnInit {
   model: Ledger = {id: null, credit: 0, debit: 0, trans_date: this.dateservice.todayDate,
     category: {id: null, category_name: null},
     store: {id: null, store_name: null, default_credit: 0, default_debit: 0},
-    payment_type_id: null};
+    payment_type: {id: null, payment_name: null}};
 
   storeControl: FormControl = new FormControl();
-  date = new FormControl(this.dateservice.todayDate);
+  // date = new FormControl(this.dateservice.todayDate);
 
   // used to determine whether entry is a credit or debit (attached to form fields in template)
   isCredit = false;
@@ -100,8 +100,10 @@ export class LedgerentryComponent implements OnInit {
     } else {
       this.model.credit = 0;
     }
+
     // post new entry
     // const req = this.ledgerservice.createNewEntry(JSON.stringify(this.model), this.entryType);
+    this.model.store = this.storeControl.value;
     const req = this.ledgerservice.createNewEntry(this.model, this.entryType);
     req.subscribe(data => {
       // reset model after successful entry
@@ -109,7 +111,7 @@ export class LedgerentryComponent implements OnInit {
       this.model = {id: null, credit: 0, debit: 0, trans_date: this.dateservice.todayDate,
         category: {id: null, category_name: null},
         store: {id: null, store_name: null, default_credit: 0, default_debit: 0},
-        payment_type_id: null};
+        payment_type: {id: null, payment_name: null }};
         // navigate to entries page after successfully creating new entry
         if (this.entryType === 'ledger') {
           this.router.navigate(['/ledger/ledger/ledger-entries']);
@@ -167,7 +169,6 @@ export class LedgerentryComponent implements OnInit {
       this.paymenttypeservice.getPaymentTypes()
       .subscribe(data => {
           this.paymentTypes = data;
-          console.log(this.paymentTypes);
       },
       (err: HttpErrorResponse) => {
          if (err.error instanceof Error) {

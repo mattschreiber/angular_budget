@@ -7,11 +7,13 @@
 <div class="container" fxLayout.lt-sm="column" fxLayoutGap="20px">
   <form (ngSubmit)="onSubmit()" #ledgerEntryForm="ngForm">
     <div class="form-group">
+
       <mat-form-field class="example-container">
-        <input class="my-class" #fun [(ngModel)]="model.trans_date" matInput [matDatepicker]="picker1" placeholder="" [formControl]="date">
+        <input class="my-class" #fun [(ngModel)]="model.trans_date" name="trans_date" matInput [matDatepicker]="picker1" placeholder="" [value]="model.trans_date">
       <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
       <mat-datepicker touchUi="true" #picker1></mat-datepicker>
       </mat-form-field>
+
     </div>
     <div class="form-group">
       <mat-form-field>
@@ -22,7 +24,7 @@
     </div>
     <div class="form-group">
       <mat-form-field>
-        <input type="text" [(ngModel)]="model.store"  placeholder="Store" aria-label="Number" matInput [formControl]="storeControl" [matAutocomplete]="auto" required>
+        <input type="text" placeholder="Store" aria-label="Number" matInput [formControl]="storeControl" [matAutocomplete]="auto" required>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="getDisplayFn()">
           <mat-option *ngFor="let store of filteredOptions | async" [value]="store">
             {{ store.store_name }}
@@ -39,7 +41,7 @@
     </div>
     <div class="form-group">
       <mat-form-field>
-        <mat-select placeholder="Payment Type" [(ngModel)]="model.payment_type_id" name="payment_type_id" required>
+        <mat-select placeholder="Payment Type" [(ngModel)]="model.payment_type.id" name="payment_type.id" required>
           <mat-option *ngFor="let pt of paymentTypes" [value]="pt.id"> {{ pt.payment_name }}</mat-option>
         </mat-select>
       </mat-form-field>
