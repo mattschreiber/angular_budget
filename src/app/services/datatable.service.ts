@@ -3,16 +3,11 @@ import {HttpClient} from '@angular/common/http';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Observable} from 'rxjs';
 
-
-
-
-
-
-
 import { DateService } from '../services/date.service';
 
-import { Ledger } from '../shared/ledger';
+// import { Ledger } from '../shared/ledger';
 import { Balance } from '../shared/balance';
+import { PaymentType } from '../shared/paymenttype';
 
 import { CONFIGS } from '../shared/configurations';
 
@@ -49,6 +44,7 @@ export interface TableEntries {
   trans_date: string;
   cat: Category;
   store: Store;
+  payment_type: PaymentType;
 }
 
 export interface Category {

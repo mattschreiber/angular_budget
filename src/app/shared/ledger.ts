@@ -1,5 +1,6 @@
 import { Category } from './category';
 import { Store } from './store';
+import { PaymentType } from '../shared/paymenttype';
 
 export class Ledger {
   id: number;
@@ -8,5 +9,5 @@ export class Ledger {
   trans_date: Date;
   category: Category;
   store: Store;
-  payment_type_id: number;
+  payment_type: PaymentType
 }

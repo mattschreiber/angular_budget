@@ -98,6 +98,12 @@
       <mat-header-cell [fxHide]="displayMobile" *matHeaderCellDef>Category</mat-header-cell>
       <mat-cell [fxHide]="displayMobile" *matCellDef="let row">{{ row.category_name }}</mat-cell>
     </ng-container>
+
+    <!-- Payment Name Column -->
+    <ng-container matColumnDef="paymentname">
+      <mat-header-cell [fxHide]="displayMobile" *matHeaderCellDef>Payment</mat-header-cell>
+      <mat-cell [fxHide]="displayMobile" *matCellDef="let row">{{ row.payment_name }}</mat-cell>
+    </ng-container>
     <div>
       <mat-header-row *matHeaderRowDef="displayedColumns" matTooltip="Click on a Row to Update" matTooltipPosition="above"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openUpdate(row)"></mat-row>

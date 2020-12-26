@@ -7,6 +7,8 @@ import {MatPaginator, MatSort, MatTableDataSource, MatTooltip,
 import {Observable, Subscription, of as observableOf,  forkJoin } from 'rxjs';
 import {MediaChange, MediaObserver} from '@angular/flex-layout';
 import { ViewEncapsulation } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 import { UpdateEntryComponent } from '../update-entry/update-entry.component';
 import { DateService } from '../services/date.service';
@@ -46,7 +48,7 @@ export class TableLedgerComponent implements AfterViewInit, OnInit, OnDestroy   
   startDate = new FormControl(this.firstOfMonth);
   endDate = new FormControl(this.lastOfMonth);
 
-  displayedColumns = ['date', 'credit', 'debit', 'store', 'category'];
+  displayedColumns = ['date', 'credit', 'debit', 'store', 'category', 'paymentname'];
   // displayedColumnsMobile = ['date', 'credit', 'debit', 'store'];
   displayMobile: boolean;
   dataSource = new MatTableDataSource();
@@ -61,14 +63,26 @@ export class TableLedgerComponent implements AfterViewInit, OnInit, OnDestroy   
   constructor(private http: HttpClient, private dateservice: DateService, private datatableserve: DatatableService,
               private route: ActivatedRoute, private router: Router,
               public dialog: MatDialog, private media: MediaObserver) {
-                this.watcher = media.media$.subscribe((change: MediaChange) => {
+                // this.watcher = media.media$.subscribe((change: MediaChange) => {
+                //   this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
+                //   if ( change.mqAlias === 'xs' || change.mqAlias === 'sm') {
+                //      this.displayMobile = true;
+                //    } else {
+                //      this.displayMobile = false;
+                //    }
+                //  });
+                this.watcher = media.asObservable()
+                .pipe(
+                  filter((changes: MediaChange[]) => changes.length > 0),
+                  map((changes: MediaChange[]) => changes[0])
+                ).subscribe((change: MediaChange) => {
                   this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
-                  if ( change.mqAlias === 'xs' || change.mqAlias === 'sm') {
-                     this.displayMobile = true;
-                   } else {
-                     this.displayMobile = false;
-                   }
-                 });
+                    if ( change.mqAlias === 'xs' || change.mqAlias === 'sm') {
+                      this.displayMobile = true;
+                    } else {
+                      this.displayMobile = false;
+                  }
+                })             
               }
 
   ngOnInit() {
@@ -162,7 +176,7 @@ getValues(startDate: string, endDate: string) {
  flattenData(data) {
   if (data != null) {
     let i: number;
-    let flatData: {id: number, credit: number, debit: number, category_name: string, store_name: string, trans_date: Date};
+    let flatData: {id: number, credit: number, debit: number, category_name: string, store_name: string, trans_date: Date, payment_name: string};
     const arr = [];
     for (i = 0; i < data.length; i++) {
       flatData = {
@@ -171,7 +185,8 @@ getValues(startDate: string, endDate: string) {
         debit: data[i].debit,
         category_name: data[i].category.category_name,
         store_name: data[i].store.store_name,
-        trans_date: data[i].trans_date
+        trans_date: data[i].trans_date,
+        payment_name: data[i].payment_type.payment_name
      };
       arr.push(flatData);
     }
