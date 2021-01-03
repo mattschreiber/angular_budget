@@ -4,12 +4,6 @@ import {HttpClient} from '@angular/common/http';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Observable} from 'rxjs';
 
-
-
-
-
-
-
 import { DateService } from '../services/date.service';
 
 import { CONFIGS } from '../shared/configurations';
@@ -21,7 +15,7 @@ export class LedgerService {
 
   constructor(private http: HttpClient, private dateservice: DateService) { }
 
-  createNewEntry(ledger, urlFrag: string): Observable<Ledger> {
+  createNewEntry(ledger: Ledger, urlFrag: string): Observable<Ledger> {
     // method accepts a ledger object and posts a new entry.
     // urlFrag
     // clone ledger object, convert credit/debit to to cents and then post to db
@@ -37,6 +31,12 @@ export class LedgerService {
     const href = CONFIGS.baseUrl;
     const requestUrl = `${href}${urlFrag}-entry/${id}`;
     return this.http.delete<number>(requestUrl);
+  }
+
+  updateEntry(ledger: Ledger, urlFrag: string) {
+    const href = CONFIGS.baseUrl;
+    const requestUrl = `${href}update${urlFrag}`;
+    return this.http.put<number>(requestUrl, ledger);
   }
 
 }

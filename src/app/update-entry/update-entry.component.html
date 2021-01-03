@@ -13,9 +13,15 @@
         <input matInput placeholder="Amount" formControlName="amount">
       </mat-form-field>
     </div>
+    <!-- <div class="form-group" fxLayoutAlign="center center">
+      <mat-form-field>
+        <input matInput placeholder="Payment Type" formControlName="payment_type">
+      </mat-form-field>
+    </div> -->
     <div class="form-group" fxLayoutAlign="center center">
-      <button mat-dialog-close color="primary" mat-button>Cancel</button>
-      <button type="submit" color="primary" mat-button>Delete</button>
+      <!-- <button mat-dialog-close color="primary" mat-button>Cancel</button> -->
+      <button type="button" color="primary" class="btn1" mat-flat-button (click)="onUpdate()">Update</button>
+      <button type="submit" color="primary" mat-flat-button>Delete</button>
     </div>
   </mat-dialog-content>
   </form>

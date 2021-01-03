@@ -214,8 +214,8 @@ getValues(startDate: string, endDate: string) {
 
  openUpdate(row, entryType): void {
    const dialogRef = this.dialog.open(UpdateEntryComponent, {
-     width: '300px',
-     height: '200px',
+    //  width: '300px',
+    //  height: '200px',
      data: { id: row.id, debit: row.debit, credit: row.credit, entryType: this.entryType }
    });
 

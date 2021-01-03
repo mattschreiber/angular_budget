@@ -28,6 +28,7 @@ export class UpdateEntryComponent implements OnInit {
   createForm() {
    this.updateEntryForm = this.fb.group({
      amount: ['', Validators.required]
+    //  payment_type: ['amex', Validators.required]
    });
  }
  ngOnInit() {
@@ -56,6 +57,31 @@ export class UpdateEntryComponent implements OnInit {
            console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
          }
      });
+   }
+   onUpdate() {
+
+    // convert debit and credit amounts to whole number for storing in the database
+    if (this.data.debit > 0) {
+      this.data.debit = +(this.updateEntryForm.get('amount').value * 100).toFixed(2);
+    } else {
+      this.data.credit = +(this.updateEntryForm.get('amount').value * 100).toFixed(2);
+    }
+
+    const req = this.ledgerservice.updateEntry(this.data, this.entryType);
+    console.log("we did an update");
+    req.subscribe(data => {
+      this.closeDialog();
+    },
+    (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          // A client-side or network error occurred. Handle it accordingly.
+          console.log('An error occurred:', err.error.message);
+        } else {
+          // The backend returned an unsuccessful response code.
+          // The response body may contain clues as to what went wrong,
+          console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+        }
+    });
    }
 
 closeDialog() {
