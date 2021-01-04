@@ -1,5 +1,5 @@
 <div class="updateEntryToolbar">
-<mat-toolbar color="primary"><span>Delete Entry</span>
+<mat-toolbar color="primary"><span>Update Entry</span>
   <span class="flex-spacer"></span>
   <button mat-button mat-dialog-close>&times;</button>
 </mat-toolbar>
@@ -13,11 +13,13 @@
         <input matInput placeholder="Amount" formControlName="amount">
       </mat-form-field>
     </div>
-    <!-- <div class="form-group" fxLayoutAlign="center center">
+    <div>
       <mat-form-field>
-        <input matInput placeholder="Payment Type" formControlName="payment_type">
+        <mat-select placeholder="Category" formControlName="category" required>
+          <mat-option *ngFor="let cat of storeAndCat.category" [value]="cat.id"> {{ cat.category_name }}</mat-option>
+        </mat-select>
       </mat-form-field>
-    </div> -->
+    </div>
     <div class="form-group" fxLayoutAlign="center center">
       <!-- <button mat-dialog-close color="primary" mat-button>Cancel</button> -->
       <button type="button" color="primary" class="btn1" mat-flat-button (click)="onUpdate()">Update</button>

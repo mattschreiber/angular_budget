@@ -6,8 +6,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ViewEncapsulation } from '@angular/core';
 
 import { LedgerService } from '../services/ledger.service';
+import { StoreandcatService } from '../services/storeandcat.service';
 
 import { Ledger } from '../shared/ledger';
+import { Category } from '../shared/category';
+import { Store } from '../shared/store';
 
 @Component({
   selector: 'app-update-entry',
@@ -20,18 +23,23 @@ export class UpdateEntryComponent implements OnInit {
   ledger: Ledger;
   entryType: string;
   entryId: number;
+  storeAndCat: StoreAndCat = {category: [], store: []};
 
-  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient, private ledgerservice: LedgerService,
+  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient, private ledgerservice: LedgerService, private storeandcatservice: StoreandcatService,
      public dialogRef: MatDialogRef<UpdateEntryComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.createForm();
   }
   createForm() {
    this.updateEntryForm = this.fb.group({
-     amount: ['', Validators.required]
+     amount: ['', Validators.required],
+     category: ['', Validators.required]
     //  payment_type: ['amex', Validators.required]
    });
  }
  ngOnInit() {
+
+  this.getStoreAndCat();
+
    if (this.data.debit > 0) {
      this.updateEntryForm.get('amount').setValue(this.data.debit / 100);
    } else {
@@ -42,21 +50,41 @@ export class UpdateEntryComponent implements OnInit {
 
   }
 
-   onSubmit() {
-     const req = this.ledgerservice.deleteEntry(this.entryId, this.entryType);
-     req.subscribe(data => {
-           this.closeDialog();
-     },
-     (err: HttpErrorResponse) => {
-         if (err.error instanceof Error) {
-           // A client-side or network error occurred. Handle it accordingly.
-           console.log('An error occurred:', err.error.message);
-         } else {
-           // The backend returned an unsuccessful response code.
-           // The response body may contain clues as to what went wrong,
-           console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
-         }
-     });
+    // get all stores and categories to display on entry form.
+  getStoreAndCat(): void {
+    this.storeandcatservice.getStoreAndCat()
+    .subscribe(data => {
+        this.storeAndCat = data;
+        this.updateEntryForm.get('category').setValue(this.data.category_id);
+    },
+    (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          // A client-side or network error occurred. Handle it accordingly.
+          console.log('An error occurred:', err.error.message);
+        } else {
+          // The backend returned an unsuccessful response code.
+          // The response body may contain clues as to what went wrong,
+          console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+        }
+      }
+    );
+  }
+
+  onSubmit() {
+    const req = this.ledgerservice.deleteEntry(this.entryId, this.entryType);
+    req.subscribe(data => {
+          this.closeDialog();
+    },
+    (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          // A client-side or network error occurred. Handle it accordingly.
+          console.log('An error occurred:', err.error.message);
+        } else {
+          // The backend returned an unsuccessful response code.
+          // The response body may contain clues as to what went wrong,
+          console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+        }
+    });
    }
    onUpdate() {
 
@@ -67,8 +95,10 @@ export class UpdateEntryComponent implements OnInit {
       this.data.credit = +(this.updateEntryForm.get('amount').value * 100).toFixed(2);
     }
 
-    const req = this.ledgerservice.updateEntry(this.data, this.entryType);
-    console.log("we did an update");
+    let model: Ledger = {id: this.data.id, debit: this.data.debit, credit: this.data.credit, trans_date: null, store: {id: null, store_name: null, default_credit: null, default_debit: null}, category: {id: this.updateEntryForm.get('category').value, category_name: ''}, payment_type: null}
+
+    const req = this.ledgerservice.updateEntry(model, this.entryType);
+
     req.subscribe(data => {
       this.closeDialog();
     },
@@ -87,4 +117,10 @@ export class UpdateEntryComponent implements OnInit {
 closeDialog() {
     this.dialogRef.close('updated');
   }
+  
+}
+
+export interface StoreAndCat {
+  category: Category[];
+  store: Store[];
 }
