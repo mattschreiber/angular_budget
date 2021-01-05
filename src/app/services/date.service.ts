@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class DateService {
 
+  // first and last day of current month
   todayDate = new Date();
   firstDayMonth = new Date(this.todayDate.getFullYear(), this.todayDate.getMonth(), 1);
   lastDayMonth = new Date(this.todayDate.getFullYear(), this.todayDate.getMonth() + 1, 0);
@@ -45,6 +46,17 @@ export class DateService {
   addMonth(date: Date, numMonths: number): Date {
     date.setMonth(date.getMonth() + numMonths);
     return date;
+  }
+
+  // first day of any month and year
+  getFirstDayMonth(month: number, year: number): Date {
+    let firstDay = new Date(year, month, 1);
+    return firstDay;
+  }
+  // last day of any month and year
+  getLastDayMonth(month: number, year: number): Date {
+    let lastDay = new Date(year, month+1, 0);
+    return lastDay;
   }
 
   // let months: string[] = [];
