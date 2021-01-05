@@ -176,7 +176,7 @@ getValues(startDate: string, endDate: string) {
  flattenData(data) {
   if (data != null) {
     let i: number;
-    let flatData: {id: number, credit: number, debit: number, category_name: string, store_name: string, trans_date: Date, payment_name: string, category_id: number};
+    let flatData: {id: number, credit: number, debit: number, category_name: string, store_name: string, trans_date: Date, payment_name: string, category_id: number, payment_type_id: number};
     const arr = [];
     for (i = 0; i < data.length; i++) {
       flatData = {
@@ -187,7 +187,8 @@ getValues(startDate: string, endDate: string) {
         store_name: data[i].store.store_name,
         trans_date: data[i].trans_date,
         payment_name: data[i].payment_type.payment_name,
-        category_id: data[i].category.id
+        category_id: data[i].category.id,
+        payment_type_id: data[i].payment_type.id
      };
       arr.push(flatData);
     }
@@ -217,7 +218,7 @@ getValues(startDate: string, endDate: string) {
    const dialogRef = this.dialog.open(UpdateEntryComponent, {
     //  width: '300px',
     //  height: '200px',
-     data: { id: row.id, debit: row.debit, credit: row.credit, category_id: row.category_id, entryType: this.entryType }
+     data: { id: row.id, debit: row.debit, credit: row.credit, category_id: row.category_id, payment_type_id: row.payment_type_id, entryType: this.entryType }
    });
 
    dialogRef.afterClosed()
