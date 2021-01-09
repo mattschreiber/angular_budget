@@ -43,6 +43,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { LoginComponent } from './login/login.component';
 import { UpdateEntryComponent } from './update-entry/update-entry.component';
 import { CreateStoreComponent } from './create-store/create-store.component';
+import { MonthlybudgetComponent } from './monthlybudget/monthlybudget.component';
 
 
 
@@ -57,7 +58,8 @@ import { CreateStoreComponent } from './create-store/create-store.component';
     PageNotFoundComponent,
     LoginComponent,
     UpdateEntryComponent,
-    CreateStoreComponent
+    CreateStoreComponent,
+    MonthlybudgetComponent
   ],
   imports: [
     BrowserModule,
