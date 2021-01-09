@@ -15,8 +15,8 @@
       <ng-container matColumnDef="credit">
         <mat-header-cell *matHeaderCellDef>Credit</mat-header-cell>
         <!-- <mat-cell *matCellDef="let row">$&nbsp;{{ row.credit / 100 }}</mat-cell> -->
-        <mat-cell *matCellDef="let row">
-          <input matInput placeholder="" [value]=row.credit>
+        <mat-cell *matCellDef="let row; let i = index;">
+          <input matInput placeholder="" #cred [value]=row.credit (keyup)="creditChange(cred.value, i)">
         </mat-cell> 
       </ng-container>
   
@@ -24,8 +24,8 @@
       <ng-container matColumnDef="debit">
         <mat-header-cell *matHeaderCellDef>Debit</mat-header-cell>
         <!-- <mat-cell *matCellDef="let row">$&nbsp;{{ row.debit / 100 }}</mat-cell> -->
-        <mat-cell *matCellDef="let row">
-          <input matInput placeholder="" [value]=row.debit>
+        <mat-cell *matCellDef="let row; let i = index">
+          <input matInput placeholder="" #deb [value]=row.debit (keyup)="debitChange(deb.value, i)">
         </mat-cell> 
         
       </ng-container>
@@ -40,8 +40,8 @@
       <ng-container matColumnDef="category">
         <mat-header-cell [fxHide]="displayMobile" *matHeaderCellDef>Category</mat-header-cell>
         <!-- <mat-cell [fxHide]="displayMobile" *matCellDef="let row">{{ row.category.category_name }}</mat-cell> -->
-        <mat-cell *matCellDef="let row">
-          <mat-select style="width: 50%;" placeholder="Category" name="category.id" [value] = "row.category.id" required>
+        <mat-cell *matCellDef="let row; let i = index;">
+          <mat-select style="width: 50%;" placeholder="Category" #cat name="category.id" [value] = "row.category.id" (selectionChange)="updateCat(cat.value, i)" required>
             <mat-option *ngFor="let cat of storeAndCat.category" [value]="cat.id"> {{ cat.category_name }}</mat-option>
           </mat-select>
         </mat-cell>
@@ -51,8 +51,8 @@
       <ng-container matColumnDef="paymentname">
         <mat-header-cell [fxHide]="displayMobile" *matHeaderCellDef>Payment</mat-header-cell>
         <!-- <mat-cell [fxHide]="displayMobile" *matCellDef="let row">{{ row.payment_type.payment_name }}</mat-cell> -->
-        <mat-cell *matCellDef="let row">
-          <mat-select style="width: 50%;" placeholder="Payment Type" name="payment_type.id" [value] = "row.payment_type.id" required>
+        <mat-cell *matCellDef="let row; let i = index;">
+          <mat-select style="width: 50%;" placeholder="Payment Type" #pt name="payment_type.id" [value] = "row.payment_type.id" (selectionChange)="updatePaymentType(pt.value, i)" required>
             <mat-option *ngFor="let pt of paymentTypes" [value]="pt.id"> {{ pt.payment_name }}</mat-option>
           </mat-select>
         </mat-cell>

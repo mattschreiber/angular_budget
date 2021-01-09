@@ -5,13 +5,15 @@ import { MatTableDataSource } from '@angular/material'
 
 
 import { DateService } from '../services/date.service';
-import { DatatableService } from '../services/datatable.service';
+import { DatatableService, TableEntries } from '../services/datatable.service';
 import { PaymenttypeService } from '../services/paymenttype.service';
 import { StoreandcatService } from '../services/storeandcat.service';
 
 import { PaymentType } from '../shared/paymenttype';
 import { Category } from '../shared/category';
 import { Store } from '../shared/store';
+import { Ledger } from '../shared/ledger';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-monthlybudget',
@@ -33,10 +35,13 @@ export class MonthlybudgetComponent implements OnInit {
   startDate = new FormControl(this.firstOfMonth);
   endDate = new FormControl(this.lastOfMonth);
 
-   // object used to load payment types drop down list
-   paymentTypes: PaymentType 
+  // object used to load payment types drop down list
+  paymentTypes: PaymentType 
 
-   storeAndCat: StoreAndCat = {category: [], store: []};
+  // object used to capture budget data returned from getValues()
+  budgetData: Ledger[] = [];
+
+  storeAndCat: StoreAndCat = {category: [], store: []};
 
   displayedColumns = ['date', 'credit', 'debit', 'store', 'category', 'paymentname'];
   // displayedColumnsMobile = ['date', 'credit', 'debit', 'store'];
@@ -78,6 +83,7 @@ getValues(startDate: string, endDate: string) {
         data[i].debit = data[i].debit/100;
       }
       this.dataSource.data = data;
+      this.copyData(data);
     } else {
       this.dataSource.data = [];
     }
@@ -93,6 +99,19 @@ getValues(startDate: string, endDate: string) {
        console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
    }
 });
+}
+
+// copyData createa an array of Budget Objects to keep track of changes made to row entries
+// the budgetData will be updated when change events are called for various cells in the table
+copyData(data: any[]): void{
+  data.forEach(element => {
+    let l: Ledger;
+    l = {id: element.id, credit: element.credit, debit: element.debit, trans_date: null, 
+      category: {id: element.category.id, category_name: null}, 
+      store: {id: null, store_name: null, default_credit: null, default_debit: null},
+      payment_type: {id: element.payment_type.id, payment_name: null}}
+    this.budgetData.push(l);
+  });
 }
 
   // get all stores and categories to display on entry form.
@@ -112,6 +131,22 @@ getValues(startDate: string, endDate: string) {
         }
       }
     );
+  }
+
+  updateCat(category_id: number, index: number): void {
+    this.budgetData[index].category.id = category_id;
+  }
+
+  updatePaymentType(pt_id: number, index: number): void {
+    this.budgetData[index].payment_type.id = pt_id;
+  }
+
+  debitChange(debit: number, index: number): void {
+    console.log("debit " + debit + " index: " + index);
+  }
+
+  creditChange(credit: number, index: number): void {
+    console.log("credit : " + credit + " index: " + index);
   }
 
   // get all stores and categories to display on entry form.
