@@ -7,8 +7,11 @@ import { MatTableDataSource } from '@angular/material'
 import { DateService } from '../services/date.service';
 import { DatatableService } from '../services/datatable.service';
 import { PaymenttypeService } from '../services/paymenttype.service';
+import { StoreandcatService } from '../services/storeandcat.service';
 
 import { PaymentType } from '../shared/paymenttype';
+import { Category } from '../shared/category';
+import { Store } from '../shared/store';
 
 @Component({
   selector: 'app-monthlybudget',
@@ -33,6 +36,8 @@ export class MonthlybudgetComponent implements OnInit {
    // object used to load payment types drop down list
    paymentTypes: PaymentType 
 
+   storeAndCat: StoreAndCat = {category: [], store: []};
+
   displayedColumns = ['date', 'credit', 'debit', 'store', 'category', 'paymentname'];
   // displayedColumnsMobile = ['date', 'credit', 'debit', 'store'];
   displayMobile: boolean;
@@ -42,12 +47,15 @@ export class MonthlybudgetComponent implements OnInit {
   pageSizeOptions = [10, 25, 100];
 
   tableEntries: DatatableService | null;
+
   constructor(private http: HttpClient, private paymenttypeservice: PaymenttypeService,
-    private dateservice: DateService, private datatableserve: DatatableService) {
+    private dateservice: DateService, private datatableserve: DatatableService,
+    private storeandcatservice: StoreandcatService) {
    }
 
   ngOnInit() {
     this.getPaymentTypes();
+    this.getStoreAndCat();
     this.tableEntries = new DatatableService(this.http, this.dateservice);
   }
 
@@ -64,6 +72,11 @@ getValues(startDate: string, endDate: string) {
   .subscribe( data => {
     // this.flattenData(data[0]);
     if (data != null) {
+      let i: number;
+      for (i = 0; i < data.length; i++) {
+        data[i].credit = data[i].credit/100;
+        data[i].debit = data[i].debit/100;
+      }
       this.dataSource.data = data;
     } else {
       this.dataSource.data = [];
@@ -81,6 +94,25 @@ getValues(startDate: string, endDate: string) {
    }
 });
 }
+
+  // get all stores and categories to display on entry form.
+  getStoreAndCat(): void {
+    this.storeandcatservice.getStoreAndCat()
+    .subscribe(data => {
+        this.storeAndCat = data;
+    },
+    (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          // A client-side or network error occurred. Handle it accordingly.
+          console.log('An error occurred:', err.error.message);
+        } else {
+          // The backend returned an unsuccessful response code.
+          // The response body may contain clues as to what went wrong,
+          console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+        }
+      }
+    );
+  }
 
   // get all stores and categories to display on entry form.
   getPaymentTypes(): void {
@@ -102,3 +134,9 @@ getValues(startDate: string, endDate: string) {
   }
 
 }
+
+export interface StoreAndCat {
+  category: Category[];
+  store: Store[];
+}
+

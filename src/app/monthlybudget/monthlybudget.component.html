@@ -3,7 +3,7 @@
 </div>
 <div [fxHide]="isLoading">
 <div fxLayout.lt-sm="column" fxLayoutGap="20px">
-  <div class="table-container" fxFlex.lt-sm="100%" fxFlex.sm="100%">
+  <div fxFlex.lt-sm="100%" fxFlex.sm="100%">
     <mat-table #table [dataSource]="dataSource" class="table-table">
             <!-- Date Column -->
       <ng-container matColumnDef="date">
@@ -39,7 +39,12 @@
       <!-- Category Column -->
       <ng-container matColumnDef="category">
         <mat-header-cell [fxHide]="displayMobile" *matHeaderCellDef>Category</mat-header-cell>
-        <mat-cell [fxHide]="displayMobile" *matCellDef="let row">{{ row.category.category_name }}</mat-cell>
+        <!-- <mat-cell [fxHide]="displayMobile" *matCellDef="let row">{{ row.category.category_name }}</mat-cell> -->
+        <mat-cell *matCellDef="let row">
+          <mat-select style="width: 50%;" placeholder="Category" name="category.id" [value] = "row.category.id" required>
+            <mat-option *ngFor="let cat of storeAndCat.category" [value]="cat.id"> {{ cat.category_name }}</mat-option>
+          </mat-select>
+        </mat-cell>
       </ng-container>
   
       <!-- Payment Name Column -->
@@ -47,7 +52,7 @@
         <mat-header-cell [fxHide]="displayMobile" *matHeaderCellDef>Payment</mat-header-cell>
         <!-- <mat-cell [fxHide]="displayMobile" *matCellDef="let row">{{ row.payment_type.payment_name }}</mat-cell> -->
         <mat-cell *matCellDef="let row">
-          <mat-select placeholder="Payment Type" name="payment_type.id" [value] = "row.payment_type.id" required>
+          <mat-select style="width: 50%;" placeholder="Payment Type" name="payment_type.id" [value] = "row.payment_type.id" required>
             <mat-option *ngFor="let pt of paymentTypes" [value]="pt.id"> {{ pt.payment_name }}</mat-option>
           </mat-select>
         </mat-cell>
