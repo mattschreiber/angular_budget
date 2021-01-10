@@ -64,8 +64,11 @@
     </mat-table>
     </div>
   </div>
+  <div fxLayout.lt-sm="column" fxLayoutGap="20px"> 
   <app-month-year 
     (newYear)="yearUpdated($event)"
     (newMonth)="monthUpdated($event)">
   </app-month-year>
+  <button mat-flat-button color="primary">Submit</button>
+  </div>
 </div>
