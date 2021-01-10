@@ -27,6 +27,10 @@ export class MonthlybudgetComponent implements OnInit {
   datatype = 'budget-entries'
   isLoading = true;
 
+  // variables used to track the year and month that will be used to create the new budget entries
+  newBudgetYear: number;
+  newBudgetMonth: number;
+
   // Dates used to initially configure Date Pickers which are used to populate the datatable
   firstOfMonth: Date = this.dateservice.firstDayMonth;
   todayDate: Date = this.dateservice.todayDate;
@@ -62,6 +66,12 @@ export class MonthlybudgetComponent implements OnInit {
     this.getPaymentTypes();
     this.getStoreAndCat();
     this.tableEntries = new DatatableService(this.http, this.dateservice);
+
+    // set defaults for the dates that will be used to create new budget entries
+    // defaults are set to current month and year.
+    this.newBudgetMonth = new Date().getMonth() + 1;
+    this.newBudgetYear = new Date().getFullYear();
+
   }
 
   ngAfterViewInit() {
@@ -142,11 +152,13 @@ copyData(data: any[]): void{
   }
 
   debitChange(debit: number, index: number): void {
-    console.log("debit " + debit + " index: " + index);
+    this.budgetData[index].debit = debit;
+    // console.log("debit " + debit + " index: " + index);
   }
 
   creditChange(credit: number, index: number): void {
-    console.log("credit : " + credit + " index: " + index);
+    this.budgetData[index].credit = credit;
+    // console.log("credit : " + credit + " index: " + index);
   }
 
   // get all stores and categories to display on entry form.
@@ -166,6 +178,16 @@ copyData(data: any[]): void{
         }
       }
     );
+  }
+
+  // function to update year when event emitted from month-year component
+  yearUpdated(year: number): void {
+    this.newBudgetYear = year;
+    console.log(this.newBudgetYear);
+  }
+  monthUpdated(month: number): void {
+    this.newBudgetMonth = month;
+    console.log(this.newBudgetMonth);
   }
 
 }

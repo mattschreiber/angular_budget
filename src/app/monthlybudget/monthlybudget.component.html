@@ -64,4 +64,8 @@
     </mat-table>
     </div>
   </div>
+  <app-month-year 
+    (newYear)="yearUpdated($event)"
+    (newMonth)="monthUpdated($event)">
+  </app-month-year>
 </div>

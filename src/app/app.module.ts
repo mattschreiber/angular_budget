@@ -44,6 +44,7 @@ import { LoginComponent } from './login/login.component';
 import { UpdateEntryComponent } from './update-entry/update-entry.component';
 import { CreateStoreComponent } from './create-store/create-store.component';
 import { MonthlybudgetComponent } from './monthlybudget/monthlybudget.component';
+import { MonthYearComponent } from './month-year/month-year.component';
 
 
 
@@ -59,7 +60,8 @@ import { MonthlybudgetComponent } from './monthlybudget/monthlybudget.component'
     LoginComponent,
     UpdateEntryComponent,
     CreateStoreComponent,
-    MonthlybudgetComponent
+    MonthlybudgetComponent,
+    MonthYearComponent
   ],
   imports: [
     BrowserModule,
