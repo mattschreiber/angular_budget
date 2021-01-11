@@ -196,38 +196,39 @@ copyData(data: any[]): void{
   // function that creates new budget entries for a given month and year
   newBudget(): void {
 
-    const d = new Date (this.budgetData[0].trans_date);
-    d.setUTCMonth(this.newBudgetMonth);
-    // d.setUTCMonth(this.newBudgetMonth);
-    console.log(d.toISOString());
+    let i: number = 0;
+    this.budgetData.forEach(element => {
+      const d = new Date (element.trans_date);
+      const timeOffSet: number = d.getTimezoneOffset();
+      const offsetTime = new Date(d.getTime() + timeOffSet * 60 * 1000);
+      offsetTime.setUTCMonth(this.newBudgetMonth);
+      offsetTime.setUTCFullYear(this.newBudgetYear);
 
-    this.budgetData[0].trans_date = d.toISOString();
-    console.log(this.budgetData[0].trans_date);
-
-    // let d = this.dateservice.parseDate(new Date(this.budgetData[0].trans_date).toISOString());
-    // let d = new Date(this.budgetData[0].trans_date);
-    // d.setUTCMonth(this.newBudgetMonth);
-    // this.budgetData[0].trans_date = new Date(d.toISOString());
-    // console.log(d.toLocaleDateString());
-
-    const req = this.ledgerservice.createNewEntry(this.budgetData[0], this.entryType);
-    req.subscribe(data => {
-      // reset model after successful entry
-      console.log(data);
-    },
-    (err: HttpErrorResponse) => {
-        if (err.error instanceof Error) {
-          // A client-side or network error occurred. Handle it accordingly.
-          console.log('An error occurred:', err.error.message);
-          // this.flashMessage = err.error.message;
-        } else {
-          // The backend returned an unsuccessful response code.
-          // The response body may contain clues as to what went wrong,
-          // this.isError = true;
-          // this.flashMessage = err.error;
-          console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
-          }
-        });
+      this.budgetData[i].trans_date = offsetTime.toISOString();
+      console.log(this.budgetData[i].trans_date);
+      i++; 
+    });
+    this.budgetData.forEach(element => {
+      const req = this.ledgerservice.createNewEntry(element, this.entryType);
+      req.subscribe(data => {
+        // reset model after successful entry
+        console.log(data);
+      },
+      (err: HttpErrorResponse) => {
+          if (err.error instanceof Error) {
+            // A client-side or network error occurred. Handle it accordingly.
+            console.log('An error occurred:', err.error.message);
+            // this.flashMessage = err.error.message;
+          } else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            // this.isError = true;
+            // this.flashMessage = err.error;
+            console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+            }
+          });
+      
+    });
   }
 
 }
