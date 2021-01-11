@@ -8,12 +8,12 @@ import { DateService } from '../services/date.service';
 import { DatatableService, TableEntries } from '../services/datatable.service';
 import { PaymenttypeService } from '../services/paymenttype.service';
 import { StoreandcatService } from '../services/storeandcat.service';
+import { LedgerService } from '../services/ledger.service';
 
 import { PaymentType } from '../shared/paymenttype';
 import { Category } from '../shared/category';
 import { Store } from '../shared/store';
 import { Ledger } from '../shared/ledger';
-import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-monthlybudget',
@@ -43,7 +43,7 @@ export class MonthlybudgetComponent implements OnInit {
   paymentTypes: PaymentType 
 
   // object used to capture budget data returned from getValues()
-  budgetData: Ledger[] = [];
+  budgetData: Ledger[] | any[] = [];
 
   storeAndCat: StoreAndCat = {category: [], store: []};
 
@@ -59,7 +59,7 @@ export class MonthlybudgetComponent implements OnInit {
 
   constructor(private http: HttpClient, private paymenttypeservice: PaymenttypeService,
     private dateservice: DateService, private datatableserve: DatatableService,
-    private storeandcatservice: StoreandcatService) {
+    private storeandcatservice: StoreandcatService, private ledgerservice: LedgerService) {
    }
 
   ngOnInit() {
@@ -69,7 +69,7 @@ export class MonthlybudgetComponent implements OnInit {
 
     // set defaults for the dates that will be used to create new budget entries
     // defaults are set to current month and year.
-    this.newBudgetMonth = new Date().getMonth() + 1;
+    this.newBudgetMonth = new Date().getMonth();
     this.newBudgetYear = new Date().getFullYear();
 
   }
@@ -116,9 +116,9 @@ getValues(startDate: string, endDate: string) {
 copyData(data: any[]): void{
   data.forEach(element => {
     let l: Ledger;
-    l = {id: element.id, credit: element.credit, debit: element.debit, trans_date: null, 
+    l = {id: element.id, credit: element.credit, debit: element.debit, trans_date: element.trans_date, 
       category: {id: element.category.id, category_name: null}, 
-      store: {id: null, store_name: null, default_credit: null, default_debit: null},
+      store: {id: element.store.id, store_name: null, default_credit: null, default_debit: null},
       payment_type: {id: element.payment_type.id, payment_name: null}}
     this.budgetData.push(l);
   });
@@ -185,9 +185,49 @@ copyData(data: any[]): void{
     this.newBudgetYear = year;
     console.log(this.newBudgetYear);
   }
+
+  // the constant months sets the numeric value for the month equal to its corresponding number
+  // however in this case we need to get the true index so we subtract 1.
   monthUpdated(month: number): void {
-    this.newBudgetMonth = month;
+    this.newBudgetMonth = month - 1;
     console.log(this.newBudgetMonth);
+  }
+
+  // function that creates new budget entries for a given month and year
+  newBudget(): void {
+
+    const d = new Date (this.budgetData[0].trans_date);
+    d.setUTCMonth(this.newBudgetMonth);
+    // d.setUTCMonth(this.newBudgetMonth);
+    console.log(d.toISOString());
+
+    this.budgetData[0].trans_date = d.toISOString();
+    console.log(this.budgetData[0].trans_date);
+
+    // let d = this.dateservice.parseDate(new Date(this.budgetData[0].trans_date).toISOString());
+    // let d = new Date(this.budgetData[0].trans_date);
+    // d.setUTCMonth(this.newBudgetMonth);
+    // this.budgetData[0].trans_date = new Date(d.toISOString());
+    // console.log(d.toLocaleDateString());
+
+    const req = this.ledgerservice.createNewEntry(this.budgetData[0], this.entryType);
+    req.subscribe(data => {
+      // reset model after successful entry
+      console.log(data);
+    },
+    (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          // A client-side or network error occurred. Handle it accordingly.
+          console.log('An error occurred:', err.error.message);
+          // this.flashMessage = err.error.message;
+        } else {
+          // The backend returned an unsuccessful response code.
+          // The response body may contain clues as to what went wrong,
+          // this.isError = true;
+          // this.flashMessage = err.error;
+          console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+          }
+        });
   }
 
 }

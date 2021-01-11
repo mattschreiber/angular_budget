@@ -16,7 +16,7 @@
         <mat-header-cell *matHeaderCellDef>Credit</mat-header-cell>
         <!-- <mat-cell *matCellDef="let row">$&nbsp;{{ row.credit / 100 }}</mat-cell> -->
         <mat-cell *matCellDef="let row; let i = index;">
-          <input matInput placeholder="" #cred [value]=row.credit (keyup)="creditChange(cred.value, i)">
+          <mat-form-field class="field-length"><input matInput placeholder="" #cred [value]=row.credit (keyup)="creditChange(cred.value, i)"></mat-form-field>
         </mat-cell> 
       </ng-container>
   
@@ -25,7 +25,7 @@
         <mat-header-cell *matHeaderCellDef>Debit</mat-header-cell>
         <!-- <mat-cell *matCellDef="let row">$&nbsp;{{ row.debit / 100 }}</mat-cell> -->
         <mat-cell *matCellDef="let row; let i = index">
-          <input matInput placeholder="" #deb [value]=row.debit (keyup)="debitChange(deb.value, i)">
+          <mat-form-field class="field-length"><input matInput placeholder="" #deb [value]=row.debit (keyup)="debitChange(deb.value, i)"></mat-form-field>
         </mat-cell> 
         
       </ng-container>
@@ -69,6 +69,6 @@
     (newYear)="yearUpdated($event)"
     (newMonth)="monthUpdated($event)">
   </app-month-year>
-  <button mat-flat-button color="primary">Submit</button>
+  <button (click)="newBudget()" mat-flat-button color="primary">New Budget</button>
   </div>
 </div>

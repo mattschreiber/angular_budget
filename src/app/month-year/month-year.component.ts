@@ -1,7 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { merge, of as observableOf } from 'rxjs';
-import {startWith, map, switchMap, catchError} from 'rxjs/operators';
 
 import { DateService } from '../services/date.service';
 import { MONTHS } from '../shared/months';
