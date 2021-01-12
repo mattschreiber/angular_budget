@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material'
-
+// import * as _ from 'underscore';
 
 import { DateService } from '../services/date.service';
 import { DatatableService, TableEntries } from '../services/datatable.service';
@@ -39,6 +39,7 @@ export class MonthlybudgetComponent implements OnInit {
   startDate = new FormControl(this.firstOfMonth);
   endDate = new FormControl(this.lastOfMonth);
 
+
   // object used to load payment types drop down list
   paymentTypes: PaymentType 
 
@@ -60,6 +61,7 @@ export class MonthlybudgetComponent implements OnInit {
   constructor(private http: HttpClient, private paymenttypeservice: PaymenttypeService,
     private dateservice: DateService, private datatableserve: DatatableService,
     private storeandcatservice: StoreandcatService, private ledgerservice: LedgerService) {
+      // this.updateDate = _.debounce(this.updateDate, 3500);
    }
 
   ngOnInit() {
@@ -82,6 +84,7 @@ export class MonthlybudgetComponent implements OnInit {
  // updates table along with Estimated and Actual Amounts, but not projected or actual as of today
 getValues(startDate: string, endDate: string) {
   this.isLoading = true;
+  this.budgetData = [];
 
   this.tableEntries.getEntries(this.datatype, startDate, endDate)
   .subscribe( data => {
@@ -229,6 +232,20 @@ copyData(data: any[]): void{
           });
       
     });
+  }
+
+  updateDate(startDate: string, endDate: string): void {
+
+    // convert to dates so comparison works
+    const startD = new Date(startDate);
+    const endD = new Date(endDate);
+ 
+    if (startD <= endD) {
+      this.getValues(this.dateservice.parseDate(startDate), this.dateservice.parseDate(endDate));
+    } else {
+      // The end date should not be before the start date. set table and balances to zero
+      this.dataSource.data = [];
+   }
   }
 
 }
