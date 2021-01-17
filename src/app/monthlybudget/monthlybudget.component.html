@@ -83,11 +83,17 @@
     </mat-table>
     </div>
   </div>
-  <div fxLayout.lt-sm="column" fxLayoutGap="20px"> 
-  <app-month-year 
-    (newYear)="yearUpdated($event)"
-    (newMonth)="monthUpdated($event)">
-  </app-month-year>
-  <button (click)="newBudget()" mat-flat-button color="primary">New Budget</button>
+  <div fxLayout.lt-sm="column" fxLayoutGap="20px">
+    <div [fxShow]="isError">
+      <h3 class="flash-message-error">{{flashMessage}}</h3>
+    </div>
+    <div [fxShow]="isSuccess">
+      <h3 class="flash-message-success">{{flashMessage}}</h3>
+    </div>
+    <app-month-year 
+      (newYear)="yearUpdated($event)"
+      (newMonth)="monthUpdated($event)">
+    </app-month-year>
+    <button (click)="newBudget()" mat-flat-button color="primary">New Budget</button>
   </div>
 </div>

@@ -26,6 +26,11 @@ export class MonthlybudgetComponent implements OnInit {
   entryType = 'budget';
   datatype = 'budget-entries'
   isLoading = true;
+  
+  // Add message indicating if new entry successful
+  flashMessage: string; 
+  isError: boolean = false;
+  isSuccess: boolean = false;
 
   // variables used to track the year and month that will be used to create the new budget entries
   newBudgetYear: number;
@@ -186,19 +191,18 @@ copyData(data: any[]): void{
   // function to update year when event emitted from month-year component
   yearUpdated(year: number): void {
     this.newBudgetYear = year;
-    console.log(this.newBudgetYear);
   }
 
   // the constant months sets the numeric value for the month equal to its corresponding number
   // however in this case we need to get the true index so we subtract 1.
   monthUpdated(month: number): void {
     this.newBudgetMonth = month - 1;
-    console.log(this.newBudgetMonth);
   }
 
   // function that creates new budget entries for a given month and year
   newBudget(): void {
-
+    this.isError = false;
+    this.isSuccess = false;
     let i: number = 0;
     this.budgetData.forEach(element => {
       const d = new Date (element.trans_date);
@@ -208,25 +212,27 @@ copyData(data: any[]): void{
       offsetTime.setUTCFullYear(this.newBudgetYear);
 
       this.budgetData[i].trans_date = offsetTime.toISOString();
-      console.log(this.budgetData[i].trans_date);
       i++; 
     });
     this.budgetData.forEach(element => {
       const req = this.ledgerservice.createNewEntry(element, this.entryType);
-      req.subscribe(data => {
+      req.subscribe(() => {
         // reset model after successful entry
-        console.log(data);
+        this.isSuccess = true;
+        this.flashMessage = "Successfully Saved New Budget"
       },
       (err: HttpErrorResponse) => {
           if (err.error instanceof Error) {
             // A client-side or network error occurred. Handle it accordingly.
             console.log('An error occurred:', err.error.message);
-            // this.flashMessage = err.error.message;
+            this.isError = true;
+            this.flashMessage = "Unable to save new budget: ", err.error.message;
           } else {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
             // this.isError = true;
-            // this.flashMessage = err.error;
+            this.isError = true;
+            this.flashMessage = "Unable to save new budget: ", err.error;
             console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
             }
           });

@@ -81,3 +81,11 @@ h3 {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.flash-message-success {
+  color: $primary-color!important;
+}
+
+.flash-message-error {
+  color: red;
+}
