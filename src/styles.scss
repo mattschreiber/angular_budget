@@ -3,6 +3,7 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 $primary-color: rgb(65, 82, 174);
+$warn-color: #f44336;
 
 body {
   padding: 0;
@@ -87,5 +88,5 @@ h3 {
 }
 
 .flash-message-error {
-  color: red;
+  color:$warn-color!important;
 }
